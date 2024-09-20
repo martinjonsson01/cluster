@@ -1,0 +1,3 @@
+---
+providerRegex: ^(sverker|bertil|greger)$
+bypassDnsResolution: true
