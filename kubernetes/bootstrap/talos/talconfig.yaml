@@ -22,38 +22,53 @@ cniConfig:
 
 nodes:
   - hostname: "sverker"
-    ipAddress: ""
+    ipAddress: "192.168.0.110"
     installDisk: "/dev/sdb"
     talosImageURL: factory.talos.dev/installer/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "00:23:24:a5:98:ef"
-        dhcp: true
+        dhcp: false
+        addresses:
+          - "192.168.0.110/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "192.168.0.1"
         mtu: 1500
         vip:
           ip: "192.168.0.109"
   - hostname: "bertil"
-    ipAddress: ""
+    ipAddress: "192.168.0.111"
     installDisk: "/dev/sdb"
     talosImageURL: factory.talos.dev/installer/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "00:23:24:a5:98:ff"
-        dhcp: true
+        dhcp: false
+        addresses:
+          - "192.168.0.111/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "192.168.0.1"
         mtu: 1500
         vip:
           ip: "192.168.0.109"
   - hostname: "greger"
-    ipAddress: ""
+    ipAddress: "192.168.0.112"
     installDisk: "/dev/sdb"
     talosImageURL: factory.talos.dev/installer/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "00:23:24:d2:b5:20"
-        dhcp: true
+        dhcp: false
+        addresses:
+          - "192.168.0.112/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "192.168.0.1"
         mtu: 1500
         vip:
           ip: "192.168.0.109"
