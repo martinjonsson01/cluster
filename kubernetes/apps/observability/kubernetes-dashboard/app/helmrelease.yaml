@@ -40,11 +40,11 @@ spec:
         hosts:
           - "kubernetes.${SECRET_DOMAIN}"
 
-  metricsScraper:
-    enabled: true
-  nginx:
-    enabled: false
-  cert-manager:
-    enabled: false
-  metrics-server:
-    enabled: false
+    metricsScraper:
+      enabled: true
+    nginx:
+      enabled: false
+    cert-manager:
+      enabled: false
+    metrics-server:
+      enabled: false
