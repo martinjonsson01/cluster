@@ -22,25 +22,26 @@ spec:
     remediation:
       retries: 3
   values:
-    env:
-      TZ: "${TIMEZONE}"
-    extraArgs:
-      - --enable-skip-login
-      - --disable-settings-authorizer
-      - --enable-insecure-login
-      - --insecure-bind-address=0.0.0.0
-    ingress:
-      enabled: true
-      className: internal
-      annotations:
-        external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        nginx.ingress.kubernetes.io/proxy-body-size: "100m"
-        nginx.ingress.kubernetes.io/whitelist-source-range: |
-          10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
-      hosts:
-        - &host "kubernetes.${SECRET_DOMAIN}"
-      tls:
-        - hosts:
-            - *host
-    metricsScraper:
-      enabled: true
+    app:
+      env:
+        TZ: "${TIMEZONE}"
+      extraArgs:
+        - --enable-skip-login
+        - --disable-settings-authorizer
+        - --enable-insecure-login
+        - --insecure-bind-address=0.0.0.0
+      ingress:
+        enabled: true
+        className: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+          nginx.ingress.kubernetes.io/whitelist-source-range: |
+            10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+        hosts:
+          - &host "kubernetes.${SECRET_DOMAIN}"
+        tls:
+          - hosts:
+              - *host
+      metricsScraper:
+        enabled: true
