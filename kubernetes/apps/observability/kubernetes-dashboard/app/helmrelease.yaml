@@ -21,8 +21,6 @@ spec:
     remediation:
       retries: 3
   values:
-    metricsScraper:
-      enabled: true
     app:
       env:
         TZ: "${TIMEZONE}"
@@ -41,3 +39,12 @@ spec:
             10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
         hosts:
           - "kubernetes.${SECRET_DOMAIN}"
+
+  metricsScraper:
+    enabled: true
+  nginx:
+    enabled: false
+  cert-manager:
+    enabled: false
+  metrics-server:
+    enabled: false
