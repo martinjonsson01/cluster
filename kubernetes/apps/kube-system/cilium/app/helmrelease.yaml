@@ -51,17 +51,9 @@ spec:
         enabled: true
         rollOutPods: true
         ingress:
-          app:
-            className: external
-            annotations:
-              external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-            hosts:
-              - host: "hubble.${SECRET_DOMAIN}"
-                paths:
-                  - path: /
-                    service:
-                      identifier: app
-                      port: http
+          enabled: true
+          className: internal
+          hosts: ["hubble.${SECRET_DOMAIN}"]
     operator:
       prometheus:
         enabled: true
