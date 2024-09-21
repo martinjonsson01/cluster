@@ -27,7 +27,9 @@ spec:
       env:
         TZ: "${TIMEZONE}"
       extraArgs:
-        - --token-ttl=43200 # seconds time to expire
+        - --enable-insecure-login
+        - --enable-skip-login
+        - --disable-settings-authorizer
       ingress:
         enabled: true
         ingressClassName: internal
