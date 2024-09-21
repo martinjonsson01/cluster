@@ -22,17 +22,16 @@ spec:
     remediation:
       retries: 3
   values:
-    env:
-      TZ: "${TIMEZONE}"
-    protocolHttps: true
-    ingress:
-      enabled: true
-      className: internal
-      hosts:
-        - kubernetes.${SECRET_DOMAIN}
-
-    extraArgs:
-      - --enable-skip-login
-      - --disable-settings-authorizer
     metricsScraper:
       enabled: true
+    app:
+      env:
+        TZ: "${TIMEZONE}"
+      extraArgs:
+        - --enable-skip-login
+        - --disable-settings-authorizer
+      ingress:
+        enabled: true
+        ingressClassName: internal
+        hosts:
+          - "kubernetes.${SECRET_DOMAIN}"
