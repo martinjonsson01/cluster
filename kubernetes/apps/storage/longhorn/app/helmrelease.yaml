@@ -39,6 +39,8 @@ spec:
       backupTarget: "nfs://${SECRET_NAS_IP}:/volume1/backups/cluster"
     ingress:
       enabled: true
+      annotations:
+        external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
       ingressClassName: internal
       host: longhorn.${SECRET_DOMAIN}
       pathType: Prefix
