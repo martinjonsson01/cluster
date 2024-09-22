@@ -36,7 +36,6 @@ spec:
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       concurrentAutomaticEngineUpgradePerNodeLimit: 3
       orphanAutoDeletion: true
-      backupTarget: "nfs://${SECRET_NAS_IP}:/volume1/backups/cluster"
     ingress:
       enabled: true
       annotations:

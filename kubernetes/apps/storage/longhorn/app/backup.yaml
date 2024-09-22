@@ -1,0 +1,5 @@
+apiVersion: longhorn.io/v1beta2
+kind: Setting
+metadata:
+  name: backup-target
+value: nfs://${SECRET_NAS_IP}:/volume1/backups/cluster
