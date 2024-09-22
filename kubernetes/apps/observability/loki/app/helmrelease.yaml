@@ -74,7 +74,3 @@ spec:
       enabled: false
     test:
       enabled: false
-    volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: storage-loki-1
