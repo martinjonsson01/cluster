@@ -22,35 +22,15 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    wordpressUsername: Cronix
-    wordpressEmail: h@xx0r.eu
-    wordpressFirstName: Martin
-    wordpressLastName: Jonsson
-    wordpressBlogName: Test blog
-    wordpressTablePrefix: wp_
     wordpressScheme: https
-    wordpressSkipInstall: false
     wordpressExtraConfigContent: |
       @ini_set( 'post_max_size', '128M');
       @ini_set( 'memory_limit', '256M' );
-    wordpressConfiguration: ""
-    existingWordPressConfigurationSecret: ""
-    wordpressConfigureCache: true
-    wordpressAutoUpdateLevel: minor
-    wordpressPlugins: none
-    serviceAccountName: default
-    hostAliases:
-      ## Required for apache-exporter to work
-      - ip: "127.0.0.1"
-        hostnames:
-          - "wordpress.${SECRET_DOMAIN}"
     resources:
       limits: {}
       requests:
         memory: 512Mi
         cpu: 300m
-    service:
-      type: ClusterIP
     ingress:
       enabled: true
       annotations:
