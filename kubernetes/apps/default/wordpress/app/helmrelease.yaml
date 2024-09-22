@@ -23,7 +23,6 @@ spec:
       retries: 3
   values:
     wordpressUsername: Cronix
-    existingSecret: "wordpress-secret"
     wordpressEmail: h@xx0r.eu
     wordpressFirstName: Martin
     wordpressLastName: Jonsson
