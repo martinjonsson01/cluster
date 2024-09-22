@@ -40,7 +40,7 @@ spec:
     ingress:
       enabled: true
       ingressClassName: internal
-      hosts: ["longhorn.${SECRET_DOMAIN}"]
+      host: longhorn.${SECRET_DOMAIN}
       pathType: Prefix
     metrics:
       serviceMonitor:
