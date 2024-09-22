@@ -1,0 +1,61 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: wordpress
+  namespace: default
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: wordpress
+      version: 23.1.1
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+        namespace: flux-system
+      interval: 1m
+      valuesFiles:
+        - values.yaml
+  values:
+    image:
+      registry: harbor.crystalnet.org/dockerhub-proxy
+      repository: bitnami/wordpress
+      tag: 6.4.3-debian-11-r3
+      pullPolicy: IfNotPresent
+    wordpressUsername: Cronix
+    existingSecret: "wordpress-secret"
+    wordpressEmail: h@xx0r.eu
+    wordpressFirstName: Martin
+    wordpressLastName: Jonsson
+    wordpressBlogName: Test blog
+    wordpressTablePrefix: wp_
+    wordpressScheme: https
+    wordpressSkipInstall: false
+    wordpressExtraConfigContent: |
+      @ini_set( 'post_max_size', '128M');
+      @ini_set( 'memory_limit', '256M' );
+    wordpressConfiguration: ""
+    existingWordPressConfigurationSecret: ""
+    wordpressConfigureCache: true
+    wordpressAutoUpdateLevel: minor
+    wordpressPlugins: none
+    serviceAccountName: default
+    hostAliases:
+      ## Required for apache-exporter to work
+      - ip: "127.0.0.1"
+        hostnames:
+          - "wordpress.${SECRET_DOMAIN}"
+    resources:
+      limits: {}
+      requests:
+        memory: 512Mi
+        cpu: 300m
+    service:
+      type: ClusterIP
+    ingress:
+      enabled: true
+      annotations:
+        external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+      ingressClassName: internal
+      hostname: wordpress.${SECRET_DOMAIN}
+      path: /
