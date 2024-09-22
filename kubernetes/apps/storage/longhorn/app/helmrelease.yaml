@@ -42,7 +42,6 @@ spec:
       ingressClassName: internal
       hosts: ["longhorn.${SECRET_DOMAIN}"]
       pathType: Prefix
-      tls: true
     metrics:
       serviceMonitor:
         enabled: true
