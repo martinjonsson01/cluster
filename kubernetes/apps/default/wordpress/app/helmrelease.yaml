@@ -23,6 +23,7 @@ spec:
       retries: 3
   values:
     wordpressScheme: https
+    existingSecret: wordpress-credentials
     wordpressExtraConfigContent: |
       @ini_set( 'post_max_size', '128M');
       @ini_set( 'memory_limit', '256M' );
@@ -38,3 +39,7 @@ spec:
       ingressClassName: internal
       hostname: wordpress.${SECRET_DOMAIN}
       path: /
+    mariadb:
+      auth:
+        rootPassword: ""
+        password: ""
