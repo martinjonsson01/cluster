@@ -1,4 +1,5 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: wordpress
@@ -12,9 +13,6 @@ spec:
         kind: HelmRepository
         name: bitnami
         namespace: flux-system
-      interval: 1m
-      valuesFiles:
-        - values.yaml
   install:
     remediation:
       retries: 3
@@ -24,11 +22,6 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    image:
-      registry: harbor.crystalnet.org/dockerhub-proxy
-      repository: bitnami/wordpress
-      tag: 6.4.3-debian-11-r3
-      pullPolicy: IfNotPresent
     wordpressUsername: Cronix
     existingSecret: "wordpress-secret"
     wordpressEmail: h@xx0r.eu
