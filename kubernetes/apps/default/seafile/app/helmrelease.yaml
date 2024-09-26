@@ -1,0 +1,56 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: seafile
+  namespace: default
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://phybros.github.io/helm-charts
+      chart: seafile
+      version: 4.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: phybros-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: seafileltd/seafile-mc
+      tag: 11.0.12
+    env:
+      TIME_ZONE: ${TIMEZONE}
+      SEAFILE_SERVER_HOSTNAME: &hostname "drive.${SECRET_DOMAIN}"
+      DB_HOST: seafile-mariadb
+    envFrom:
+      - secretRef:
+          name: seafile-secret
+
+    persistence:
+      shared:
+        enabled: true
+        type: nfs
+        server: ${SECRET_NAS_IP}
+        path: /volume1/drive
+        mountPath: /shared
+
+    ingress:
+      main:
+        enabled: true
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        className: external
+        hosts:
+          - host: *hostname
+            paths:
+              - path: /
+                pathType: Prefix
+
+    mariadb:
+      enabled: true
+      primary:
+        persistence:
+          enabled: true
+          existingClaim: seafile-db-v1
