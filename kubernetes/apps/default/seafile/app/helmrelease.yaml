@@ -6,6 +6,9 @@ metadata:
   namespace: default
 spec:
   interval: 5m
+  securityContext:
+    runAsUser: 1024
+    runAsGroup: 100
   chart:
     spec:
       # renovate: registryUrl=https://phybros.github.io/helm-charts
