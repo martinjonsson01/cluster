@@ -18,3 +18,4 @@ resources:
   - ./kubernetes-dashboard.yaml
   - ./grafana.yaml
   - ./longhorn.yaml
+  - ./phybros-charts.yaml
