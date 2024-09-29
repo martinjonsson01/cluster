@@ -74,6 +74,8 @@ spec:
                 value: "false"
               - name: SEAFILE_SERVER_HOSTNAME
                 value: &hostname files.${SECRET_DOMAIN}
+              - name: NON_ROOT
+                value: "true"
             envFrom:
               - secretRef:
                   name: *secret
