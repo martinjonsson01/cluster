@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.2.0/charts/other/app-template/values.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -37,7 +37,9 @@ spec:
 
         containers:
           mariadb:
-            image: mariadb:10.11
+            image:
+              repository: mariadb
+              tag: 10.11
             env:
               MARIADB_AUTO_UPGRADE: true
               MARIADB_ROOT_PASSWORD:
@@ -49,13 +51,17 @@ spec:
               - containerPort: &mariadb-port 3306
 
           memcached:
-            image: memcached:1.6.18
+            image:
+              repository: memcached
+              tag: 1.6.18
             args: ["-m", "256"]
             ports:
               - containerPort: &memcached-port 11211
 
           seafile:
-            image: docker.seadrive.org/seafileltd/seafile-mc:11.0.12
+            image:
+              repository: docker.seadrive.org/seafileltd/seafile-mc
+              tag: 11.0.12
             env:
               - name: DB_HOST
                 value: "mariadb"
@@ -77,24 +83,27 @@ spec:
       mariadb:
         controller: main
         ports:
-          protocol: TCP
-          port: *mariadb-port
-          targetPort: *mariadb-port
+          db:
+            protocol: TCP
+            port: 3306
+            targetPort: 3306
 
       memcached:
         controller: main
         ports:
-          protocol: TCP
-          port: *memcached-port
-          targetPort: *memcached-port
+          cache:
+            protocol: TCP
+            port: *memcached-port
+            targetPort: *memcached-port
 
       seafile:
         controller: main
         type: LoadBalancer
         ports:
-          protocol: TCP
-          port: *seafile-port
-          targetPort: *seafile-port
+          http:
+            protocol: TCP
+            port: *seafile-port
+            targetPort: *seafile-port
 
     ingress:
       seafile:
@@ -121,4 +130,5 @@ spec:
         type: nfs
         server: ${SECRET_NAS_IP}
         path: /volume1/drive
-        mountPath: /shared
+        globalMounts:
+          - path: /shared
