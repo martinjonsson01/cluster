@@ -18,4 +18,3 @@ resources:
   - ./kubernetes-dashboard.yaml
   - ./grafana.yaml
   - ./longhorn.yaml
-  - ./seafile-helm.yaml
