@@ -49,6 +49,10 @@ spec:
                     key: DB_ROOT_PASSWD
             ports:
               - containerPort: &mariadb-port 3306
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 999
+              runAsGroup: 999
 
           memcached:
             image:
