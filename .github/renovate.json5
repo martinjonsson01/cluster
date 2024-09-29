@@ -47,6 +47,12 @@
       "ignoreTests": true,
       "matchUpdateTypes": ["minor", "patch"]
     },
+    {
+      "description": ["Auto merge non-major semver updates"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    },
     // groups
     {
       "description": ["Flux Group"],
