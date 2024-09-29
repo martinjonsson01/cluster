@@ -77,24 +77,24 @@ spec:
       mariadb:
         controller: main
         ports:
-          - protocol: TCP
-            port: *mariadb-port
-            targetPort: *mariadb-port
+          protocol: TCP
+          port: *mariadb-port
+          targetPort: *mariadb-port
 
       memcached:
         controller: main
         ports:
-          - protocol: TCP
-            port: *memcached-port
-            targetPort: *memcached-port
+          protocol: TCP
+          port: *memcached-port
+          targetPort: *memcached-port
 
       seafile:
         controller: main
         type: LoadBalancer
         ports:
-          - protocol: TCP
-            port: *seafile-port
-            targetPort: *seafile-port
+          protocol: TCP
+          port: *seafile-port
+          targetPort: *seafile-port
 
     ingress:
       seafile:
