@@ -1,56 +1,124 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.2.0/charts/other/app-template/values.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: seafile
-  namespace: default
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
-      # renovate: registryUrl=https://phybros.github.io/helm-charts
-      chart: seafile
-      version: 4.0.1
+      chart: app-template
+      version: 3.4.0
       sourceRef:
         kind: HelmRepository
-        name: phybros-charts
+        name: bjw-s
         namespace: flux-system
-      interval: 5m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
   values:
-    image:
-      repository: seafileltd/seafile-mc
-      tag: 11.0.12
-    env:
-      TIME_ZONE: ${TIMEZONE}
-      SEAFILE_SERVER_HOSTNAME: &hostname "drive.${SECRET_DOMAIN}"
-      DB_HOST: seafile-mariadb
-    envFrom:
-      - secretRef:
-          name: seafile-secret
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile: { type: RuntimeDefault }
+
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          mariadb:
+            image: mariadb:10.11
+            env:
+              MARIADB_AUTO_UPGRADE: true
+              MARIADB_ROOT_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: &secret seafile-secret
+                    key: DB_ROOT_PASSWD
+            ports:
+              - containerPort: &mariadb-port 3306
+
+          memcached:
+            image: memcached:1.6.18
+            args: ["-m", "256"]
+            ports:
+              - containerPort: &memcached-port 11211
+
+          seafile:
+            image: docker.seadrive.org/seafileltd/seafile-mc:11.0.12
+            env:
+              - name: DB_HOST
+                value: "mariadb"
+              - name: TIME_ZONE
+                value: ${TIMEZONE}
+              - name: SEAFILE_SERVER_LETSENCRYPT
+                value: "false"
+              - name: SEAFILE_SERVER_HOSTNAME
+                value: &hostname files.${SECRET_DOMAIN}
+            envFrom:
+              - secretRef:
+                  name: *secret
+            ports:
+              - containerPort: &seafile-port 80
+            # - containerPort: 443
+            #   name:  seafile-secure
+
+    service:
+      mariadb:
+        controller: main
+        ports:
+          - protocol: TCP
+            port: *mariadb-port
+            targetPort: *mariadb-port
+
+      memcached:
+        controller: main
+        ports:
+          - protocol: TCP
+            port: *memcached-port
+            targetPort: *memcached-port
+
+      seafile:
+        controller: main
+        type: LoadBalancer
+        ports:
+          - protocol: TCP
+            port: *seafile-port
+            targetPort: *seafile-port
+
+    ingress:
+      seafile:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+        className: internal
+        hosts:
+          - host: *hostname
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
 
     persistence:
+      mariadbData:
+        existingClaim: seafile-db-v1
+        advancedMounts:
+          main:
+            mariadb:
+              - path: /var/lib/mysql
       shared:
         enabled: true
         type: nfs
         server: ${SECRET_NAS_IP}
         path: /volume1/drive
         mountPath: /shared
-
-    ingress:
-      main:
-        enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        className: external
-        hosts:
-          - host: *hostname
-            paths:
-              - path: /
-                pathType: Prefix
-
-    mariadb:
-      enabled: true
-      primary:
-        persistence:
-          enabled: true
-          existingClaim: seafile-db-v1

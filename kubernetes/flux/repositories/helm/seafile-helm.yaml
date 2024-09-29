@@ -3,9 +3,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: phybros-charts
+  name: seafile-helm
   namespace: flux-system
 spec:
   interval: 30m
-  url: https://phybros.github.io/helm-charts/
+  url: https://datamate-rethink-it.github.io/seafile-helm
   timeout: 3m
