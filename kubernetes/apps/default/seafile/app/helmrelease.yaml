@@ -42,7 +42,7 @@ spec:
           mariadb:
             image:
               repository: mariadb
-              tag: 10.11
+              tag: 10.11.9
             env:
               MARIADB_AUTO_UPGRADE: true
               MARIADB_ROOT_PASSWORD:
@@ -50,39 +50,86 @@ spec:
                   secretKeyRef:
                     name: &secret seafile-secret
                     key: DB_ROOT_PASSWD
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - healthcheck.sh
+                      - --su-mysql
+                      - --connect
+                      - --innodb_initialized
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness: *probes
             ports:
               - containerPort: &mariadb-port 3306
 
           memcached:
             image:
               repository: memcached
-              tag: 1.6.18
+              tag: 1.6.31
             args: ["-m", "256"]
             ports:
               - containerPort: &memcached-port 11211
 
-          seafile:
+          seafile-server:
             image:
-              repository: seafileltd/seafile-mc
+              repository: ggogel/seafile-server
               tag: 11.0.12
             env:
               - name: DB_HOST
                 value: "mariadb"
               - name: TIME_ZONE
                 value: ${TIMEZONE}
-              - name: SEAFILE_SERVER_LETSENCRYPT
-                value: "false"
-              - name: SEAFILE_SERVER_HOSTNAME
+              - name: SEAFILE_URL
                 value: &hostname files.${SECRET_DOMAIN}
-              - name: NON_ROOT
+              - name: HTTPS
                 value: "true"
             envFrom:
               - secretRef:
                   name: *secret
             ports:
-              - containerPort: &seafile-port 80
-            # - containerPort: 443
-            #   name:  seafile-secure
+              - containerPort: 8001
+                protocol: TCP
+              - containerPort: 8080
+                protocol: TCP
+              - containerPort: 8082
+                protocol: TCP
+              - containerPort: 8083
+                protocol: TCP
+            probes:
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  periodSeconds: 10
+                  tcpSocket:
+                    port: 8082
+                  timeoutSeconds: 10
+
+          seahub:
+            image:
+              repository: ggogel/seahub
+              tag: 11.0.12
+            envFrom:
+              - secretRef:
+                  name: *secret
+            ports:
+              - containerPort: 8000
+                protocol: TCP
+
+          seahub-media:
+            image:
+              repository: ggogel/seahub-media
+              tag: 11.0.12
+            ports:
+              - containerPort: 80
+                protocol: TCP
 
     service:
       mariadb:
@@ -101,14 +148,36 @@ spec:
             port: *memcached-port
             targetPort: *memcached-port
 
-      seafile:
+      seafile-server:
         controller: main
         type: LoadBalancer
         ports:
-          http:
-            protocol: TCP
-            port: *seafile-port
-            targetPort: *seafile-port
+          port8001:
+            port: 8001
+            targetPort: 8001
+          port8080:
+            port: 8080
+            targetPort: 8080
+          port8082:
+            port: 8082
+            targetPort: 8082
+          port8083:
+            port: 8083
+            targetPort: 8083
+
+      seahub:
+        controller: main
+        ports:
+          port8000:
+            port: 8000
+            targetPort: 8000
+
+      seahub-media:
+        controller: main
+        ports:
+          port80:
+            port: 80
+            targetPort: 80
 
     ingress:
       seafile:
@@ -118,10 +187,31 @@ spec:
         hosts:
           - host: *hostname
             paths:
-              - path: /
-                service:
-                  identifier: seafile
-                  port: http
+            - path: /()(.*)
+              pathType: Prefix
+              service:
+                name: seahub
+                port: 8000
+            - path: /seafhttp(/|$)(.*)
+              pathType: Prefix
+              service:
+                name: seafile-server
+                port: 8082
+            - path: /()(seafdav.*)
+              pathType: Prefix
+              service:
+                name: seafile-server
+                port: 8080
+            - path: /notification(/|$)(.*)
+              pathType: Prefix
+              service:
+                name: seafile-server
+                port: 8083
+            - path: /()(media.*)
+              pathType: Prefix
+              service:
+                name: seahub-media
+                port: 80
 
     persistence:
       mariadb-data:
@@ -130,6 +220,22 @@ spec:
           main:
             mariadb:
               - path: /var/lib/mysql
+      seahub-avatars:
+        existingClaim: seahub-avatars
+        advancedMounts:
+          main:
+            seahub:
+              - path: /shared/seafile/seahub-data/avatars
+            seahub-media:
+              - path: /usr/share/caddy/media/avatars
+      seahub-custom:
+        existingClaim: seahub-custom
+        advancedMounts:
+          main:
+            seahub:
+              - path: /shared/seafile/seahub-data/custom
+            seahub-media:
+              - path: /usr/share/caddy/media/custom
       shared:
         enabled: true
         type: nfs

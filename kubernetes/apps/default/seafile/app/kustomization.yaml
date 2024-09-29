@@ -3,6 +3,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./config-pvc.yaml
+  - ./db-pvc.yaml
+  - ./avatars-pvc.yaml
+  - ./custom-pvc.yaml
   - ./helmrelease.yaml
   - ./secret.sops.yaml
