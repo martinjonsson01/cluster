@@ -41,7 +41,7 @@ spec:
                     name: &secret seafile-secret
                     key: DB_ROOT_PASSWD
               TIME_ZONE: ${TIMEZONE}
-              MARIADB_ROOT_HOST: localhost
+              MARIADB_ROOT_HOST: "%"
             probes:
               liveness: &probes
                 enabled: true
