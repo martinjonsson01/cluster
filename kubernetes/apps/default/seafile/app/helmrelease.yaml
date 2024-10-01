@@ -35,7 +35,7 @@ spec:
               tag: 10.11.9
             env:
               MARIADB_AUTO_UPGRADE: true
-              MARIADB_ROOT_PASSWORD:
+              MYSQL_ROOT_PASSWORD:
                 valueFrom:
                   secretKeyRef:
                     name: &secret seafile-secret
