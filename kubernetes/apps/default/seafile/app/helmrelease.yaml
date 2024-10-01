@@ -73,7 +73,7 @@ spec:
               tag: 11.0.12
             env:
               - name: DB_HOST
-                value: "mariadb"
+                value: "localhost"
               - name: TIME_ZONE
                 value: ${TIMEZONE}
               - name: SEAFILE_URL
@@ -125,7 +125,7 @@ spec:
       mariadb:
         controller: main
         ports:
-          mariadb:
+          db:
             protocol: TCP
             port: *mariadb-port
             targetPort: *mariadb-port
