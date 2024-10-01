@@ -75,7 +75,7 @@ spec:
               tag: 11.0.12
             env:
               - name: DB_HOST
-                value: "localhost"
+                value: "127.0.0.1"
               - name: TIME_ZONE
                 value: ${TIMEZONE}
               - name: SEAFILE_URL
