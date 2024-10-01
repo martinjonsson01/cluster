@@ -125,7 +125,7 @@ spec:
       mariadb:
         controller: main
         ports:
-          db:
+          mariadb:
             protocol: TCP
             port: *mariadb-port
             targetPort: *mariadb-port
