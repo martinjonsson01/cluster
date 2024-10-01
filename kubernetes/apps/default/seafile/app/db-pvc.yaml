@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: seafile-db-v1
+  name: seafile-db-v2
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
