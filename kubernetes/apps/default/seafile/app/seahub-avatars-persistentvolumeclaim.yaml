@@ -1,11 +1,14 @@
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: seahub-avatars
   name: seahub-avatars
 spec:
-  accessModes: ["ReadWriteMany"]
+  accessModes:
+    - ReadWriteMany
   resources:
     requests:
       storage: 100Mi
-  storageClassName: longhorn
+status: {}
