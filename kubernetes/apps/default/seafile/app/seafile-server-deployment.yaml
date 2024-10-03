@@ -34,20 +34,15 @@ spec:
     spec:
       containers:
         - env:
-            - name: DB_HOST
-              value: db
-            - name: DB_ROOT_PASSWD
-              value:
-                valueFrom:
+            DB_HOST: db
+            DB_ROOT_PASSWD:
+              valueFrom:
                   secretKeyRef:
                     name: &secret seafile-secret
                     key: DB_ROOT_PASSWD
-            - name: HTTPS
-              value: "true"
-            - name: SEAFILE_URL
-              value: files.${SECRET_DOMAIN}
-            - name: TIME_ZONE
-              value: ${TIMEZONE}
+            HTTPS: "true"
+            SEAFILE_URL: files.${SECRET_DOMAIN}
+            TIME_ZONE: ${TIMEZONE}
           image: ggogel/seafile-server:11.0.12
           name: seafile-server
           ports:
