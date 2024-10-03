@@ -22,20 +22,17 @@ spec:
         io.kompose.service: seahub
     spec:
       containers:
-        - envFrom:
-            - secretRef:
-                name: seafile-secret
-          env:
+        - env:
             - name: SEAFILE_ADMIN_EMAIL
               valueFrom:
-                  secretKeyRef:
-                    name: seafile-secret
-                    key: SEAFILE_ADMIN_EMAIL
+                secretKeyRef:
+                  name: seafile-secret
+                  key: SEAFILE_ADMIN_EMAIL
             - name: SEAFILE_ADMIN_PASSWORD
               valueFrom:
-                  secretKeyRef:
-                    name: seafile-secret
-                    key: SEAFILE_ADMIN_PASSWORD
+                secretKeyRef:
+                  name: seafile-secret
+                  key: SEAFILE_ADMIN_PASSWORD
           image: ggogel/seahub:11.0.12
           name: seahub
           ports:
