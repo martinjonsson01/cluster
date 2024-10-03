@@ -37,11 +37,10 @@ spec:
             - name: DB_HOST
               value: db
             - name: DB_ROOT_PASSWD
-              value:
-                valueFrom:
-                  secretKeyRef:
-                    name: &secret seafile-secret
-                    key: DB_ROOT_PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: seafile-secret
+                  key: DB_ROOT_PASSWD
             - name: HTTPS
               value: "true"
             - name: SEAFILE_URL
