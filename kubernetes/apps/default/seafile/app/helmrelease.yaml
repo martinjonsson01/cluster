@@ -34,14 +34,13 @@ spec:
               repository: mariadb
               tag: 10.1
             env:
-              MARIADB_AUTO_UPGRADE: true
+              MYSQL_AUTO_UPGRADE: true
               MYSQL_ROOT_PASSWORD:
                 valueFrom:
                   secretKeyRef:
                     name: &secret seafile-secret
                     key: DB_ROOT_PASSWD
               TIME_ZONE: ${TIMEZONE}
-              MARIADB_ROOT_HOST: "%"
             probes:
               liveness: &probes
                 enabled: true
