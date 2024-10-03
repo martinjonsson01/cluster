@@ -8,6 +8,7 @@ metadata:
     kompose.service.healthcheck.readiness.test: healthcheck.sh --su-mysql --connect --innodb_initialized
     kompose.service.healthcheck.readiness.timeout: 10s
     kompose.volume.size: 1Gi
+    reloader.stakater.com/auto: "true"
   creationTimestamp: null
   labels:
     io.kompose.service: db
@@ -40,7 +41,10 @@ spec:
             - name: MYSQL_LOG_CONSOLE
               value: "true"
             - name: MYSQL_ROOT_PASSWORD
-              value: db_dev
+              valueFrom:
+                  secretKeyRef:
+                    name: seafile-secret
+                    key: DB_ROOT_PASSWD
           image: mariadb:10.11.9
           name: db
           ports:
@@ -64,5 +68,5 @@ spec:
       volumes:
         - name: seafile-mariadb
           persistentVolumeClaim:
-            claimName: seafile-mariadb
+            claimName: seafile-mariadb-v2
 status: {}

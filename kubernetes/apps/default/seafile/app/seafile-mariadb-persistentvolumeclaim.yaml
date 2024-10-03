@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: seafile-mariadb
-  name: seafile-mariadb
+  name: seafile-mariadb-v2
 spec:
   accessModes:
     - ReadWriteOnce
