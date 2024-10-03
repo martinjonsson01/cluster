@@ -206,7 +206,7 @@ spec:
 
     persistence:
       mariadb-data:
-        existingClaim: seafile-db-v3
+        existingClaim: seafile-db-v4
         advancedMounts:
           main:
             mariadb:
