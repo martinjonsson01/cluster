@@ -14,7 +14,7 @@ resources:
   - ./seafile-server-deployment.yaml
   - ./seafile-server-service.yaml
   - ./seahub-avatars-persistentvolumeclaim.yaml
-  - ./seahub-custom-persistencevolumeclaim.yaml
+  - ./seahub-custom-persistentvolumeclaim
   - ./seahub-media-deployment.yaml
   - ./seahub-media-service.yaml
   - ./seahub.service.yaml
