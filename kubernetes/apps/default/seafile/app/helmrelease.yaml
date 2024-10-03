@@ -32,7 +32,7 @@ spec:
           mariadb:
             image:
               repository: mariadb
-              tag: 10.11.9
+              tag: 10.1
             env:
               MARIADB_AUTO_UPGRADE: true
               MYSQL_ROOT_PASSWORD:
