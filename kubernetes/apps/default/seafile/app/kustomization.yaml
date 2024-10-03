@@ -17,5 +17,5 @@ resources:
   - ./seahub-custom-persistentvolumeclaim.yaml
   - ./seahub-media-deployment.yaml
   - ./seahub-media-service.yaml
-  - ./seahub.service.yaml
+  - ./seahub-service.yaml
 
