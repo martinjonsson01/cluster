@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: seafile-data
-  name: seafile-data
+  name: seafile-data-v2
 spec:
   accessModes:
     - ReadWriteMany
@@ -25,7 +25,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   claimRef:
     namespace: default
-    name: seafile-data
+    name: seafile-data-v2
   nfs:
     path: "/volume1/drive"
     server: ${SECRET_NAS_IP}

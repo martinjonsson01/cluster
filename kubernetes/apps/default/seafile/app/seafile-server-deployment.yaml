@@ -71,5 +71,5 @@ spec:
       volumes:
         - name: seafile-data
           persistentVolumeClaim:
-            claimName: seafile-data
+            claimName: seafile-data-v2
 status: {}

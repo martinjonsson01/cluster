@@ -42,7 +42,7 @@ spec:
       volumes:
         - name: seafile-data
           persistentVolumeClaim:
-            claimName: seafile-data
+            claimName: seafile-data-v2
         - name: seahub-avatars
           persistentVolumeClaim:
             claimName: seahub-avatars-v2
