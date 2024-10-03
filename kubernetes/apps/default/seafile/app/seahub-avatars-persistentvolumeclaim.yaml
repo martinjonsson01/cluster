@@ -4,11 +4,12 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: seahub-avatars
-  name: seahub-avatars
+  name: seahub-avatars-v2
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 100Mi
+  storageClassName: longhorn
 status: {}

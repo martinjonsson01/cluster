@@ -4,11 +4,12 @@ metadata:
   creationTimestamp: null
   labels:
     io.kompose.service: seahub-custom
-  name: seahub-custom
+  name: seahub-custom-v2
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 100Mi
+  storageClassName: longhorn
 status: {}

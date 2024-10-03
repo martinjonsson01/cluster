@@ -41,8 +41,8 @@ spec:
       volumes:
         - name: seahub-avatars
           persistentVolumeClaim:
-            claimName: seahub-avatars
+            claimName: seahub-avatars-v2
         - name: seahub-custom
           persistentVolumeClaim:
-            claimName: seahub-custom
+            claimName: seahub-custom-v2
 status: {}
