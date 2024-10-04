@@ -28,7 +28,7 @@ spec:
               echo Installing ser2net
               apk add --no-cache ser2net
               printenv
-              ser2net -d -C 2000:raw:0:$UDEV_DEVNODE:9600
+              ser2net -d -C 2000:raw:0:$UDEV_DEVNODE:115200
           ports:
             - name: device
               containerPort: 2000
