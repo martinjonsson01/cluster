@@ -19,3 +19,4 @@ resources:
   - ./grafana.yaml
   - ./longhorn.yaml
   - ./akri.yaml
+  - ./emqx.yaml
