@@ -15,8 +15,8 @@ spec:
   brokerSpec:
     brokerPodSpec:
       containers:
-        - name: ti-cc2531-broker
-          image: ammmze/akri-ser2net-broker:latest
+        - name: zigbee-dongle-broker
+          image: ammmze/akri-ser2net-broker:1.1.0
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
