@@ -43,7 +43,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: ISO_8601
               ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_API: "false"
               ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_AVAILABILITY_PAYLOAD: "false"
-              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: debug # info
+              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info # debug
               ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
               ZIGBEE2MQTT_CONFIG_ADVANCED_CHANNEL: 25 # Changing might require re-pairing of some devices
               ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: 60
@@ -65,7 +65,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_SERIAL_DISABLE_LED: "false"
               ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://akri-zigbee-dongle-svc.kube-system.svc.cluster.local:2000
               ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ezsp
-              DEBUG: "zigbee-herdsman*"
+              # DEBUG: "zigbee-herdsman*"
             envFrom:
               - secretRef:
                   name: zigbee2mqtt-secret
