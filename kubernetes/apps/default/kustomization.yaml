@@ -6,3 +6,4 @@ resources:
   - ./namespace.yaml
   - ./filebrowser/ks.yaml
   - ./seafile/ks.yaml
+  - ./zigbee2mqtt/ks.yaml
