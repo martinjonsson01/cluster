@@ -12,28 +12,29 @@ spec:
       udevRules:
       - ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SUBSYSTEM=="tty"
 
-  brokerPodSpec:
-    containers:
-      - name: akri-zigbee-dongle-broker
-        image: ammmze/akri-ser2net-broker:latest
-        imagePullPolicy: IfNotPresent
-        securityContext:
-          privileged: true
-        env:
-          - name: DEVICE_OPTIONS
-            value: "9600"
-        ports:
-          - name: device
-            containerPort: 2000
-        resources:
-          requests:
-            "{{PLACEHOLDER}}": '1'
-            cpu: 10m
-            memory: 50Mi
-          limits:
-            "{{PLACEHOLDER}}": '1'
-            cpu: 100m
-            memory: 200Mi
+  brokerSpec:
+    brokerPodSpec:
+      containers:
+        - name: akri-zigbee-dongle-broker
+          image: ammmze/akri-ser2net-broker:1.1.0
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          env:
+            - name: DEVICE_OPTIONS
+              value: "9600"
+          ports:
+            - name: device
+              containerPort: 2000
+          resources:
+            requests:
+              "{{PLACEHOLDER}}": '1'
+              cpu: 10m
+              memory: 50Mi
+            limits:
+              "{{PLACEHOLDER}}": '1'
+              cpu: 100m
+              memory: 200Mi
 
   configurationServiceSpec:
     type: ClusterIP
