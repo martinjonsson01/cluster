@@ -10,23 +10,18 @@ spec:
     discoveryDetails: |
       groupRecursive: true # Recommended unless using very exact udev rules
       udevRules:
-      - ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60"
+      - ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SUBSYSTEM=="tty"
 
   brokerPodSpec:
     containers:
       - name: akri-zigbee-dongle-broker
-        image: alpine:3.14.0
+        image: ammmze/akri-ser2net-broker:latest
         imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
-        command:
-          - sh
-          - -c
-          - |-
-            set -euxo pipefail
-            echo Installing ser2net
-            apk add --no-cache ser2net
-            ser2net -d -C 2000:raw:0:$UDEV_DEVNODE:9600
+        env:
+          - name: DEVICE_OPTIONS
+            value: "9600"
         ports:
           - name: device
             containerPort: 2000
