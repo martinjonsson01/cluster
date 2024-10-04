@@ -85,10 +85,8 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                akri.sh/akri-zigbee-dongle: "1"
               limits:
                 memory: 1Gi
-                akri.sh/akri-zigbee-dongle: "1"
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
