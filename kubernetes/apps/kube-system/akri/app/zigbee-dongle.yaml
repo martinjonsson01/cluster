@@ -15,20 +15,14 @@ spec:
   brokerSpec:
     brokerPodSpec:
       containers:
-        - name: zigbee-dongle-broker
-          image: alpine:3.14.0
+        - name: ti-cc2531-broker
+          image: ammmze/akri-ser2net-broker:latest
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
-          command:
-            - sh
-            - -c
-            - |-
-              set -euxo pipefail
-              echo Installing ser2net
-              apk add --no-cache ser2net
-              printenv
-              ser2net -d -C 2000:raw:0:$UDEV_DEVNODE:115200
+          env:
+            - name: DEVICE_OPTIONS
+              value: "115200"
           ports:
             - name: device
               containerPort: 2000
