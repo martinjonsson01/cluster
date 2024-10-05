@@ -28,28 +28,28 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
-            image:
-              repository: ghcr.io/onedr0p/home-assistant
-              tag: 2024.10.0@sha256:1c61cc33a693176b4b6b930080196e204d3df094d7674bad3f62ed54cccef92c
-            env:
-              TZ: ${TIMEZONE}
-              HASS_HTTP_TRUSTED_PROXY_1: "${NODE_CIDR}"
-              HASS_HTTP_TRUSTED_PROXY_2: "${POD_CIDR}"
-              HASS_HTTP_TRUSTED_PROXY_3: "${SERVICE_CIDR}"
-              HASS_URL: "https://hass.${SECRET_DOMAIN}"
-            envFrom:
-              - secretRef:
-                  name: home-assistant-secret
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 2Gi
+#          app:
+#            image:
+#              repository: ghcr.io/onedr0p/home-assistant
+#              tag: 2024.10.0@sha256:1c61cc33a693176b4b6b930080196e204d3df094d7674bad3f62ed54cccef92c
+#            env:
+#              TZ: ${TIMEZONE}
+#              HASS_HTTP_TRUSTED_PROXY_1: "${NODE_CIDR}"
+#              HASS_HTTP_TRUSTED_PROXY_2: "${POD_CIDR}"
+#              HASS_HTTP_TRUSTED_PROXY_3: "${SERVICE_CIDR}"
+#              HASS_URL: "https://hass.${SECRET_DOMAIN}"
+#            envFrom:
+#              - secretRef:
+#                  name: home-assistant-secret
+#            securityContext:
+#              allowPrivilegeEscalation: false
+#              readOnlyRootFilesystem: true
+#              capabilities: { drop: ["ALL"] }
+#            resources:
+#              requests:
+#                cpu: 10m
+#              limits:
+#                memory: 2Gi
           code-server:
             image:
               repository: ghcr.io/coder/code-server
@@ -66,6 +66,25 @@ spec:
                 cpu: 10m
               limits:
                 memory: 512Mi
+          filebrowser:
+            image:
+              repository: docker.io/filebrowser/filebrowser
+              tag: v2.31.1@sha256:b9b0dcac8b20c01ed4777889c8ae6ff74443ed604e11e4b862d9f3068eeb9114
+            env:
+              TZ: ${TIMEZONE}
+              FB_DATABASE: /config/filebrowser.db
+              FB_ROOT: /config
+              FB_LOG: stdout
+              FB_NOAUTH: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 2Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -82,18 +101,20 @@ spec:
             port: 8123
           code-server:
             port: 12321
+          filebrowser:
+            port: 80
     ingress:
-      app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        className: external
-        hosts:
-          - host: hass.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+#      app:
+#        annotations:
+#          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+#        className: external
+#        hosts:
+#          - host: hass.${SECRET_DOMAIN}
+#            paths:
+#              - path: /
+#                service:
+#                  identifier: app
+#                  port: http
       code-server:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
@@ -105,6 +126,17 @@ spec:
                 service:
                   identifier: app
                   port: code-server
+      filebrowser:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+        className: internal
+        hosts:
+          - host: hass-files.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: filebrowser
     persistence:
       config:
         existingClaim: home-assistant
