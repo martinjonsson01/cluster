@@ -41,6 +41,9 @@ spec:
             env:
               TZ: ${TIMEZONE}
               DOMAIN: https://vault.${SECRET_DOMAIN}
+              IP_HEADER: "CF-Connecting-IP"
+              SIGNUPS_ALLOWED: "false"
+              INVITATIONS_ALLOWED: "false"
               ROCKET_PORT: "8080"
               DATABASE_URL:
                 secretKeyRef:
