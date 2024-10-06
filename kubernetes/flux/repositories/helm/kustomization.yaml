@@ -20,3 +20,4 @@ resources:
   - ./longhorn.yaml
   - ./akri.yaml
   - ./emqx.yaml
+  - ./cloudnative-pg.yaml
