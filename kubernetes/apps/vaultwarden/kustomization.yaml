@@ -7,4 +7,4 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   #- ./vaultwarden/ks.yaml
-  #- ./postgresql/cluster.yaml
+  - ./postgresql/cluster.yaml
