@@ -12,7 +12,7 @@ spec:
       database: vaultwarden
       owner: vaultwarden
   storage:
-    storageClass: local-path
+    storageClass: openebs-hostpath
     size: 8Gi
   resources:
     requests:
