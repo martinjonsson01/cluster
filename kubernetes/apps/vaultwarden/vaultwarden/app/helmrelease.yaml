@@ -1,0 +1,115 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.4.0/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: vaultwarden
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 3.4.0
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  interval: 1h
+  driftDetection:
+    mode: enabled
+  values:
+    controllers:
+      vaultwarden:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        strategy: Recreate
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/dani-garcia/vaultwarden
+              tag: 1.32.1-alpine@sha256:a61afd8b8b9c8f15ef642cf9338e07d7ea4b8ca3af75022a6debb287a40cdc5b
+
+            env:
+              TZ: ${TIMEZONE}
+              DOMAIN: https://vault.${SECRET_DOMAIN}
+              ROCKET_PORT: "8080"
+              DATABASE_URL:
+                secretKeyRef:
+                  name: postgresql-app
+                  key: uri
+              LOGIN_RATELIMIT_MAX_BURST: "2"
+#              PUSH_ENABLED: "true"
+              ORG_ATTACHMENT_LIMIT: "1000000" # 1GB
+              USER_ATTACHMENT_LIMIT: "1000000" # 1GB
+              USER_SEND_LIMIT: "1000000" # 1GB
+#            envFrom:
+#              - secretRef:
+#                  name: vaultwarden-secret
+
+            probes:
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+
+            securityContext:
+              readOnlyRootFilesystem: true
+        pod:
+          priorityClassName: system-cluster-critical
+          securityContext:
+            fsGroup: 65534
+            runAsGroup: 65534
+            runAsUser: 65534
+
+    service:
+      vaultwarden:
+        controller: vaultwarden
+        ports:
+          http:
+            port: 8080
+
+    persistence:
+      data:
+        enabled: true
+        retain: true
+        accessMode: ReadWriteOnce
+        storageClass: longhorn
+        size: 8Gi
+
+    ingress:
+      vaultwarden:
+        enabled: true
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        className: external
+        hosts:
+          - host: &host vault.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service: &svc
+                  identifier: vaultwarden
+                  port: http
+      admin:
+        enabled: true
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+        className: internal
+        hosts:
+          - host: *host
+            paths:
+              - path: /admin
+                service: *svc
