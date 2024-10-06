@@ -25,6 +25,8 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  driftDetection:
+    mode: enabled
   dependsOn:
     - name: openebs
       namespace: storage

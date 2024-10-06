@@ -20,6 +20,8 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  driftDetection:
+    mode: enabled
   values:
     args:
       - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname

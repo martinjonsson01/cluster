@@ -21,6 +21,8 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  driftDetection:
+    mode: enabled
   valuesFrom:
     - kind: ConfigMap
       name: coredns-helm-values

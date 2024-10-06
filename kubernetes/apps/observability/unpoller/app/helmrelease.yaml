@@ -22,6 +22,8 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  driftDetection:
+    mode: enabled
   dependsOn:
     - name: kube-prometheus-stack
       namespace: observability
