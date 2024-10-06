@@ -47,13 +47,13 @@ spec:
                   name: postgresql-app
                   key: uri
               LOGIN_RATELIMIT_MAX_BURST: "2"
-#              PUSH_ENABLED: "true"
+              PUSH_ENABLED: "true"
               ORG_ATTACHMENT_LIMIT: "1000000" # 1GB
               USER_ATTACHMENT_LIMIT: "1000000" # 1GB
               USER_SEND_LIMIT: "1000000" # 1GB
-#            envFrom:
-#              - secretRef:
-#                  name: vaultwarden-secret
+            envFrom:
+              - secretRef:
+                  name: vaultwarden-secret
 
             probes:
               startup:
