@@ -18,7 +18,7 @@ spec:
   install:
     crds: Skip
     remediation:
-      retries: 3
+      retries: 4
   upgrade:
     cleanupOnFail: true
     crds: Skip
