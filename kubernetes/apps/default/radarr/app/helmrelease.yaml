@@ -115,7 +115,7 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: radarr
+        existingClaim: radarr-2
       tmp:
         type: emptyDir
       media:
