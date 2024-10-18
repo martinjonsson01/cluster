@@ -21,7 +21,7 @@ spec:
     cleanupOnFail: true
     remediation:
       strategy: rollback
-      retries: 3
+      retries: 4
   driftDetection:
     mode: enabled
   values:
