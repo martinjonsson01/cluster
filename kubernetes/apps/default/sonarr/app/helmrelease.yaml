@@ -110,12 +110,14 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [10000]
         seccompProfile: { type: RuntimeDefault }
-#    service:
-#      app:
-#        controller: sonarr
-#        ports:
+    service:
+      app:
+        controller: sonarr
+        ports:
 #          http:
 #            port: *port
+          filebrowser:
+            port: 80
     ingress:
 #      app:
 #        annotations:
