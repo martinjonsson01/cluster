@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="35"></td>
+    <td rowspan="37"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/akri/app/helmrelease.yaml">akri</a></td>
-    <td rowspan="35"></td>
+    <td rowspan="37"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -144,6 +144,14 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/observability/smartctl-exporter/app/helmrelease.yaml">smartctl-exporter</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/sonarr/app/helmrelease.yaml">sonarr</a></td>
+  </tr>
+  <tr>
+    <td><code>Cluster</code></td>
+    <td><a href="kubernetes/apps/default/sonarr/app/postgresql.yaml">sonarr-db</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
