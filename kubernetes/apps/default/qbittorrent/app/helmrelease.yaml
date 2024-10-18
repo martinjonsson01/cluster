@@ -112,5 +112,4 @@ spec:
         server: ${SECRET_NAS_IP}
         path: /volume1/Media/torrents
         globalMounts:
-          - path: /media/Downloads/qbittorrent
-            subPath: Downloads/qbittorrent
+          - path: /data/torrents
