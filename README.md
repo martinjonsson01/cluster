@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="37"></td>
+    <td rowspan="39"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/akri/app/helmrelease.yaml">akri</a></td>
-    <td rowspan="37"></td>
+    <td rowspan="39"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -116,6 +116,14 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/observability/prometheus-operator-crds/app/helmrelease.yaml">prometheus-operator-crds</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/prowlarr/app/helmrelease.yaml">prowlarr</a></td>
+  </tr>
+  <tr>
+    <td><code>Cluster</code></td>
+    <td><a href="kubernetes/apps/default/prowlarr/app/postgresql.yaml">prowlarr-db</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
