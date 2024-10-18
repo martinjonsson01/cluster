@@ -22,9 +22,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: sonarr-db
-      namespace: default
   driftDetection:
     mode: enabled
   values:
