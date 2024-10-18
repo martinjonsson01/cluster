@@ -30,77 +30,62 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-#          app:
-#            image:
-#              repository: ghcr.io/onedr0p/sonarr-develop
-#              tag: 4.0.9.2457@sha256:d981084e9534a6f4a089926625ba4679089dbced7693460df7d83233177c1f92
-#            env:
-#              SONARR__APP__INSTANCENAME: Sonarr
-#              SONARR__APP__THEME: dark
-#              SONARR__AUTH__METHOD: External
-#              SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
-#              SONARR__LOG__DBENABLED: "False"
-#              SONARR__LOG__LEVEL: info
-#              SONARR__SERVER__PORT: &port 80
-#              SONARR__UPDATE__BRANCH: develop
-#              SONARR__POSTGRES__HOST: sonarr-db.default.svc.cluster.local
-#              SONARR__POSTGRES__PORT:
-#                secretKeyRef:
-#                  name: sonarr-db-app
-#                  key: port
-#              SONARR__POSTGRES__USER:
-#                secretKeyRef:
-#                  name: sonarr-db-app
-#                  key: user
-#              SONARR__POSTGRES__PASSWORD:
-#                secretKeyRef:
-#                  name: sonarr-db-app
-#                  key: password
-#              SONARR__POSTGRES__MAINDB:
-#                secretKeyRef:
-#                  name: sonarr-db-app
-#                  key: dbname
-#              TZ: ${TIMEZONE}
-#            envFrom:
-#              - secretRef:
-#                  name: sonarr-secret
-#            probes:
-#              liveness: &probes
-#                enabled: true
-#                custom: true
-#                spec:
-#                  httpGet:
-#                    path: /ping
-#                    port: *port
-#                  initialDelaySeconds: 0
-#                  periodSeconds: 10
-#                  timeoutSeconds: 1
-#                  failureThreshold: 3
-#              readiness: *probes
-#            securityContext:
-#              allowPrivilegeEscalation: false
-#              readOnlyRootFilesystem: true
-#              capabilities: { drop: ["ALL"] }
-#            resources:
-#              requests:
-#                cpu: 100m
-#              limits:
-#                memory: 4Gi
-          filebrowser:
+          app:
             image:
-              repository: docker.io/filebrowser/filebrowser
-              tag: v2.31.2@sha256:a4da9ca8364b0a1fc5dd36f7add92582bf673c0ae0bda8dd9bd13062c41d1715
+              repository: ghcr.io/onedr0p/sonarr
+              tag: 4.0.9.2244@sha256:2740c331757564877a344cdad41a9a092b36f0680f5f0133bcc971b0b2bd1f84
             env:
+              SONARR__APP__INSTANCENAME: Sonarr
+              SONARR__APP__THEME: dark
+              SONARR__AUTH__METHOD: External
+              SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              SONARR__LOG__DBENABLED: "False"
+              SONARR__LOG__LEVEL: info
+              SONARR__SERVER__PORT: &port 8989
+              SONARR__UPDATE__BRANCH: main
+              SONARR__POSTGRES__HOST: sonarr-db.default.svc.cluster.local
+              SONARR__POSTGRES__PORT:
+                secretKeyRef:
+                  name: sonarr-db-app
+                  key: port
+              SONARR__POSTGRES__USER:
+                secretKeyRef:
+                  name: sonarr-db-app
+                  key: user
+              SONARR__POSTGRES__PASSWORD:
+                secretKeyRef:
+                  name: sonarr-db-app
+                  key: password
+              SONARR__POSTGRES__MAINDB:
+                secretKeyRef:
+                  name: sonarr-db-app
+                  key: dbname
               TZ: ${TIMEZONE}
-              FB_DATABASE: /config/filebrowser.db
-              FB_ROOT: /config
-              FB_LOG: stdout
-              FB_NOAUTH: true
+            envFrom:
+              - secretRef:
+                  name: sonarr-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 100m
               limits:
-                memory: 2Gi
+                memory: 4Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -114,33 +99,20 @@ spec:
       app:
         controller: sonarr
         ports:
-#          http:
-#            port: *port
-          filebrowser:
-            port: 80
+          http:
+            port: *port
     ingress:
-#      app:
-#        annotations:
-#          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-#        className: internal
-#        hosts:
-#          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
-#            paths:
-#              - path: /
-#                service:
-#                  identifier: app
-#                  port: http
-      filebrowser:
+      app:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         className: internal
         hosts:
-          - host: sonarr-files.${SECRET_DOMAIN}
+          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
                   identifier: app
-                  port: filebrowser
+                  port: http
     persistence:
       config:
         existingClaim: sonarr
