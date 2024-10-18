@@ -3,9 +3,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./namespace.yaml
-  - ./filebrowser/ks.yaml
-  - ./seafile/ks.yaml
-  - ./zigbee2mqtt/ks.yaml
-  - ./home-assistant/ks.yaml
-  - ./qbittorrent/ks.yaml
+  - ./qbtools.secret.sops.yaml
+  - ./helmrelease.yaml

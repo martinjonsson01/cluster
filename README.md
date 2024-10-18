@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="33"></td>
+    <td rowspan="35"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/akri/app/helmrelease.yaml">akri</a></td>
-    <td rowspan="33"></td>
+    <td rowspan="35"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -116,6 +116,14 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/observability/prometheus-operator-crds/app/helmrelease.yaml">prometheus-operator-crds</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/qbittorrent/app/helmrelease.yaml">qbittorrent</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/qbittorrent/tools/helmrelease.yaml">qbtools</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
