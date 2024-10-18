@@ -10,3 +10,4 @@ resources:
   - ./home-assistant/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./sonarr/ks.yaml
+  - ./prowlarr/ks.yaml
