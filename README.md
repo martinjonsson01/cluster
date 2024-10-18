@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="39"></td>
+    <td rowspan="41"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/akri/app/helmrelease.yaml">akri</a></td>
-    <td rowspan="39"></td>
+    <td rowspan="41"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -132,6 +132,14 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/qbittorrent/tools/helmrelease.yaml">qbtools</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/radarr/app/helmrelease.yaml">radarr</a></td>
+  </tr>
+  <tr>
+    <td><code>Cluster</code></td>
+    <td><a href="kubernetes/apps/default/radarr/app/postgresql.yaml">radarr-db</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

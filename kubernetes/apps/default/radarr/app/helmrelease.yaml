@@ -1,0 +1,126 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: radarr
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  driftDetection:
+    mode: enabled
+  values:
+    controllers:
+      radarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/radarr
+              tag: 5.12.2.9335@sha256:d7ab75d9280e9067c9c7b4e3fc6366c030a5090dc842785d098f5967417cbac9
+            env:
+              RADARR__APP__INSTANCENAME: Radarr
+              RADARR__APP__THEME: dark
+              RADARR__AUTH__METHOD: External
+              RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              RADARR__LOG__DBENABLED: "False"
+              RADARR__LOG__LEVEL: info
+              RADARR__SERVER__PORT: &port 80
+              RADARR__UPDATE__BRANCH: master
+              RADARR__POSTGRES__HOST: radarr-db-rw.default
+              RADARR__POSTGRES__PORT:
+                secretKeyRef:
+                  name: radarr-db-app
+                  key: port
+              RADARR__POSTGRES__USER:
+                secretKeyRef:
+                  name: radarr-db-app
+                  key: user
+              RADARR__POSTGRES__PASSWORD:
+                secretKeyRef:
+                  name: radarr-db-app
+                  key: password
+              RADARR__POSTGRES__MAINDB:
+                secretKeyRef:
+                  name: radarr-db-app
+                  key: dbname
+              TZ: ${TIMEZONE}
+            envFrom:
+              - secretRef:
+                  name: radarr-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+              #limits:
+              #  memory: 4Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: radarr
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+        className: internal
+        hosts:
+          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        existingClaim: radarr
+      tmp:
+        type: emptyDir
+      media:
+        type: nfs
+        server: ${SECRET_NAS_IP}
+        path: /volume1/Media
+        globalMounts:
+          - path: /data
