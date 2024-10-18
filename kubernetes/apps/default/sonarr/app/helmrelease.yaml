@@ -43,7 +43,7 @@ spec:
               SONARR__LOG__LEVEL: info
               SONARR__SERVER__PORT: &port 8989
               SONARR__UPDATE__BRANCH: main
-              SONARR__POSTGRES__HOST: sonarr-db-rw.default.svc.cluster.local
+              SONARR__POSTGRES__HOST: sonarr-db-rw.default
               SONARR__POSTGRES__PORT:
                 secretKeyRef:
                   name: sonarr-db-app
