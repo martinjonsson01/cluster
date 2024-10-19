@@ -219,7 +219,7 @@ spec:
     ingress:
       enabled: true
       annotations:
-        external-dns.alpha.kubernetes.io/target: grafana.${SECRET_DOMAIN}
+        external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
       ingressClassName: internal
       hosts: ["grafana.${SECRET_DOMAIN}"]
     persistence:
