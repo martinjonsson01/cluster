@@ -72,6 +72,36 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.0.109"
+  - hostname: "guts"
+    ipAddress: "192.168.0.113"
+    installDisk: "/dev/nvme0n1"
+    talosImageURL: factory.talos.dev/installer/613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "58:47:ca:77:fb:f0"
+        dhcp: false
+        addresses:
+          - "192.168.0.113/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "192.168.0.1"
+        mtu: 1500
+  - hostname: "griffith"
+    ipAddress: "192.168.0.114"
+    installDisk: "/dev/nvme0n1"
+    talosImageURL: factory.talos.dev/installer/613e1592b2da41ae5e265e8789429f22e121aab91cb4deb6bc3c0b6262961245
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "58:47:ca:77:fa:6e"
+        dhcp: false
+        addresses:
+          - "192.168.0.114/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "192.168.0.1"
+        mtu: 1500
 
 # Global patches
 patches:
