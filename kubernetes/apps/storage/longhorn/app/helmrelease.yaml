@@ -27,7 +27,7 @@ spec:
   values:
     persistence:
       defaultClass: true
-      defaultClassReplicaCount: 3
+      defaultClassReplicaCount: 2
     defaultSettings:
       createDefaultDiskLabeledNodes: true
       defaultDataLocality: true
