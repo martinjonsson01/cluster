@@ -24,6 +24,9 @@ spec:
       retries: 4
   driftDetection:
     mode: enabled
+  dependsOn:
+    - name: longhorn
+      namespace: storage
   values:
     controllers:
       radarr:
