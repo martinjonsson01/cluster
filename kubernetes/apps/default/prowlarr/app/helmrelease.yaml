@@ -24,6 +24,9 @@ spec:
       retries: 3
   driftDetection:
     mode: enabled
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: storage
   values:
     controllers:
       prowlarr:

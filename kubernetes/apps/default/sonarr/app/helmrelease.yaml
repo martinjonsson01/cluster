@@ -25,6 +25,8 @@ spec:
   dependsOn:
     - name: longhorn
       namespace: storage
+    - name: cloudnative-pg
+      namespace: storage
   driftDetection:
     mode: enabled
   values:

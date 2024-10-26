@@ -24,6 +24,11 @@ spec:
   interval: 1h
   driftDetection:
     mode: enabled
+  dependsOn:
+    - name: longhorn
+      namespace: storage
+    - name: cloudnative-pg
+      namespace: storage
   values:
     controllers:
       vaultwarden:
