@@ -206,10 +206,14 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td>flux-system</td>
+    <td rowspan="2">flux-system</td>
+    <td><code>GitRepository</code></td>
+    <td><a href="https://github.com/cloudnative-pg/cloudnative-pg">cloudnative-pg-crds</a></td>
+    <td rowspan="2"></td>
+  </tr>
+  <tr>
     <td><code>GitRepository</code></td>
     <td><a href="https://github.com/martinjonsson01/cluster">home-kubernetes</a></td>
-    <td></td>
   </tr>
 </table>
 <!-- End apps section -->
