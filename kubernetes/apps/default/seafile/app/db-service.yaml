@@ -10,14 +10,14 @@ metadata:
     kompose.volume.size: 1Gi
   creationTimestamp: null
   labels:
-    io.kompose.service: db
-  name: db
+    io.kompose.service: seafile-db
+  name: seafile-db
 spec:
   ports:
     - name: "3306"
       port: 3306
       targetPort: 3306
   selector:
-    io.kompose.service: db
+    io.kompose.service: seafile-db
 status:
   loadBalancer: {}
