@@ -52,7 +52,7 @@ spec:
               ROCKET_PORT: "8080"
               DATABASE_URL:
                 secretKeyRef:
-                  name: postgresql-app
+                  name: vaultwarden-db-app
                   key: uri
               LOGIN_RATELIMIT_MAX_BURST: "2"
               PUSH_ENABLED: "true"

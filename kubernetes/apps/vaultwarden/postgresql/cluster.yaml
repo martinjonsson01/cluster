@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgresql
+  name: vaultwarden-db
   namespace: vaultwarden
 spec:
   instances: 2

@@ -193,9 +193,9 @@ The software I run in my home cluster.
   </tr>
   <tr>
     <td>vaultwarden</td>
+    <td><code>Cluster</code></td>
+    <td><a href="kubernetes/apps/vaultwarden/postgresql/cluster.yaml">vaultwarden-db</a></td>
     <td></td>
-    <td></td>
-    <td><a href="kubernetes/apps/vaultwarden/postgresql/cluster.yaml">postgresql</a></td>
   </tr>
 </table>
 
