@@ -46,6 +46,10 @@ The software I run in my home cluster.
     <td><a href="kubernetes/apps/kube-system/coredns/app/helmrelease.yaml">coredns</a></td>
   </tr>
   <tr>
+    <td><code>Deployment</code></td>
+    <td><a href="kubernetes/apps/default/seafile/app/db-deployment.yaml">db</a></td>
+  </tr>
+  <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/network/echo-server/app/helmrelease.yaml">echo-server</a></td>
   </tr>
@@ -140,10 +144,6 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/reloader/app/helmrelease.yaml">reloader</a></td>
-  </tr>
-  <tr>
-    <td><code>Deployment</code></td>
-    <td><a href="kubernetes/apps/default/seafile/app/db-deployment.yaml">seafile-db</a></td>
   </tr>
   <tr>
     <td><code>Deployment</code></td>

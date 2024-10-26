@@ -35,7 +35,7 @@ spec:
       containers:
         - env:
             - name: DB_HOST
-              value: seafile-db
+              value: db
             - name: DB_ROOT_PASSWD
               valueFrom:
                 secretKeyRef:
