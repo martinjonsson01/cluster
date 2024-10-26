@@ -27,6 +27,8 @@ spec:
       namespace: storage
     - name: akri
       namespace: kube-system
+    - name: emqx
+      namespace: database
   driftDetection:
     mode: enabled
   values:
