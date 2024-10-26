@@ -14,8 +14,6 @@ spec:
         namespace: flux-system
         name: cnpg
       interval: 1h
-  driftDetection:
-    mode: enabled
   install:
     remediation:
       retries: 3
