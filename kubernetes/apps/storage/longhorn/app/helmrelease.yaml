@@ -15,10 +15,12 @@ spec:
         name: longhorn
         namespace: flux-system
   install:
+    crds: Create
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
     remediation:
       strategy: rollback
       retries: 4
@@ -29,6 +31,7 @@ spec:
       defaultClass: true
       defaultClassReplicaCount: 2
     defaultSettings:
+      priorityClass: system-cluster-critical
       createDefaultDiskLabeledNodes: true
       defaultDataLocality: true
       replicaAutoBalance: true
@@ -38,6 +41,10 @@ spec:
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       concurrentAutomaticEngineUpgradePerNodeLimit: 3
       orphanAutoDeletion: true
+    longhornManager:
+      priorityClass: system-cluster-critical
+    longhornDriver:
+      priorityClass: system-cluster-critical
     ingress:
       enabled: true
       annotations:
