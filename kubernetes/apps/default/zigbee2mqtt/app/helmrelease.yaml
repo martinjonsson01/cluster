@@ -25,6 +25,8 @@ spec:
   dependsOn:
     - name: longhorn
       namespace: storage
+    - name: akri
+      namespace: kube-system
   driftDetection:
     mode: enabled
   values:
