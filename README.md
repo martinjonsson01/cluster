@@ -208,7 +208,7 @@ The software I run in my home cluster.
   <tr>
     <td rowspan="2">flux-system</td>
     <td><code>GitRepository</code></td>
-    <td><a href="https://github.com/cloudnative-pg/cloudnative-pg">cloudnative-pg</a></td>
+    <td><a href="https://github.com/cloudnative-pg/cloudnative-pg">cloudnative-pg-crds</a></td>
     <td rowspan="2"></td>
   </tr>
   <tr>
