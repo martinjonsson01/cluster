@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="41"></td>
+    <td rowspan="42"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/akri/app/helmrelease.yaml">akri</a></td>
-    <td rowspan="41"></td>
+    <td rowspan="42"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -179,7 +179,11 @@ The software I run in my home cluster.
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/vaultwarden/vaultwarden/app/helmrelease.yaml">vaultwarden</a></td>
+    <td><a href="kubernetes/apps/default/vaultwarden/app/helmrelease.yaml">vaultwarden</a></td>
+  </tr>
+  <tr>
+    <td><code>Cluster</code></td>
+    <td><a href="kubernetes/apps/default/vaultwarden/app/postgresql.yaml">vaultwarden-db</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -189,12 +193,6 @@ The software I run in my home cluster.
     <td>network</td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/network/ingress-nginx/internal/helmrelease.yaml">ingress-nginx-internal</a></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>vaultwarden</td>
-    <td><code>Cluster</code></td>
-    <td><a href="kubernetes/apps/vaultwarden/postgresql/cluster.yaml">vaultwarden-db</a></td>
     <td></td>
   </tr>
 </table>
