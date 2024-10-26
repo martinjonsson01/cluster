@@ -4,8 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: qbittorrent
 spec:
-  accessModes: ["ReadWriteMany"]
+  accessModes: ["ReadWriteOnce"]
   resources:
     requests:
-      storage: 5Gi
+      storage: 1Gi
   storageClassName: longhorn
