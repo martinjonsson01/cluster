@@ -47,7 +47,7 @@ spec:
               value: files.${SECRET_DOMAIN}
             - name: TIME_ZONE
               value: ${TIMEZONE}
-          image: ggogel/seafile-server:11.0.12
+          image: ggogel/seafile-server:11.0.13
           name: seafile-server
           ports:
             - containerPort: 8001
