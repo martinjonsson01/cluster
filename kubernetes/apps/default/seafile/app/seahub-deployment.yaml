@@ -33,7 +33,7 @@ spec:
                 secretKeyRef:
                   name: seafile-secret
                   key: SEAFILE_ADMIN_PASSWORD
-          image: ggogel/seahub:11.0.12
+          image: ggogel/seahub:11.0.13
           name: seahub
           ports:
             - containerPort: 8000
