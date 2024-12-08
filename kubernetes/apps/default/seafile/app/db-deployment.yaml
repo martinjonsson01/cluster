@@ -45,7 +45,7 @@ spec:
                   secretKeyRef:
                     name: seafile-secret
                     key: DB_ROOT_PASSWD
-          image: mariadb:10.11.10
+          image: mariadb:11.6.2
           name: db
           ports:
             - containerPort: 3306
