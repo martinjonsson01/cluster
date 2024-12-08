@@ -53,6 +53,11 @@
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     },
+    // disable fragile dependency updates
+    {
+      "matchPackageNames": ["/alpine/"], // fragile due to use in akri zigbee-dongle broker pod (dunno why)
+      "enabled": false
+    },
     // groups
     {
       "description": ["Flux Group"],
