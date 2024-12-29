@@ -100,7 +100,7 @@ spec:
               tag: 1.1.1@sha256:98485c5e0071b1f12bf2be54303f607261e1fa5a448ce035f3704775d55e9e98
             env:
               TZ: ${TIMEZONE}
-              HA_URL: https://127.0.0.1:8123
+              HA_URL: http://127.0.0.1:8123
             envFrom:
               - secretRef:
                   name: home-assistant-secret
