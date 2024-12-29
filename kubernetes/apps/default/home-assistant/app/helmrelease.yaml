@@ -101,7 +101,7 @@ spec:
               - secretRef:
                   name: home-assistant-secret
             securityContext:
-              allowPrivilegeEscalation: false
+              allowPrivilegeEscalation: true
               runAsUser: 0
             resources:
               requests:
