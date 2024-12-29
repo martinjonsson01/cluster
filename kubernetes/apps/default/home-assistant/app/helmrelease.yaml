@@ -102,8 +102,7 @@ spec:
                   name: home-assistant-secret
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              runAsUser: 0
             resources:
               requests:
                 cpu: 10m
