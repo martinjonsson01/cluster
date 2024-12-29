@@ -47,6 +47,7 @@ spec:
               - secretRef:
                   name: home-assistant-secret
             securityContext:
+              runAsNonRoot: true
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
@@ -66,6 +67,8 @@ spec:
               "--port", "12321",
               "/config"
             ]
+            securityContext:
+              runAsNonRoot: true
             resources:
               requests:
                 cpu: 10m
@@ -82,6 +85,7 @@ spec:
               FB_LOG: stdout
               FB_NOAUTH: true
             securityContext:
+              runAsNonRoot: true
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
@@ -101,7 +105,6 @@ spec:
               - secretRef:
                   name: home-assistant-secret
             securityContext:
-              runAsNonRoot: false
               allowPrivilegeEscalation: true
               readOnlyRootFilesystem: false
               runAsUser: 0
@@ -114,7 +117,7 @@ spec:
                 memory: 512Mi
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: true
+        runAsNonRoot: false
         runAsUser: 568
         runAsGroup: 568
         fsGroup: 568
