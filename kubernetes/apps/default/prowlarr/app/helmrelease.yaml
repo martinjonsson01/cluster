@@ -25,8 +25,8 @@ spec:
   driftDetection:
     mode: enabled
   dependsOn:
-    - name: cloudnative-pg
-      namespace: storage
+    - name: cnpg
+      namespace: cnpg-system
   values:
     controllers:
       prowlarr:
