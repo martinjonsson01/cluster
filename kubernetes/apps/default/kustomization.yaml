@@ -13,3 +13,4 @@ resources:
   - ./radarr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./vaultwarden/ks.yaml
+  - ./actual/ks.yaml
