@@ -101,8 +101,12 @@ spec:
               - secretRef:
                   name: home-assistant-secret
             securityContext:
+              runAsNonRoot: false
               allowPrivilegeEscalation: true
+              readOnlyRootFilesystem: false
               runAsUser: 0
+              runAsGroup: 0
+              fsGroup: 0
             resources:
               requests:
                 cpu: 10m
