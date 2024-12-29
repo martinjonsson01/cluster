@@ -27,8 +27,6 @@ spec:
   dependsOn:
     - name: longhorn
       namespace: storage
-    - name: cnpg
-      namespace: cnpg-system
   values:
     controllers:
       radarr:
