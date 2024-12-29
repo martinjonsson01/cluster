@@ -90,6 +90,21 @@ spec:
                 cpu: 100m
               limits:
                 memory: 2Gi
+          everything-presence-mmwave-configurator:
+            image:
+              repository: docker.io/everythingsmarthome/everything-presence-mmwave-configurator
+              tag: 1.1.1@sha256:98485c5e0071b1f12bf2be54303f607261e1fa5a448ce035f3704775d55e9e98
+            env:
+              TZ: ${TIMEZONE}
+              HA_URL: http://home-assistant.default.svc.cluster.local:8123
+            envFrom:
+              - secretRef:
+                  name: home-assistant-secret
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -108,6 +123,8 @@ spec:
             port: 12321
           filebrowser:
             port: 80
+          everything-presence-mmwave-configurator:
+            port: 8099
     ingress:
       app:
         annotations:
@@ -142,6 +159,17 @@ spec:
                 service:
                   identifier: app
                   port: filebrowser
+      everything-presence-mmwave-configurator:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+        className: internal
+        hosts:
+          - host: hass-mmwave-config.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: everything-presence-mmwave-configurator
     persistence:
       config:
         existingClaim: home-assistant

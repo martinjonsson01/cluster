@@ -20,10 +20,14 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="41"></td>
+    <td rowspan="43"></td>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
+    <td rowspan="43"></td>
+  </tr>
+  <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/akri/app/helmrelease.yaml">akri</a></td>
-    <td rowspan="41"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -36,6 +40,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/network/cloudflared/app/helmrelease.yaml">cloudflared</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/cnpg/app/helmrelease.yaml">cnpg</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -184,12 +192,6 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/zigbee2mqtt/app/helmrelease.yaml">zigbee2mqtt</a></td>
-  </tr>
-  <tr>
-    <td>cnpg-system</td>
-    <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/cnpg/app/helmrelease.yaml">cnpg</a></td>
-    <td></td>
   </tr>
   <tr>
     <td>network</td>
