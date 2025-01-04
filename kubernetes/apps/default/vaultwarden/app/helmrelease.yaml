@@ -101,8 +101,6 @@ spec:
     ingress:
       vaultwarden:
         enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         className: external
         hosts:
           - host: &host vault.${SECRET_DOMAIN}
@@ -113,8 +111,6 @@ spec:
                   port: http
       admin:
         enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         className: internal
         hosts:
           - host: *host

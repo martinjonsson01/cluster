@@ -47,8 +47,6 @@ spec:
       priorityClass: system-cluster-critical
     ingress:
       enabled: true
-      annotations:
-        external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
       ingressClassName: internal
       host: longhorn.${SECRET_DOMAIN}
       pathType: Prefix
