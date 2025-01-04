@@ -89,6 +89,7 @@ spec:
               readOnlyRootFilesystem: true
               capabilities:
                 drop: ["ALL"]
+                add: ["NET_ADMIN"]
             resources:
               requests:
                 cpu: 10m
