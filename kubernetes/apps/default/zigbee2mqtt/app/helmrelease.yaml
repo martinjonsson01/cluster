@@ -52,7 +52,6 @@ spec:
               ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: 60
               ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: 2000
               ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
-              ZIGBEE2MQTT_CONFIG_FRONTEND: "false" # Disable default frontend settings, to allow setting them manually below.
               ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: 80
               ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee.${SECRET_DOMAIN}
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_ENABLED: "true"
