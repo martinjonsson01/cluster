@@ -38,60 +38,60 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          app:
-            image:
-              repository: ghcr.io/koenkk/zigbee2mqtt
-              tag: 2.0.0@sha256:6105a3a01a66bbfb98909a7c309d0707ec7b41728ac15d399747077225231545
-            env:
-              TZ: ${TIMEZONE}
-              ZIGBEE2MQTT_DATA: /config
-              ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: ISO_8601
-              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info # debug
-              ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
-              ZIGBEE2MQTT_CONFIG_ADVANCED_CHANNEL: 25 # Changing might require re-pairing of some devices
-              ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: 60
-              ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: 2000
-              ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
-              ZIGBEE2MQTT_CONFIG_FRONTEND: "false" # Disable default frontend settings, to allow setting them manually below.
-              ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: &port 80
-              ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee.${SECRET_DOMAIN}
-              ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_DISCOVERY_TOPIC: homeassistant
-              ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_STATUS_TOPIC: homeassistant/status
-              ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: "true"
-              ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
-              ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: "true"
-              ZIGBEE2MQTT_CONFIG_MQTT_SERVER: mqtt://emqx-listeners.database.svc.cluster.local:1883
-              ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
-              ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
-              ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE: 115200
-              ZIGBEE2MQTT_CONFIG_SERIAL_DISABLE_LED: "false"
-              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://akri-zigbee-dongle-svc.kube-system.svc.cluster.local:2000
-              ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ember
-              # DEBUG: "zigbee-herdsman*"
-            envFrom:
-              - secretRef:
-                  name: zigbee2mqtt-secret
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 10
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop: ["ALL"]
-                add: ["NET_BIND_SERVICE"]
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 1Gi
+          #app:
+          #  image:
+          #    repository: ghcr.io/koenkk/zigbee2mqtt
+          #    tag: 2.0.0@sha256:6105a3a01a66bbfb98909a7c309d0707ec7b41728ac15d399747077225231545
+          #  env:
+          #    TZ: ${TIMEZONE}
+          #    ZIGBEE2MQTT_DATA: /config
+          #    ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: ISO_8601
+          #    ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_LEVEL: info # debug
+          #    ZIGBEE2MQTT_CONFIG_ADVANCED_LOG_OUTPUT: '["console"]'
+          #    ZIGBEE2MQTT_CONFIG_ADVANCED_CHANNEL: 25 # Changing might require re-pairing of some devices
+          #    ZIGBEE2MQTT_CONFIG_AVAILABILITY_ACTIVE_TIMEOUT: 60
+          #    ZIGBEE2MQTT_CONFIG_AVAILABILITY_PASSIVE_TIMEOUT: 2000
+          #    ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
+          #    ZIGBEE2MQTT_CONFIG_FRONTEND: "false" # Disable default frontend settings, to allow setting them manually below.
+          #    ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: &port 80
+          #    ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee.${SECRET_DOMAIN}
+          #    ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_DISCOVERY_TOPIC: homeassistant
+          #    ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_STATUS_TOPIC: homeassistant/status
+          #    ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: "true"
+          #    ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
+          #    ZIGBEE2MQTT_CONFIG_MQTT_REJECT_UNAUTHORIZED: "true"
+          #    ZIGBEE2MQTT_CONFIG_MQTT_SERVER: mqtt://emqx-listeners.database.svc.cluster.local:1883
+          #    ZIGBEE2MQTT_CONFIG_MQTT_VERSION: 5
+          #    ZIGBEE2MQTT_CONFIG_PERMIT_JOIN: "false"
+          #    ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE: 115200
+          #    ZIGBEE2MQTT_CONFIG_SERIAL_DISABLE_LED: "false"
+          #    ZIGBEE2MQTT_CONFIG_SERIAL_PORT: tcp://akri-zigbee-dongle-svc.kube-system.svc.cluster.local:2000
+          #    ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: ember
+          #    # DEBUG: "zigbee-herdsman*"
+          #  envFrom:
+          #    - secretRef:
+          #        name: zigbee2mqtt-secret
+          #  probes:
+          #    liveness:
+          #      enabled: true
+          #    readiness:
+          #      enabled: true
+          #    startup:
+          #      enabled: true
+          #      spec:
+          #        failureThreshold: 30
+          #        periodSeconds: 10
+          #  securityContext:
+          #    allowPrivilegeEscalation: false
+          #    readOnlyRootFilesystem: true
+          #    capabilities:
+          #      drop: ["ALL"]
+          #      add: ["NET_BIND_SERVICE"]
+          #  resources:
+          #    requests:
+          #      cpu: 10m
+          #    limits:
+          #      memory: 1Gi
           code-server:
             image:
               repository: ghcr.io/coder/code-server
@@ -122,22 +122,22 @@ spec:
       app:
         controller: zigbee2mqtt
         ports:
-          http:
-            port: *port
+          #http:
+          #  port: *port
           code-server:
             port: 12321
     ingress:
-      app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        className: internal
-        hosts:
-          - host: zigbee.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+      #app:
+      #  annotations:
+      #    external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+      #  className: internal
+      #  hosts:
+      #    - host: zigbee.${SECRET_DOMAIN}
+      #      paths:
+      #        - path: /
+      #          service:
+      #            identifier: app
+      #            port: http
       code-server:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
