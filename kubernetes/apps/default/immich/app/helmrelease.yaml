@@ -31,7 +31,6 @@ spec:
       namespace: cnpg-system
   values:
     env:
-      DB_SKIP_MIGRATIONS: "true"
       TZ: ${TIMEZONE}
       DB_DATABASE_NAME:
         valueFrom:
@@ -46,12 +45,12 @@ spec:
       DB_USERNAME:
         valueFrom:
           secretKeyRef:
-            name: immich-db-app
+            name: immich-db-superuser
             key: user
       DB_PASSWORD:
         valueFrom:
           secretKeyRef:
-            name: immich-db-app
+            name: immich-db-superuser
             key: password
       DB_PORT:
         valueFrom:
