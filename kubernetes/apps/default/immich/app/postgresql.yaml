@@ -6,12 +6,22 @@ metadata:
   name: immich-db
 spec:
   instances: 2
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.4-30
+  # Image from https://github.com/tensorchord/cloudnative-pgvecto.rs
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16-v0.2.1
   enableSuperuserAccess: true
   bootstrap:
     initdb:
       database: immich
       owner: immich
+      postInitApplicationSQL:
+        - ALTER SYSTEM SET search_path TO "immich", public, vectors;
+        - CREATE EXTENSION IF NOT EXISTS "vectors";
+        - CREATE EXTENSION IF NOT EXISTS cube WITH SCHEMA pg_catalog;
+        - CREATE EXTENSION IF NOT EXISTS earthdistance WITH SCHEMA pg_catalog;
+        - ALTER SCHEMA vectors OWNER TO immich;
+  postgresql:
+    shared_preload_libraries:
+      - "vectors.so"
   storage:
     storageClass: openebs-hostpath
     size: 8Gi
