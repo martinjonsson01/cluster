@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./postgresql.yaml
   - ./pvc.yaml
-  #- ./helmrelease.yaml
+  - ./helmrelease.yaml
