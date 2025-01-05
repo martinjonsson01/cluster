@@ -12,7 +12,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: ${SECRET_NAS_IP}
-    path: /volume1/Mediaasdasdasd # todo!!!!!!!!!!!!!!!!!!!
+    path: /volume1/homes/martinjonsson01/immich-photos
   mountOptions:
     - nfsvers=4.2
     - nconnect=8
