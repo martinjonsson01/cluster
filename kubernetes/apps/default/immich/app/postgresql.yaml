@@ -8,10 +8,10 @@ spec:
   instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:16.4-30
   enableSuperuserAccess: true
-  bootstrap:
-    initdb:
-      database: immich
-      owner: immich
+  #bootstrap:
+  #  initdb:
+  #    database: immich
+  #    owner: immich
   storage:
     storageClass: openebs-hostpath
     size: 8Gi
