@@ -14,3 +14,4 @@ resources:
   - ./prowlarr/ks.yaml
   - ./vaultwarden/ks.yaml
   - ./actual/ks.yaml
+  - ./immich/ks.yaml

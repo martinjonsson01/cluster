@@ -21,3 +21,4 @@ resources:
   - ./akri.yaml
   - ./emqx.yaml
   - ./cloudnative-pg.yaml
+  - ./immich.yaml
