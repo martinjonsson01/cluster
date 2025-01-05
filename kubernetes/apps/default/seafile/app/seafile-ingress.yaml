@@ -9,6 +9,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "36000"
     nginx.ingress.kubernetes.io/send-timeout: "36000"
     nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+    external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
 spec:
   ingressClassName: internal
   rules:

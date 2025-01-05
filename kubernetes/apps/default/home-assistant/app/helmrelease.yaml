@@ -137,6 +137,8 @@ spec:
             port: 8099
     ingress:
       app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
         className: external
         hosts:
           - host: hass.${SECRET_DOMAIN}
@@ -146,6 +148,8 @@ spec:
                   identifier: app
                   port: http
       code-server:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         className: internal
         hosts:
           - host: hass-code.${SECRET_DOMAIN}
@@ -155,6 +159,8 @@ spec:
                   identifier: app
                   port: code-server
       filebrowser:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         className: internal
         hosts:
           - host: hass-files.${SECRET_DOMAIN}
@@ -164,6 +170,8 @@ spec:
                   identifier: app
                   port: filebrowser
       everything-presence-mmwave-configurator:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         className: internal
         hosts:
           - host: hass-mmwave-config.${SECRET_DOMAIN}
