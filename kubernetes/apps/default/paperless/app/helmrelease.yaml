@@ -69,8 +69,8 @@ spec:
               PAPERLESS_CONSUMER_RECURSIVE: "true"
               PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
               # Configure OCR
-              PAPERLESS_OCR_LANGUAGES: eng swe
-              PAPERLESS_OCR_LANGUAGE: eng
+              PAPERLESS_OCR_LANGUAGES: swe eng
+              PAPERLESS_OCR_LANGUAGE: swe
               PAPERLESS_OCR_USER_ARGS: '{"invalidate_digital_signatures": true}' # Allows importing and OCR:ing of signed PDFs (originals still kept with their signatures)
               # Enable TIKA
               PAPERLESS_TIKA_ENABLED: true
