@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="47"></td>
+    <td rowspan="49"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="47"></td>
+    <td rowspan="49"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -132,6 +132,14 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/storage/openebs/app/helmrelease.yaml">openebs</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/paperless/app/helmrelease.yaml">paperless</a></td>
+  </tr>
+  <tr>
+    <td><code>Cluster</code></td>
+    <td><a href="kubernetes/apps/default/paperless/app/postgresql.yaml">paperless-db</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

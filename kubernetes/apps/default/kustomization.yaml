@@ -16,3 +16,4 @@ resources:
   - ./actual/ks.yaml
   - ./immich/ks.yaml
   - ./mealie/ks.yaml
+  - ./paperless/ks.yaml
