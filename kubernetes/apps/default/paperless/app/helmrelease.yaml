@@ -53,7 +53,7 @@ spec:
               # Configure application
               PAPERLESS_URL: https://papers.${SECRET_DOMAIN}
               PAPERLESS_PORT: "8000"
-              PAPERLESS_TIME_ZONE: ${TZ}
+              PAPERLESS_TIME_ZONE: ${TIMEZONE}
               PAPERLESS_WEBSERVER_WORKERS: "2"
               PAPERLESS_TASK_WORKERS: "2"
               # Configure Remote User auth
