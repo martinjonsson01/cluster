@@ -20,3 +20,4 @@ resources:
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
   - ./overseerr/ks.yaml
+  - ./homepage/ks.yaml
