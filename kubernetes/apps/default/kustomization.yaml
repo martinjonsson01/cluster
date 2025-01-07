@@ -21,3 +21,4 @@ resources:
   - ./tautulli/ks.yaml
   - ./overseerr/ks.yaml
   - ./homepage/ks.yaml
+  - ./maloja/ks.yaml
