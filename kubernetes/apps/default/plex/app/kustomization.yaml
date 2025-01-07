@@ -5,11 +5,10 @@ kind: Kustomization
 resources:
   - ./pvc.yaml
   - ./helmrelease.yaml
-  - ./lokirule.yaml
 configMapGenerator:
   - name: plex-loki-rules
     files:
-      - plex.yaml=./resources/lokirule.yaml
+      - plex.yaml=./lokirule.yaml
     options:
       labels:
         loki_rule: "true"
