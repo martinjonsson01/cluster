@@ -98,9 +98,9 @@ spec:
           nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
           nginx.ingress.kubernetes.io/backend-protocol: HTTPS
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/description: Watch TV Series and Movies
           gethomepage.dev/group: Media
           gethomepage.dev/icon: sh-plex.png
+          gethomepage.dev/name: Plex
         className: external
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"

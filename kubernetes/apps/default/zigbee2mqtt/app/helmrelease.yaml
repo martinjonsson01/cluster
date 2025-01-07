@@ -131,6 +131,9 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: sh-zigbee2mqtt.svg
         className: internal
         hosts:
           - host: zigbee.${SECRET_DOMAIN}

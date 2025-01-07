@@ -139,6 +139,9 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home Automation
+          gethomepage.dev/icon: sh-home-assistant.svg
         className: external
         hosts:
           - host: hass.${SECRET_DOMAIN}
