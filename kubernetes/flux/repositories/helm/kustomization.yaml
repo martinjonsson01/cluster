@@ -24,3 +24,4 @@ resources:
   - ./immich.yaml
   - ./node-feature-discovery.yaml
   - ./intel.yaml
+  - ./jameswynn-charts.yaml

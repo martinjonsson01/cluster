@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="55"></td>
+    <td rowspan="56"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="55"></td>
+    <td rowspan="56"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -80,6 +80,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/home-assistant/app/helmrelease.yaml">home-assistant</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/homepage/app/helmrelease.yaml">homepage</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
