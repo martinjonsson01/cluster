@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="49"></td>
+    <td rowspan="53"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="49"></td>
+    <td rowspan="53"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -95,6 +95,14 @@ The software I run in my home cluster.
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/kube-system/intel-device-plugin/gpu/helmrelease.yaml">intel-device-plugin-gpu</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/kube-system/intel-device-plugin/app/helmrelease.yaml">intel-device-plugin-operator</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/network/k8s-gateway/app/helmrelease.yaml">k8s-gateway</a></td>
   </tr>
   <tr>
@@ -131,6 +139,10 @@ The software I run in my home cluster.
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/kube-system/node-feature-discovery/app/helmrelease.yaml">node-feature-discovery</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/storage/openebs/app/helmrelease.yaml">openebs</a></td>
   </tr>
   <tr>
@@ -140,6 +152,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>Cluster</code></td>
     <td><a href="kubernetes/apps/default/paperless/app/postgresql.yaml">paperless-db</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/plex/app/helmrelease.yaml">plex</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
