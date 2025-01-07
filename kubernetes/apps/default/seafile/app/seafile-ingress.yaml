@@ -11,7 +11,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: "/$2"
     external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
     gethomepage.dev/enabled: "true"
-    gethomepage.dev/group: Selfohsted
+    gethomepage.dev/group: Selfhosted
     gethomepage.dev/icon: sh-seafile.svg
     gethomepage.dev/name: Seafile
 spec:
