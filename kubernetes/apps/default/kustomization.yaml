@@ -19,3 +19,4 @@ resources:
   - ./paperless/ks.yaml
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
+  - ./overseerr/ks.yaml

@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="54"></td>
+    <td rowspan="55"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="54"></td>
+    <td rowspan="55"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -144,6 +144,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/storage/openebs/app/helmrelease.yaml">openebs</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/overseerr/app/helmrelease.yaml">overseerr</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
