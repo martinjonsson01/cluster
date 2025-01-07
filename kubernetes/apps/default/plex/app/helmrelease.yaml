@@ -125,7 +125,7 @@ spec:
       media:
         type: nfs
         server: ${SECRET_NAS_IP}
-        path: /volume1/Media
+        path: /volume1/Media/media
         globalMounts:
           - path: /media
             readOnly: true
