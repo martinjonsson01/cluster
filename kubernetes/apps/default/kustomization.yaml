@@ -23,3 +23,4 @@ resources:
   - ./homepage/ks.yaml
   - ./maloja/ks.yaml
   - ./multiscrobbler/ks.yaml
+  - ./bazarr/ks.yaml
