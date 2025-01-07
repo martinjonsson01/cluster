@@ -90,6 +90,7 @@ spec:
             gethomepage.dev/enabled: "true"
             gethomepage.dev/group: Selfhosted
             gethomepage.dev/icon: sh-immich.svg
+            gethomepage.dev/name: Immich
           hosts:
             - host: "photos.${SECRET_DOMAIN}"
               paths:

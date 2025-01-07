@@ -103,6 +103,10 @@ spec:
         enabled: true
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: sh-vaultwarden.svg
+          gethomepage.dev/name: Vaultwarden
         className: external
         hosts:
           - host: &host vault.${SECRET_DOMAIN}

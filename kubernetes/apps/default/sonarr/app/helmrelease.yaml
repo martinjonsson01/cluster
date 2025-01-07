@@ -113,6 +113,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Downloads
           gethomepage.dev/icon: sh-sonarr.svg
+          gethomepage.dev/name: Sonarr
         className: internal
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"

@@ -134,6 +134,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: sh-zigbee2mqtt.svg
+          gethomepage.dev/name: Zigbee2MQTT
         className: internal
         hosts:
           - host: zigbee.${SECRET_DOMAIN}

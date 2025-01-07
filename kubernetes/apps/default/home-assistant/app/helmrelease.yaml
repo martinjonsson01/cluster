@@ -142,6 +142,7 @@ spec:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: sh-home-assistant.svg
+          gethomepage.dev/name: Home Assistant
         className: external
         hosts:
           - host: hass.${SECRET_DOMAIN}

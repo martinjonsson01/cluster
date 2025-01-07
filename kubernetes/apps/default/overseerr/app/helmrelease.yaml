@@ -68,6 +68,10 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-overseerr.svg
+          gethomepage.dev/name: Overseerr
         className: external
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"

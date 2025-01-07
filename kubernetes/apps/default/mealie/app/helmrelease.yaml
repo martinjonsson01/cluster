@@ -81,6 +81,10 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: sh-mealie.svg
+          gethomepage.dev/name: Mealie
         className: external
         hosts:
           - host: "recipes.${SECRET_DOMAIN}"
