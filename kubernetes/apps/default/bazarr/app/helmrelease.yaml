@@ -128,7 +128,6 @@ spec:
         path: /volume1/Media/media
         globalMounts:
           - path: /media
-            readOnly: true
       scripts:
         type: configMap
         name: bazarr-scripts
