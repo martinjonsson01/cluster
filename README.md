@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="55"></td>
+    <td rowspan="58"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="55"></td>
+    <td rowspan="58"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -152,6 +152,18 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/nvidia-device-plugin/app/helmrelease.yaml">nvidia-device-plugin</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/ollama/app/helmrelease.yaml">ollama</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/open-webui/app/helmrelease.yaml">open-webui</a></td>
+  </tr>
+  <tr>
+    <td><code>Cluster</code></td>
+    <td><a href="kubernetes/apps/default/open-webui/app/postgresql.yaml">open-webui-db</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
