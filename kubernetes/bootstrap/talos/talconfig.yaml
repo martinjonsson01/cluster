@@ -102,6 +102,33 @@ nodes:
           - network: 0.0.0.0/0
             gateway: "192.168.0.1"
         mtu: 1500
+  - hostname: "casca"
+    ipAddress: "192.168.0.115"
+    installDisk: "/dev/sdb"
+    # Image is using these extensions:
+    # customization:
+    #   systemExtensions:
+    #       officialExtensions:
+    #           - siderolabs/i915-ucode
+    #           - siderolabs/iscsi-tools
+    #           - siderolabs/mei
+    #           - siderolabs/nonfree-kmod-nvidia-production
+    #           - siderolabs/nvidia-container-toolkit-production
+    #           - siderolabs/util-linux-tools
+    talosImageURL: factory.talos.dev/installer/d8f85a8b7b8f3eddafa6e26d402527808a6f78c23e0fc486154a8154c387e5c5
+    patches:
+      - "@./patches/special/gpu-worker-patch.yaml"
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "b4:2e:99:44:99:c6"
+        dhcp: false
+        addresses:
+          - "192.168.0.115/24"
+        routes:
+          - network: 0.0.0.0/0
+            gateway: "192.168.0.1"
+        mtu: 1500
 
 # Global patches
 patches:
