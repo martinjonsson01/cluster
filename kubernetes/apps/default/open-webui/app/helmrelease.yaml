@@ -83,12 +83,6 @@ spec:
                 memory: 10Mi
               limits:
                 memory: 100Mi
-        pod:
-          securityContext:
-            runAsUser: 65534
-            runAsGroup: 65534
-            fsGroup: 65534
-            fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         controller: open-webui
