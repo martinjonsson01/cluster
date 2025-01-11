@@ -22,9 +22,6 @@ spec:
     remediation:
       retries: 3
       strategy: rollback
-  dependsOn:
-    - name: longhorn
-      namespace: storage
   driftDetection:
     mode: enabled
   values:

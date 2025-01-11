@@ -36,9 +36,11 @@ spec:
           app:
             image:
               repository: ghcr.io/open-webui/open-webui
-              tag: v0.5.4
+              tag: v0.5.4@sha256:42e8fa544facc38d731e3d516fbf478abe435bb4b80798e0934930afea6c5bab
             env:
-              OLLAMA_BASE_URL: http://ollama.${SECRET_DOMAIN}:11434
+              TZ: ${TIMEZONE}
+              GLOBAL_LOG_LEVEL: WARNING
+              OLLAMA_BASE_URL: http://ollama.default:11434
               DATABASE_URL:
                 secretKeyRef:
                   name: open-webui-db-app
@@ -47,6 +49,19 @@ spec:
               ENABLE_WEBSOCKET_SUPPORT: "true"
               WEBSOCKET_MANAGER: "redis"
               WEBSOCKET_REDIS_URL: "redis://127.0.0.1:6379"
+            probes:
+              liveness: &probe
+                enabled: true
+                type: HTTP
+                path: /health
+              readiness: *probe
+              startup:
+                <<: *probe
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            securityContext:
+              readOnlyRootFilesystem: true
             resources:
               requests:
                 cpu: 500m
@@ -59,12 +74,20 @@ spec:
               tag: 7.4.2
             env:
               REDIS_REPLICATION_MODE: master
+            securityContext:
+              readOnlyRootFilesystem: true
             resources:
               requests:
                 cpu: 10m
                 memory: 10Mi
               limits:
                 memory: 100Mi
+        pod:
+          securityContext:
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+            fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         controller: open-webui
