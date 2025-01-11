@@ -25,3 +25,4 @@ resources:
   - ./node-feature-discovery.yaml
   - ./intel.yaml
   - ./jameswynn-charts.yaml
+  - ./nvidia-device-plugin.yaml

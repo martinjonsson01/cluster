@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="59"></td>
+    <td rowspan="55"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="59"></td>
+    <td rowspan="55"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -52,10 +52,6 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/coredns/app/helmrelease.yaml">coredns</a></td>
-  </tr>
-  <tr>
-    <td><code>Deployment</code></td>
-    <td><a href="kubernetes/apps/default/seafile/app/db-deployment.yaml">db</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -142,10 +138,6 @@ The software I run in my home cluster.
     <td><a href="kubernetes/apps/default/mealie/app/postgresql.yaml">mealie-db</a></td>
   </tr>
   <tr>
-    <td><code>Deployment</code></td>
-    <td><a href="kubernetes/apps/default/seafile/app/memcached-deployment.yaml">memcached</a></td>
-  </tr>
-  <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/metrics-server/app/helmrelease.yaml">metrics-server</a></td>
   </tr>
@@ -156,6 +148,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/node-feature-discovery/app/helmrelease.yaml">node-feature-discovery</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/kube-system/nvidia-device-plugin/app/helmrelease.yaml">nvidia-device-plugin</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -208,18 +204,6 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/reloader/app/helmrelease.yaml">reloader</a></td>
-  </tr>
-  <tr>
-    <td><code>Deployment</code></td>
-    <td><a href="kubernetes/apps/default/seafile/app/seafile-server-deployment.yaml">seafile-server</a></td>
-  </tr>
-  <tr>
-    <td><code>Deployment</code></td>
-    <td><a href="kubernetes/apps/default/seafile/app/seahub-deployment.yaml">seahub</a></td>
-  </tr>
-  <tr>
-    <td><code>Deployment</code></td>
-    <td><a href="kubernetes/apps/default/seafile/app/seahub-media-deployment.yaml">seahub-media</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
