@@ -41,6 +41,7 @@ spec:
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       concurrentAutomaticEngineUpgradePerNodeLimit: 3
       orphanAutoDeletion: true
+      taintToleration: "martin.com/gpu=nvidia:NoSchedule"
     longhornManager:
       priorityClass: system-cluster-critical
       tolerations: &tolerations
@@ -50,6 +51,8 @@ spec:
           effect: NoSchedule
     longhornDriver:
       priorityClass: system-cluster-critical
+      tolerations: *tolerations
+    global:
       tolerations: *tolerations
     ingress:
       enabled: true
