@@ -54,6 +54,15 @@ spec:
                 memory: 2Gi
               limits:
                 memory: 16Gi
+        pod:
+          runtimeClassName: nvidia
+          tolerations:
+            - key: martin.com/gpu
+              operator: Equal
+              value: nvidia
+              effect: NoSchedule
+          nodeSelector:
+            martin.com/gpu: nvidia
     service:
       app:
         controller: ollama
