@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-temp
+  namespace: default
+spec:
+  volumes:
+    - name: app-data
+      persistentVolumeClaim:
+        claimName: xx
+  containers:
+    - name: noop
+      image: alpine:3
+      command:
+        - /bin/sh
+        - -c
+        - |
+          while [ true ]; do
+            sleep 5
+          done
+      volumeMounts:
+        - mountPath: /mnt/data
+          name: app-data
