@@ -43,8 +43,14 @@ spec:
       orphanAutoDeletion: true
     longhornManager:
       priorityClass: system-cluster-critical
+      tolerations: &tolerations
+        - key: martin.com/gpu
+          operator: Equal
+          value: nvidia
+          effect: NoSchedule
     longhornDriver:
       priorityClass: system-cluster-critical
+      tolerations: *tolerations
     ingress:
       enabled: true
       annotations:
