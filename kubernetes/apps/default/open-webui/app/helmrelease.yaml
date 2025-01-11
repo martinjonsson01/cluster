@@ -77,8 +77,6 @@ spec:
               tag: 7.4.2
             env:
               REDIS_REPLICATION_MODE: master
-            securityContext:
-              readOnlyRootFilesystem: true
             resources:
               requests:
                 cpu: 10m
