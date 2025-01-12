@@ -57,10 +57,10 @@ spec:
     - toEndpoints:
         - matchLabels:
             k8s:io.kubernetes.pod.namespace: kube-system
-            k8s-app: coredns
+            app.kubernetes.io/name: coredns
         - matchLabels:
             k8s:io.kubernetes.pod.namespace: kube-system
-            k8s-app: k8s-dns-node-cache
+            app.kubernetes.io/name: k8s-dns-node-cache
       toPorts:
         - ports:
             - port: "1053"
