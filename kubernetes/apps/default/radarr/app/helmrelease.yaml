@@ -114,6 +114,10 @@ spec:
           gethomepage.dev/group: Downloads
           gethomepage.dev/icon: sh-radarr.svg
           gethomepage.dev/name: Radarr
+          gethomepage.dev/widget.type: "radarr"
+          gethomepage.dev/widget.url: "http://radarr.default.svc:80"
+          gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_RADARR_API_TOKEN}
+          gethomepage.dev/widget.enableQueue: "true"
         className: internal
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
