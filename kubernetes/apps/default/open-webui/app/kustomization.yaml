@@ -5,5 +5,4 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./postgresql.yaml
-  - ./postgresql-test.yaml
   - ./secret.sops.yaml
