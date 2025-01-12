@@ -91,6 +91,10 @@ spec:
             gethomepage.dev/group: Selfhosted
             gethomepage.dev/icon: sh-immich.svg
             gethomepage.dev/name: Immich
+            gethomepage.dev/widget.type: "immich"
+            gethomepage.dev/widget.url: "http://immich.default.svc:3001"
+            gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_IMMICH_API_TOKEN}
+            gethomepage.dev/widget.version: "2"
           hosts:
             - host: "photos.${SECRET_DOMAIN}"
               paths:
