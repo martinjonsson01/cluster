@@ -1,0 +1,140 @@
+# This policy targets the CNPG operator.
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: cnpg-operator
+  namespace: cnpg-system
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: cloudnative-pg
+  egress:
+    # Allow egress to Kubernetes API server.
+    - toEntities:
+        - kube-apiserver
+    # Allow egress to status and database endpoints of managed Postgres cluster pods.
+    - toEndpoints:
+      - matchExpressions:
+        - key: cnpg.io/cluster
+          operator: Exists
+        - key: io.kubernetes.pod.namespace
+          operator: Exists
+      toPorts:
+      - ports:
+        - port: "8000"
+          protocol: TCP
+        - port: "5432"
+          protocol: TCP
+  ingress:
+    # Allow access to call the webhook. Cilium sees this as "remote-node" instead of "kube-apiserver".
+    - fromEntities:
+      - kube-apiserver
+      - remote-node
+      toPorts:
+      - ports:
+        - port: "9443"
+    # Allow scraping metrics.
+    - fromEntities:
+      - cluster
+      toPorts:
+      - ports:
+        - port: "8080"
+---
+# This policy targets all pods that belong to any CNPG-managed Postgres cluster (instance, init, join).
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: cnpg-db-dns
+spec:
+  endpointSelector:
+    matchExpressions:
+      - key: cnpg.io/cluster
+        operator: Exists
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: coredns
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: k8s-dns-node-cache
+      toPorts:
+        - ports:
+            - port: "1053"
+              protocol: UDP
+            - port: "1053"
+              protocol: TCP
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+---
+# This policy targets the Postgres database instance pods managed by CNPG.
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: cnpg-db-instance
+spec:
+  endpointSelector:
+    matchLabels:
+      cnpg.io/podRole: instance
+  ingress:
+    # Allow ingress from CNPG operator.
+    - fromEndpoints:
+        - matchLabels:
+            app.kubernetes.io/instance: cloudnative-pg
+            app.kubernetes.io/name: cloudnative-pg
+          matchExpressions:
+            - key: io.kubernetes.pod.namespace
+              operator: Exists
+      toPorts:
+        - ports:
+            - port: "8000"
+        - ports:
+            - port: "5432"
+    # Allow Prometheus scraping.
+    - fromEntities:
+        - cluster
+      toPorts:
+        - ports:
+            - port: "9187"
+  egress:
+    - toEntities:
+        - kube-apiserver
+
+---
+# This policy targets the init pods used by CNPG when initializing a cluster.
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: cnpg-db-init
+spec:
+  endpointSelector:
+    matchLabels:
+      cnpg.io/jobRole: initdb
+  egress:
+    - toEntities:
+      - kube-apiserver
+---
+# This policy targets the join pods used by CNPG when joining new instances to the cluster.
+# It could be improved by limiting egress to the same namespace as the target join pod,
+# but this isn't currently possible without requiring each Cluster consumer to create their own policy.
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: cnpg-db-join
+spec:
+  endpointSelector:
+    matchLabels:
+      cnpg.io/jobRole: join
+  egress:
+    # Allow egress to PostgreSQL cluster members.
+    - toEndpoints:
+        - matchLabels:
+            cnpg.io/podRole: instance
+      toPorts:
+        - ports:
+            - port: "5432"
+    # Allow CNPG management controller to access the API server.
+    - toEntities:
+      - kube-apiserver
