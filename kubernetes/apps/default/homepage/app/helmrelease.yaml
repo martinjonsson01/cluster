@@ -83,7 +83,40 @@ spec:
     # All the config files for Homepage can be specified under their relevant config block.
     config:
       bookmarks:
+        - Developer:
+            - Github:
+                - abbr: GH
+                  href: https://github.com/martinjonsson01/
+            - Renovate Dashboard:
+                - abbr: 🤖
+                  href: https://github.com/martinjonsson01/cluster/issues/2
+        - Social Media:
+            - Reddit:
+                - abbr: R
+                  href: https://old.reddit.com/
+            - Twitter:
+                - abbr: TW
+                  href: https://x.com/home
+            - Hacker News:
+                - abbr: HN
+                  href: https://news.ycombinator.com/
+        - Entertainment:
+            - Youtube:
+                - abbr: YT
+                  href: https://www.youtube.com/
+
       services:
+        - Home Automation:
+            - Home Assistant:
+                widget:
+                  custom:
+                    - state: sensor.athom_cluster_plug_power
+                    - template: "{{ states.switch|selectattr('state','equalto','on')|list|length }}"
+                      label: switches on
+                    - state: weather.forecast_hem
+                      label: wind speed
+                      value: "{attributes.wind_speed} {attributes.wind_speed_unit}"
+
       widgets:
         - kubernetes:
             cluster:
@@ -122,6 +155,10 @@ spec:
           - Tools:
           - Downloads:
           - Social:
+
+        providers:
+          longhorn:
+            url: http://longhorn-frontend.storage.svc:80
 
     # -- Main environment variables. Template enabled.
     # Syntax options:
