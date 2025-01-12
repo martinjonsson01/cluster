@@ -76,7 +76,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/group: Services
           gethomepage.dev/icon: sh-actual-budget.svg
           gethomepage.dev/name: Actual
         className: external

@@ -161,7 +161,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/group: Services
           gethomepage.dev/icon: sh-paperless-ngx.svg
           gethomepage.dev/name: Paperless
           gethomepage.dev/widget.type: paperlessngx

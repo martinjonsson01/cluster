@@ -88,7 +88,7 @@ spec:
             # proxy-body-size is set to 0 to remove the body limit on file uploads
             nginx.ingress.kubernetes.io/proxy-body-size: "0"
             gethomepage.dev/enabled: "true"
-            gethomepage.dev/group: Selfhosted
+            gethomepage.dev/group: Services
             gethomepage.dev/icon: sh-immich.svg
             gethomepage.dev/name: Immich
             gethomepage.dev/pod-selector: app.kubernetes.io/instance=immich

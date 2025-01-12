@@ -140,7 +140,7 @@ spec:
 
         layout:
           - Home Automation:
-          - Selfhosted:
+          - Services:
           - Media:
           - Household:
           - Observability:
