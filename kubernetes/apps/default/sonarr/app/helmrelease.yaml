@@ -114,6 +114,10 @@ spec:
           gethomepage.dev/group: Downloads
           gethomepage.dev/icon: sh-sonarr.svg
           gethomepage.dev/name: Sonarr
+          gethomepage.dev/widget.type: "sonarr"
+          gethomepage.dev/widget.url: "http://sonarr.default.svc:8989"
+          gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_SONARR_API_TOKEN}
+          gethomepage.dev/widget.enableQueue: "true"
         className: internal
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
