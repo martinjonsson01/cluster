@@ -138,3 +138,21 @@ spec:
     # Allow CNPG management controller to access the API server.
     - toEntities:
       - kube-apiserver
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: cnpg-db-instance-ingresses
+spec:
+  podSelector:
+    matchLabels:
+      cnpg.io/podRole: instance
+      cnpg.io/instancerole: primary
+  policyTypes:
+    - Ingress
+    - Egress
+  egress:
+    - {}
+  ingress:
+    - ports:
+        - port: 5432
