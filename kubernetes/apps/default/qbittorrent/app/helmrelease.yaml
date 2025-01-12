@@ -103,6 +103,8 @@ spec:
           gethomepage.dev/group: Downloads
           gethomepage.dev/icon: sh-qbittorrent.svg
           gethomepage.dev/name: qBittorrent
+          gethomepage.dev/widget.type: "qbittorrent"
+          gethomepage.dev/widget.url: "http://qbittorrent.default.svc:80"
         className: internal
         hosts:
           - host: qb.${SECRET_DOMAIN}
