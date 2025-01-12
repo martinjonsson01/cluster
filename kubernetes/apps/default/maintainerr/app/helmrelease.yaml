@@ -45,6 +45,8 @@ spec:
             image:
               repository: ghcr.io/jorenn92/maintainerr
               tag: 2.7.0
+            env:
+              TZ: ${TIMEZONE}
             probes:
               liveness:
                 enabled: true
