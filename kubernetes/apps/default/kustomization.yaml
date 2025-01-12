@@ -26,3 +26,4 @@ resources:
   - ./ollama/ks.yaml
   - ./open-webui/ks.yaml
   - ./maintainerr/ks.yaml
+  - ./changedetection/ks.yaml
