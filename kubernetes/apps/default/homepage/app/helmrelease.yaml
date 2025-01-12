@@ -54,6 +54,8 @@ spec:
             port: 3000
 
     controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
       strategy: RollingUpdate
       rollingUpdate:
         maxSurge: 25%
