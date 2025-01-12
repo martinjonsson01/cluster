@@ -164,6 +164,10 @@ spec:
           gethomepage.dev/group: Selfhosted
           gethomepage.dev/icon: sh-paperless-ngx.svg
           gethomepage.dev/name: Paperless
+          gethomepage.dev/widget.type: paperlessngx
+          gethomepage.dev/widget.url: http://paperless.default.svc:8000
+          gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_PAPERLESS_API_TOKEN}
+          gethomepage.dev/widget.fields: '["total", "inbox"]'
         className: internal
         hosts:
           - host: papers.${SECRET_DOMAIN}
