@@ -82,7 +82,7 @@ spec:
     # Allow ingress from CNPG operator.
     - fromEndpoints:
         - matchLabels:
-            app.kubernetes.io/instance: cloudnative-pg
+            app.kubernetes.io/instance: cnpg
             app.kubernetes.io/name: cloudnative-pg
           matchExpressions:
             - key: io.kubernetes.pod.namespace
