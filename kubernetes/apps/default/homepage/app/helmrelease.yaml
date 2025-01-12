@@ -108,16 +108,6 @@ spec:
                   href: https://www.youtube.com/
 
       services:
-        - Home Automation:
-            - Home Assistant:
-                widget:
-                  custom:
-                    - state: sensor.athom_cluster_plug_power
-                    - template: "{{ states.switch|selectattr('state','equalto','on')|list|length }}"
-                      label: switches on
-                    - state: weather.forecast_hem
-                      label: wind speed
-                      value: "{attributes.wind_speed} {attributes.wind_speed_unit}"
 
       widgets:
         - kubernetes:
