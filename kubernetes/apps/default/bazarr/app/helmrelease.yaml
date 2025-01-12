@@ -101,6 +101,10 @@ spec:
           gethomepage.dev/group: Downloads
           gethomepage.dev/icon: sh-bazarr.png
           gethomepage.dev/name: Bazarr
+          gethomepage.dev/widget.type: bazarr
+          gethomepage.dev/widget.url: http://bazarr.default.svc:6767
+          gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_BAZARR_API_TOKEN}
+          gethomepage.dev/widget.fields: '["missingEpisodes", "missingMovies"]'
         className: internal
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
