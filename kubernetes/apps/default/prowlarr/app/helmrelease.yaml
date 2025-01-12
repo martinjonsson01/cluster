@@ -111,6 +111,9 @@ spec:
           gethomepage.dev/group: Downloads
           gethomepage.dev/icon: sh-prowlarr.svg
           gethomepage.dev/name: Prowlarr
+          gethomepage.dev/widget.type: "prowlarr"
+          gethomepage.dev/widget.url: "http://prowlarr.default.svc:80"
+          gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_PROWLARR_API_TOKEN}
         className: internal
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
