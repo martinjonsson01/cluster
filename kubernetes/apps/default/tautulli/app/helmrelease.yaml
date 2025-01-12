@@ -84,6 +84,12 @@ spec:
           gethomepage.dev/group: Media
           gethomepage.dev/icon: sh-tautulli.svg
           gethomepage.dev/name: Tautulli
+          gethomepage.dev/widget.type: tautulli
+          gethomepage.dev/widget.url: http://tautulli.default.svc:80
+          gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_TAUTULLI_API_TOKEN}
+          gethomepage.dev/widget.enableUser: "true"
+          gethomepage.dev/widget.showEpisodeNumber: "true"
+          gethomepage.dev/widget.expandOneStreamToTwoRows: "true"
         className: internal
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
