@@ -47,6 +47,7 @@ spec:
                 memory: 600Mi
             env:
               NEXTAUTH_URL: https://links.${SECRET_DOMAIN}/api/v1/auth
+              NEXT_PUBLIC_DISABLE_REGISTRATION: "true"
               STORAGE_FOLDER: "config" # Will always end up as /data/STOREAGE_FOLDER so eg /data/config
               NEXT_PUBLIC_AUTHENTIK_ENABLED: "true"
               HOME: /data/config
