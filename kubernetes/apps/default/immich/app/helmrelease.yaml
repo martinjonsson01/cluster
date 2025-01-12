@@ -91,11 +91,11 @@ spec:
             gethomepage.dev/group: Selfhosted
             gethomepage.dev/icon: sh-immich.svg
             gethomepage.dev/name: Immich
+            gethomepage.dev/pod-selector: app.kubernetes.io/name=immich
             gethomepage.dev/widget.type: "immich"
             gethomepage.dev/widget.url: "http://immich-server.default.svc:2283"
             gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_IMMICH_API_TOKEN}
             gethomepage.dev/widget.version: "2"
-            gethomepage.dev/widget.pod-selector: app.kubernetes.io/name=immich
           hosts:
             - host: "photos.${SECRET_DOMAIN}"
               paths:

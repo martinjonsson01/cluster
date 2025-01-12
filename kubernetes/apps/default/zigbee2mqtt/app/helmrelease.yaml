@@ -135,7 +135,7 @@ spec:
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: sh-zigbee2mqtt.svg
           gethomepage.dev/name: Zigbee2MQTT
-          gethomepage.dev/widget.pod-selector: app.kubernetes.io/name=zigbee2mqtt
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=zigbee2mqtt
         className: internal
         hosts:
           - host: zigbee.${SECRET_DOMAIN}

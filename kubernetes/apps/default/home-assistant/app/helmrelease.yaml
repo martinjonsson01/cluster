@@ -143,10 +143,10 @@ spec:
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: sh-home-assistant.svg
           gethomepage.dev/name: Home Assistant
+          gethomepage.dev/pod-selector: app.kubernetes.io/name=home-assistant
           gethomepage.dev/widget.type: homeassistant
           gethomepage.dev/widget.url: http://home-assistant.default.svc:8123
           gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_HOMEASSISTANT_API_TOKEN}
-          gethomepage.dev/widget.pod-selector: app.kubernetes.io/name=home-assistant
         className: external
         hosts:
           - host: hass.${SECRET_DOMAIN}
