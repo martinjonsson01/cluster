@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="60"></td>
+    <td rowspan="62"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="60"></td>
+    <td rowspan="62"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -120,6 +120,14 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/kubelet-csr-approver/app/helmrelease.yaml">kubelet-csr-approver</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/linkwarden/app/helmrelease.yaml">linkwarden</a></td>
+  </tr>
+  <tr>
+    <td><code>Cluster</code></td>
+    <td><a href="kubernetes/apps/default/linkwarden/app/postgresql.yaml">linkwarden-db</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

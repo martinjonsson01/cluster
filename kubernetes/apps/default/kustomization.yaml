@@ -27,3 +27,4 @@ resources:
   - ./open-webui/ks.yaml
   - ./maintainerr/ks.yaml
   - ./changedetection/ks.yaml
+  - ./linkwarden/ks.yaml

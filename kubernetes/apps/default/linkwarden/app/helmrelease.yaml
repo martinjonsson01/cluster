@@ -1,0 +1,111 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: linkwarden
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  driftDetection:
+    mode: enabled
+  dependsOn:
+    - name: longhorn
+      namespace: storage
+    - name: cnpg
+      namespace: cnpg-system
+  values:
+    controllers:
+      linkwarden:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/linkwarden/linkwarden
+              tag: v2.9.2
+            resources:
+              requests:
+                memory: 512Mi
+              limits:
+                memory: 600Mi
+            env:
+              NEXTAUTH_URL: https://links.${SECRET_DOMAIN}/api/v1/auth
+              STORAGE_FOLDER: "config" # Will always end up as /data/STOREAGE_FOLDER so eg /data/config
+              NEXT_PUBLIC_AUTHENTIK_ENABLED: "true"
+              HOME: /data/config
+              DATABASE_URL:
+                secretKeyRef:
+                  name: linkwarden-db-app
+                  key: uri
+            envFrom:
+              - secretRef:
+                  name: linkwarden-secret
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+
+        pod:
+          securityContext:
+            runAsUser: ${APP_UID}
+            runAsGroup: ${APP_GID}
+            fsGroup: ${APP_GID}
+            fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      app:
+        controller: linkwarden
+        ports:
+          http:
+            port: 3000
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Services
+          gethomepage.dev/icon: sh-linkwarden.svg
+          gethomepage.dev/name: Linkwarden
+          gethomepage.dev/widget.type: linkwarden
+          gethomepage.dev/widget.url: http://linkwarden.default.svc:3000
+          gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_LINKWARDEN_API_TOKEN}
+        className: external
+        hosts:
+          - host: "links.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        existingClaim: linkwarden
+        globalMounts:
+          - path: /data/config
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /data/.next/cache
