@@ -85,6 +85,11 @@ spec:
           gethomepage.dev/group: Selfhosted
           gethomepage.dev/icon: sh-mealie.svg
           gethomepage.dev/name: Mealie
+          gethomepage.dev/widget.type: mealie
+          gethomepage.dev/widget.url: "http://mealie.default.svc:9000"
+          gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_MEALIE_API_TOKEN}
+          gethomepage.dev/widget.version: "2"
+          gethomepage.dev/widget.fields: '["recipes", "users", "categories", "tags"]'
         className: external
         hosts:
           - host: "recipes.${SECRET_DOMAIN}"
