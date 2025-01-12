@@ -147,7 +147,6 @@ spec:
   podSelector:
     matchLabels:
       cnpg.io/podRole: instance
-      cnpg.io/instancerole: primary
   policyTypes:
     - Ingress
     - Egress
