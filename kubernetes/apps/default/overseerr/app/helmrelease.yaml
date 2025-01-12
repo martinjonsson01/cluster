@@ -72,6 +72,10 @@ spec:
           gethomepage.dev/group: Downloads
           gethomepage.dev/icon: sh-overseerr.svg
           gethomepage.dev/name: Overseerr
+          gethomepage.dev/widget.type: overseerr
+          gethomepage.dev/widget.url: http://overseerr.default.svc:5055
+          gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_OVERSEERR_API_TOKEN}
+          gethomepage.dev/widget.fields: '["pending", "processing"]'
         className: external
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
