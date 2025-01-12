@@ -5,7 +5,7 @@ kind: Cluster
 metadata:
   name: prowlarr-db
 spec:
-  instances: 2
+  instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:16.4-30
   enableSuperuserAccess: true
   bootstrap:
