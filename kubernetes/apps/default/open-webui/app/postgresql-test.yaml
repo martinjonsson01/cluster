@@ -4,6 +4,7 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: test-db
+  namespace: cnpg-system
 spec:
   instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:16.4-30
