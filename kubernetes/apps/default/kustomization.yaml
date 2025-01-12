@@ -25,3 +25,4 @@ resources:
   - ./bazarr/ks.yaml
   - ./ollama/ks.yaml
   - ./open-webui/ks.yaml
+  - ./maintainerr/ks.yaml
