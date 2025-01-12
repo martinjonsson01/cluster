@@ -70,7 +70,7 @@ spec:
           gethomepage.dev/icon: changedetection-io.png
           gethomepage.dev/name: Change Detection
           gethomepage.dev/widget.type: changedetectionio
-          gethomepage.dev/widget.url: http://change-detection.default.svc:5000
+          gethomepage.dev/widget.url: http://changedetection.default.svc:5000
           gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_CHANGEDETECTION_API_TOKEN}
         className: internal
         hosts:
