@@ -29,7 +29,7 @@ spec:
         - {}
     - fromEndpoints:
         - matchLabels:
-            io.kubernetes.pod.namespace: cnpg-system
+            k8s:io.kubernetes.pod.namespace: cnpg-system
             app.kubernetes.io/name: cloudnative-pg
   egress:
     - toEndpoints:
