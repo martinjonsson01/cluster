@@ -50,6 +50,9 @@ spec:
               NEXT_PUBLIC_DISABLE_REGISTRATION: "true"
               STORAGE_FOLDER: "config" # Will always end up as /data/STOREAGE_FOLDER so eg /data/config
               NEXT_PUBLIC_AUTHENTIK_ENABLED: "true"
+              NEXT_PUBLIC_MAX_FILE_SIZE: 1000 # Archiving of 1000 MB pdfs
+              NEXT_PUBLIC_OLLAMA_ENDPOINT_URL: http://ollama.default:11434
+              OLLAMA_MODEL: phi3:mini-4k
               HOME: /data/config
               DATABASE_URL:
                 secretKeyRef:
