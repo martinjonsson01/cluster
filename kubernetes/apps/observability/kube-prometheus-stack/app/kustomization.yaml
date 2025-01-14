@@ -7,3 +7,4 @@ resources:
   - ./prometheusrule.yaml
   - ./cloudnative-pg-rules.yaml
   - ./secret.sops.yaml
+  - ./alertmanagerconfig.yaml
