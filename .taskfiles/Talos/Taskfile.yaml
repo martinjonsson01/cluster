@@ -88,6 +88,35 @@ tasks:
       - msg: Upstream Kubernetes version not found
         sh: curl -fsSL -o /dev/null --fail https://github.com/siderolabs/kubelet/releases/tag/{{.KUBERNETES_VERSION}}
 
+  shutdown-node:
+    desc: Shut down a single node
+    cmds:
+      - talosctl --nodes {{.HOSTNAME}} shutdown --wait --timeout=10m
+    requires:
+      vars: [HOSTNAME]
+    preconditions:
+      - msg: Missing talosconfig
+        sh: test -f {{.TALOSCONFIG}}
+      - msg: Unable to retrieve Talos config
+        sh: talosctl config info &>/dev/null
+      - msg: Node {{.HOSTNAME}} not found
+        sh: talosctl --nodes {{.HOSTNAME}} get machineconfig &>/dev/null
+
+  shutdown-cluster:
+    desc: Shut down the whole cluster
+    cmds:
+      - task: down
+      - task: shutdown-node
+        vars:
+          HOSTNAME: '{{.WORKER_HOSTNAMES}}'
+      - for: { var: CONTROLPLANE_HOSTNAMES }
+        task: talosctl --nodes {{.ITEM}} shutdown && sleep 1m
+    vars:
+      CONTROLPLANE_HOSTNAMES:
+        sh: kubectl get nodes -l node-role.kubernetes.io/control-plane= --output=jsonpath='{.items}' | jq -r 'sort_by(.status.addresses[] | select(.type=="InternalIP") | .address) | map(.metadata.name) | reverse | join(" ")'
+      WORKER_HOSTNAMES:
+        sh: kubectl get nodes -l node-role.kubernetes.io/control-plane!= --output=jsonpath='{.items}' | jq -r 'sort_by(.status.addresses[] | select(.type=="InternalIP") | .address) | map(.metadata.name) | reverse | join(",")'
+
   reset:
     desc: Resets nodes back to maintenance mode
     dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
