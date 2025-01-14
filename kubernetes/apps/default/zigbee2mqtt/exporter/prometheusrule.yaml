@@ -47,12 +47,19 @@ spec:
           annotations:
             summary: Temperature high (>50c)
             description: temperature on topic {{$labels.topic}} is {{$value}}c
-        - alert: Zigbee2MqttTemperatureLow
-          expr: mqtt_temperature < 10
+        - alert: Zigbee2MqttFreezerTemperatureHigh
+          expr: mqtt_temperature{topic="frystermometer"} > -10
+          labels:
+            severity: critical
+          annotations:
+            summary: Freezer temperature high (>-10c)
+            description: temperature on topic {{$labels.topic}} is {{$value}}c
+        - alert: Zigbee2MqttFridgeTemperatureHigh
+          expr: mqtt_temperature{topic="kyltermometer"} > 8
           labels:
             severity: warning
           annotations:
-            summary: Temperature low (<10c)
+            summary: Fridge temperature high (>8c)
             description: temperature on topic {{$labels.topic}} is {{$value}}c
         - alert: Zigbee2MqttSmokeDetectorAlert
           expr: mqtt_smoke > 0
