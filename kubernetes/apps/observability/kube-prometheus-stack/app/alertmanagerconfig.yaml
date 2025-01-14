@@ -60,7 +60,7 @@ spec:
                   {{ .CommonLabels.alertname }}
                 {{- end }}
           smarthost: "smtp.mailjet.com:587"
-          requireTLS: false
+          requireTLS: true
           sendResolved: false
           authUsername: ${SECRET_SMTP_USERNAME}
           authPassword:
