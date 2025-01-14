@@ -19,5 +19,7 @@ spec:
     requests:
       memory: 20Mi
       cpu: 10m
+  monitoring:
+    enablePodMonitor: true
   smartShutdownTimeout: 1
   stopDelay: 301
