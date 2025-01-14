@@ -43,6 +43,7 @@ spec:
         hosts: ["alertmanager.${SECRET_DOMAIN}"]
         pathType: Prefix
       alertmanagerSpec:
+        replicas: 2
         alertmanagerConfiguration:
           name: alertmanager
           global:
