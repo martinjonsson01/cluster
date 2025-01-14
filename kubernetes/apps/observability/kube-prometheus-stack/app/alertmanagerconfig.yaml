@@ -46,33 +46,14 @@ spec:
         - urlSecret:
             name: &secret alertmanager-secret
             key: ALERTMANAGER_HEARTBEAT_URL
-    - name: pushover
-      pushoverConfigs:
-        - html: true
-          message: |-
-            {{- range .Alerts }}
-              {{- $desc := default "Alert description not available" (or .Annotations.description .Annotations.summary .Annotations.message) }}
-              {{ $desc }}
-              {{- if gt (len .Labels.SortedPairs) 0 }}
-                <small>
-                  {{- range .Labels.SortedPairs }}
-                    <b>{{ .Name }}:</b> {{ .Value }}
-                  {{- end }}
-                </small>
-              {{- end }}
-            {{- end }}
-          priority: |-
-            {{ if eq .Status "firing" }}1{{ else }}0{{ end }}
-          sendResolved: true
-          sound: gamelan
-          title: >-
-            [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}]
-            {{ .CommonLabels.alertname }}
-          ttl: 3600s
-          token:
+    - name: email
+      emailConfigs:
+        - from: "alert-manager@jmartin.se"
+          to: "cluster-alerts@jmartin.se"
+          smarthost: "smtp.mailjet.com:587"
+          requireTLS: false
+          sendResolved: false
+          authUsername: ${SECRET_SMTP_USERNAME}
+          authPassword:
             name: *secret
-            key: ALERTMANAGER_PUSHOVER_TOKEN
-          userKey:
-            name: *secret
-            key: PUSHOVER_USER_KEY
-          urlTitle: View in Alertmanager
+            key: SMTP_PASSWORD
