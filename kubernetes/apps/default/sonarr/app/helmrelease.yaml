@@ -28,7 +28,7 @@ spec:
     - name: cnpg
       namespace: cnpg-system
   driftDetection:
-    mode: warn
+    mode: enabled
   values:
     controllers:
       sonarr:
