@@ -141,7 +141,7 @@ spec:
         enabled: true
         endpoints:
           - port: http
-            scheme: http
+            scheme: https
             path: /api/prometheus
             bearerTokenSecret:
               name: home-assistant-secret
