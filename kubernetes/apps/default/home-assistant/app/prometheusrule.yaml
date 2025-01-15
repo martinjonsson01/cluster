@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: homeassistant
+spec:
+  groups:
+    - name: HomeAssistant
+      rules:
+        - alert: HomeAssistantAbsent
+          annotations:
+            description: Home Assistant has disappeared from Prometheus service discovery.
+            summary: Home Assistant is down.
+          expr: absent(up{job=~".*home-assistant.*"} == 1)
+          for: 5m
+          labels:
+            severity: critical

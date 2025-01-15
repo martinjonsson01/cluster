@@ -135,6 +135,17 @@ spec:
             port: 80
           everything-presence-mmwave-configurator:
             port: 8099
+    serviceMonitor:
+      app:
+        serviceName: home-assistant
+        enabled: true
+        endpoints:
+          - port: http
+            scheme: http
+            path: /api/prometheus
+            bearerTokenSecret:
+              name: home-assistant-secret
+              key: HA_TOKEN
     ingress:
       app:
         annotations:
