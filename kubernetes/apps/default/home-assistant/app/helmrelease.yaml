@@ -145,7 +145,7 @@ spec:
             path: /api/prometheus
             bearerTokenSecret:
               name: home-assistant-secret
-              key: HA_TOKEN
+              key: HASS_SERVICEMONITOR_TOKEN
     ingress:
       app:
         annotations:
