@@ -6,7 +6,7 @@ metadata:
   name: sonarr
 spec:
   groups:
-    - name: Exportarr
+    - name: Sonarr
       rules:
         - alert: ExportarrAbsent
           annotations:
@@ -17,8 +17,6 @@ spec:
           for: 5m
           labels:
             severity: critical
-    - name: Sonarr
-      rules:
         - alert: SonarrDown
           annotations:
             description: |
