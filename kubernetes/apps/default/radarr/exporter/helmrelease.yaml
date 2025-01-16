@@ -35,7 +35,7 @@ spec:
               repository: ghcr.io/onedr0p/exportarr
               tag: v2.0.1
             args:
-              - r
+              - radarr
               - --enable-additional-metrics
               - --enable-unknown-queue-items
             env:
