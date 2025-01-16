@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: qbittorrent
+spec:
+  groups:
+    - name: qBittorrent
+      rules:
+        - alert: qBittorrentExporterAbsent
+          annotations:
+            description: |
+              prometheus-qbittorrent-exporter has disappeared from Prometheus service discovery.
+            summary: prometheus-qbittorrent-exporter is down.
+          expr: absent(up{job=~".*qbittorrent-exporter.*"} == 1)
+          for: 5m
+          labels:
+            severity: critical
+        - alert: qBittorrentDown
+          annotations:
+            description: |
+              qBittorrent in namespace {{ $labels.namespace }} is not reporting status check correctly.
+            summary: qBittorrent is Down
+          expr: qbittorrent_up{job=~".*qbittorrent-exporter.*"} != 1
+          for: 15m
+          labels:
+            severity: critical
+        - alert: qBittorrentDisconnected
+          annotations:
+            description: |
+              qBittorrent in namespace {{ $labels.namespace }} is not connected to the Bittorrent network.
+            summary: qBittorrent is Disconnected
+          expr: qbittorrent_connected{job=~".*qbittorrent-exporter.*"} != 1
+          for: 2h
+          labels:
+            severity: warning
