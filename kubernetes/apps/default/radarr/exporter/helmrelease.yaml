@@ -43,7 +43,7 @@ spec:
               URL: https://radarr.default
             envFrom:
               - secretRef:
-                  name: radarr-exporter
+                  name: radarr-exporter-secret
             probes:
               liveness: &probes
                 enabled: true
