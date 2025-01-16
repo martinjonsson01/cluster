@@ -111,16 +111,8 @@ spec:
               limits:
                 memory: 512Mi
     defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          # It says "ignored during execution", but it unofficially guarantees
-          # that the pod will be recreated exactly according to these rules.
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: sonoff.feature.node.kubernetes.io/zigbee-dongle
-                    operator: In
-                    values: ["true"]
+      nodeSelector:
+        sonoff.feature.node.kubernetes.io/zigbee-dongle: "true"
       securityContext:
         runAsNonRoot: true
         runAsUser: 568
