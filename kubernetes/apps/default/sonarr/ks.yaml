@@ -44,4 +44,3 @@ spec:
   postBuild:
     substitute:
       APP: *app
-
