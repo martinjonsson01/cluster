@@ -20,14 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="69"></td>
+    <td rowspan="68"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="69"></td>
-  </tr>
-  <tr>
-    <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/kube-system/akri/app/helmrelease.yaml">akri</a></td>
+    <td rowspan="68"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

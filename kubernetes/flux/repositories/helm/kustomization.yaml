@@ -18,7 +18,6 @@ resources:
   - ./kubernetes-dashboard.yaml
   - ./grafana.yaml
   - ./longhorn.yaml
-  - ./akri.yaml
   - ./emqx.yaml
   - ./cloudnative-pg.yaml
   - ./immich.yaml
