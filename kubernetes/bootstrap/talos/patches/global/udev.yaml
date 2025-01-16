@@ -1,0 +1,5 @@
+machine:
+  udev:
+    rules:
+      # Sonoff Zigbee 3.0 USB Dongle Plus V2
+      - SUBSYSTEMS=="usb", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", GROUP="20", MODE="0660"

@@ -139,6 +139,7 @@ patches:
   - "@./patches/global/kubelet.yaml"
   - "@./patches/global/openebs-local.yaml"
   - "@./patches/global/sysctl.yaml"
+  - "@./patches/global/udev.yaml"
 
 # Controller patches
 controlPlane:

@@ -14,7 +14,9 @@ tasks:
 
   apply-config:
     desc: Apply Talos configuration to a node
-    cmd: talosctl apply-config --mode={{.MODE}} --nodes {{.HOSTNAME}} --file {{.TALHELPER_CLUSTER_DIR}}/{{.CLUSTER_NAME}}-{{.HOSTNAME}}.yaml
+    cmds:
+      - talosctl apply-config --mode={{.MODE}} --nodes {{.HOSTNAME}} --file {{.TALHELPER_CLUSTER_DIR}}/{{.CLUSTER_NAME}}-{{.HOSTNAME}}.yaml
+      - talosctl --nodes {{.HOSTNAME}} health --wait-timeout=10m --server=false
     vars:
       MODE: '{{.MODE | default "no-reboot"}}'
       CLUSTER_NAME:
