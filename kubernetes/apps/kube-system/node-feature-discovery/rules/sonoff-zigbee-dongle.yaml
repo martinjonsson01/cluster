@@ -14,4 +14,4 @@ spec:
         - feature: usb.device
           matchExpressions:
             vendor: { op: In, value: ["10c4"] }
-            product: { op: In, value: ["ea60"] }
+            serial: { op: In, value: ["585cda3eca8bee11971703028acbdcd8"] }
