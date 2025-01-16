@@ -15,6 +15,17 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: emqx
+      namespace: database
   driftDetection:
     mode: enabled
 
@@ -46,13 +57,13 @@ spec:
               MQTT_USERNAME:
                 valueFrom:
                   secretKeyRef:
-                    name: zigbee2mqtt-exporter-secret
-                    key: MQTT_USER
+                    name: zigbee2mqtt-secret
+                    key: ZIGBEE2MQTT_CONFIG_MQTT_USER
               MQTT_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: zigbee2mqtt-exporter-secret
-                    key: MQTT_PASSWORD
+                    name: zigbee2mqtt-secret
+                    key: ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD
               PROMETHEUS_PORT: 9000
               PROMETHEUS_PREFIX: mqtt_
               TOPIC_LABEL: topic
