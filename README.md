@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="64"></td>
+    <td rowspan="69"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="64"></td>
+    <td rowspan="69"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -32,6 +32,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/bazarr/app/helmrelease.yaml">bazarr</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/bazarr/exporter/helmrelease.yaml">bazarr-exporter</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -191,6 +195,10 @@ The software I run in my home cluster.
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/overseerr/exporter/helmrelease.yaml">overseerr-exporter</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/paperless/app/helmrelease.yaml">paperless</a></td>
   </tr>
   <tr>
@@ -215,7 +223,15 @@ The software I run in my home cluster.
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/prowlarr/exporter/helmrelease.yaml">prowlarr-exporter</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/qbittorrent/app/helmrelease.yaml">qbittorrent</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/qbittorrent/exporter/helmrelease.yaml">qbittorrent-exporter</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -248,6 +264,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>Cluster</code></td>
     <td><a href="kubernetes/apps/default/sonarr/app/postgresql.yaml">sonarr-db</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/sonarr/exporter/helmrelease.yaml">sonarr-exporter</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

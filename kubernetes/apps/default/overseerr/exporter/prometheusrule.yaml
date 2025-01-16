@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: overseerr
+spec:
+  groups:
+    - name: Overseerr
+      rules:
+        - alert: OverseerrExporterAbsent
+          annotations:
+            description: |
+              overseerr-exporter has disappeared from Prometheus service discovery.
+            summary: overseerr-exporter is down.
+          expr: absent(up{job=~".*overseerr-exporter.*"} == 1)
+          for: 5m
+          labels:
+            severity: critical
