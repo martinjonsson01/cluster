@@ -6,7 +6,7 @@ metadata:
   name: prowlarr
 spec:
   groups:
-    - name: Exportarr
+    - name: Prowlarr
       rules:
         - alert: ExportarrAbsent
           annotations:
@@ -17,8 +17,6 @@ spec:
           for: 5m
           labels:
             severity: critical
-    - name: Prowlarr
-      rules:
         - alert: ProwlarrDown
           annotations:
             description: |
