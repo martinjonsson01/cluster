@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: bazarr
+spec:
+  groups:
+    - name: Bazarr
+      rules:
+        - alert: ExportarrAbsent
+          annotations:
+            description: |
+              Exportarr instance for Bazarr has disappeared from Prometheus service discovery.
+            summary: Exportarr instance for Bazarr is down.
+          expr: absent(up{job=~".*bazarr-exporter.*"} == 1)
+          for: 5m
+          labels:
+            severity: critical
+        - alert: BazarrDown
+          annotations:
+            description: |
+              Arr Application bazarr in namespace {{ $labels.namespace }} is not reporting status check correctly.
+            summary: bazarr is Down
+          expr: bazarr_system_status{job=~".*bazarr-exporter.*"} != 1
+          for: 15m
+          labels:
+            severity: critical
+        - alert: BazarrUnhealthy
+          annotations:
+            description: |
+              Arr Application bazarr is having issues with {{ $labels.source }} health check - {{ $labels.message }}.
+              For more infromation check {{ $labels.wikiurl }}.
+            summary: bazarr is unhealthy
+          expr: max_over_time(bazarr_system_health_issues{job=~".*bazarr-exporter.*",source!="UpdateCheck",source!="IndexerLongTermStatusCheck"}[1h]) == 1
+          for: 2h
+          labels:
+            severity: warning
