@@ -17,15 +17,15 @@ spec:
           for: 5m
           labels:
             severity: critical
-        - alert: qBittorrentDown
+        - alert: qBittorrentStalled
           annotations:
             description: |
-              qBittorrent in namespace {{ $labels.namespace }} is not reporting status check correctly.
-            summary: qBittorrent is Down
-          expr: qbittorrent_up{job=~".*qbittorrent-exporter.*"} != 1
-          for: 15m
+              qBittorrent server {{ $labels.server }} has torrents but is not connected to any peer.
+            summary: qBittorrent is stalled
+          expr: (qbittorrent_torrents_count{job=~".*qbittorrent-exporter.*"} > 0) and (qbittorrent_connected{job=~".*qbittorrent-exporter.*"} != 1)
+          for: 12h
           labels:
-            severity: critical
+            severity: warning
         - alert: qBittorrentDisconnected
           annotations:
             description: |
