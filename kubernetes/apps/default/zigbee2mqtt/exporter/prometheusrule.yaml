@@ -38,8 +38,8 @@ spec:
           labels:
             severity: warning
           annotations:
-            summary: The zigbee device battery level is low
-            description: battery level on topic {{$labels.topic}} is at {{$value}}%
+            summary: Low battery - {{$labels.topic}} ({{$value}}%)
+            description: battery level of {{$labels.topic}} is at {{$value}}%
         - alert: Zigbee2MqttTemperatureHigh
           expr: mqtt_temperature > 50
           labels:
