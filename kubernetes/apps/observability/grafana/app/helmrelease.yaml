@@ -197,6 +197,9 @@ spec:
         exportarr:
           url: https://raw.githubusercontent.com/onedr0p/exportarr/refs/heads/master/examples/grafana/dashboard2.json
           datasource: Prometheus
+        prometheus-qbittorrent-exporter:
+          url: https://raw.githubusercontent.com/esanchezm/prometheus-qbittorrent-exporter/master/grafana/dashboard.json
+          datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true
