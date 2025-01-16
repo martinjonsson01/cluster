@@ -29,3 +29,9 @@ spec:
     udev:
       discovery:
         enabled: true
+        resources:
+          cpuLimit: 48m
+
+    agent:
+      resources:
+        cpuLimit: 52m
