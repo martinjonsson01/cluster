@@ -41,7 +41,7 @@ spec:
             env:
               PORT: &port 9707
               URL: http://sonarr.default:8989
-              APIKEY:
+              API_KEY:
                 secretKeyRef:
                   name: sonarr-exporter-secret
                   key: API_KEY

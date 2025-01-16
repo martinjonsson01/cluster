@@ -41,7 +41,7 @@ spec:
             env:
               PORT: &port 9707
               URL: http://radarr.default:80
-              APIKEY:
+              API_KEY:
                 secretKeyRef:
                   name: radarr-exporter-secret
                   key: API_KEY
