@@ -53,6 +53,27 @@ spec:
                 cpu: 10m
               limits:
                 memory: 256M
+          shinkro-mapping:
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.4.0@sha256:0330739a707a2969d617e859f096659ab6d149212658ac0ad7e550b59482ebf0
+            env:
+              GITSYNC_REPO: https://github.com/varoOP/shinkro-mapping
+              GITSYNC_REF: main
+              GITSYNC_PERIOD: 24h
+              GITSYNC_ROOT: /shinkro-mapping
+              GITSYNC_EXECHOOK_COMMAND: |
+                cp -f tmdb-mal.yaml /config/tmdb-mal.yaml &&
+                cp -f tvdb-mal.yaml /config/tvdb-mal.yaml
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
 
     service:
       app:
@@ -71,10 +92,5 @@ spec:
           - path: /config/config.toml
             subPath: config.toml
             readOnly: true
-      config-tvdb:
-        type: configMap
-        name: shinkro-tvdb-mal-configmap
-        globalMounts:
-          - path: /config/tvdb-mal.yaml
-            subPath: tvdb-mal.yaml
-            readOnly: true
+      shinkro-mapping:
+        type: emptyDir
