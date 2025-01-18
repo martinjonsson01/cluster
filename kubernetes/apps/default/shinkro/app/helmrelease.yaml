@@ -62,7 +62,7 @@ spec:
               GITSYNC_REF: main
               GITSYNC_PERIOD: 24h
               GITSYNC_ROOT: /shinkro-mapping
-              GITSYNC_EXECHOOK_COMMAND: >
+              GITSYNC_EXECHOOK_COMMAND: >-
                 cp -f
                 /shinkro-mapping/shinkro-mapping/{tmdb-mal.yaml,tvdb-mal.yaml}
                 /config/
