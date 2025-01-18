@@ -49,18 +49,12 @@ spec:
               PLEX_USERNAME: shinkro
               ANIME_LIBRARIES: Library1,Library2,Library3
             securityContext:
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 256M
-
-    defaultPodOptions:
-      securityContext:
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
 
     persistence:
       config:
