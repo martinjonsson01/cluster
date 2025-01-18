@@ -119,6 +119,8 @@ spec:
       media:
         type: nfs
         server: ${SECRET_NAS_IP}
-        path: /volume1/Media
+        path: /volume1/Media/torrents
         globalMounts:
-          - path: /data
+          - path: /Media/torrents
+      tmp:
+        type: emptyDir
