@@ -62,10 +62,7 @@ spec:
               GITSYNC_REF: main
               GITSYNC_PERIOD: 24h
               GITSYNC_ROOT: /shinkro-mapping
-              GITSYNC_EXECHOOK_COMMAND: >-
-                /bin/cp -f
-                /shinkro-mapping/shinkro-mapping/tvdb-mal.yaml
-                /config/
+              GITSYNC_EXECHOOK_COMMAND: /config/copy-mal-files.sh
             resources:
               requests:
                 cpu: 10m
@@ -95,3 +92,10 @@ spec:
             readOnly: true
       shinkro-mapping:
         type: emptyDir
+      copy-mal-files-script:
+        type: configMap
+        name: copy-mal-files-script
+        globalMounts:
+          - path: /config/copy-mal-files.sh
+            subPath: copy-mal-files.sh
+            readOnly: true
