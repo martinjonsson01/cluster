@@ -57,10 +57,17 @@ spec:
     persistence:
       config:
         existingClaim: shinkro
-      #secret-file:
-      #  type: secret
-      #  name: shinkro-secret
-      #  globalMounts:
-      #    - path: /config/config.toml
-      #      subPath: config.toml
-      #      readOnly: true
+      config-toml:
+        type: secret
+        name: shinkro-secret
+        globalMounts:
+          - path: /config/config.toml
+            subPath: config.toml
+            readOnly: true
+      config-tvdb:
+        type: configMap
+        name: shinkro-tvdb-mal-configmap
+        globalMounts:
+          - path: /config/tvdb-mal.yaml
+            subPath: tvdb-mal.yaml
+            readOnly: true
