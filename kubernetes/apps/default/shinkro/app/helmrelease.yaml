@@ -39,8 +39,6 @@ spec:
               repository: ghcr.io/varoop/shinkro
               tag: v0.1.7@sha256:2fa71bee97d8bbb0ecf5796590000d11b5bc075549135992d7e55ecd7fad4880
             env:
-              PUID: 1000
-              PGID: 1000
               TZ: ${TIMEZONE}
               # Dummy values, required for first start.
               # Real config values are in the config.toml file.
