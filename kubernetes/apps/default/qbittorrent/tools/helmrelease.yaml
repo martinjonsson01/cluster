@@ -32,7 +32,7 @@ spec:
       tagging:
         type: cronjob
         cronjob: &cronJobSpec
-          schedule: "@hourly"
+          schedule: 0 * * * * # At minute 0
           timeZone: ${TIMEZONE}
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
@@ -48,11 +48,11 @@ spec:
               TZ: ${TIMEZONE}
             args: [
               "tagging",
-              "--added-on",
-              "--expired",
-              "--last-activity",
-              "--sites",
-              "--unregistered"
+              "--added-on",      # Tag torrents with added date (last 24h, 7 days, 30 days, etc)
+              "--expired",       # Tag torrents that have an expired ratio or seeding time (defined in config.yaml)
+              "--last-activity", # Tag torrents with last activity date (last 1d, 7 days, 30 days, etc)
+              "--sites",         # Tag torrents with site names (defined in config.yaml)
+              "--unregistered"   # Tag torrents with unregistered tracker status message
             ]
             securityContext:
               allowPrivilegeEscalation: false
@@ -71,6 +71,7 @@ spec:
               "--exclude-category", "manual",
               "--exclude-tag", "added:24h",
               "--include-tag", "unregistered",
+              "--with-data",
               "--dry-run",
             ]
           expired:
@@ -80,6 +81,7 @@ spec:
               "--exclude-category", "manual",
               "--exclude-tag", "added:24h",
               "--include-tag", "expired",
+              "--with-data",
               "--dry-run",
             ]
         pod:
@@ -88,8 +90,7 @@ spec:
         type: cronjob
         cronjob:
           <<: *cronJobSpec
-          schedule: 0 0 * * 0
-          suspend: true
+          schedule: 0 6 * * 2 # At 06:00 on Tuesday
         containers:
           app:
             <<: *container
