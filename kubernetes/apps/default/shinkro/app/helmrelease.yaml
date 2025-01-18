@@ -48,8 +48,6 @@ spec:
               SHINKRO_PASSWORD: shinkro
               PLEX_USERNAME: shinkro
               ANIME_LIBRARIES: Library1,Library2,Library3
-            securityContext:
-              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
