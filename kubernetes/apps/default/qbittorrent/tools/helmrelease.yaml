@@ -83,7 +83,7 @@ spec:
               "--dry-run",
             ]
         pod:
-          restartPolicy: OnFailure
+          restartPolicy: Never
       orphaned:
         type: cronjob
         cronjob:
@@ -112,8 +112,8 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
         seccompProfile: { type: RuntimeDefault }
     persistence:
       secret-file:
@@ -131,4 +131,3 @@ spec:
           orphaned:
             app:
               - path: /media/Downloads/qbittorrent
-                subPath: Downloads/qbittorrent
