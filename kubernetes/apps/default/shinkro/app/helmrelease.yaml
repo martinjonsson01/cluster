@@ -62,7 +62,7 @@ spec:
               GITSYNC_REF: main
               GITSYNC_PERIOD: 24h
               GITSYNC_ROOT: /shinkro-mapping
-              GITSYNC_EXECHOOK_COMMAND: /config/copy-mal-files.sh
+              GITSYNC_EXECHOOK_COMMAND: /scripts/copy-mal-files.sh
             resources:
               requests:
                 cpu: 10m
@@ -91,7 +91,8 @@ spec:
       copy-mal-files-script:
         type: configMap
         name: copy-mal-files-script
+        defaultMode: 0775
         globalMounts:
-          - path: /config/copy-mal-files.sh
+          - path: /scripts/copy-mal-files.sh
             subPath: copy-mal-files.sh
             readOnly: true
