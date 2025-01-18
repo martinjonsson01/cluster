@@ -28,3 +28,4 @@ resources:
   - ./maintainerr/ks.yaml
   - ./changedetection/ks.yaml
   - ./linkwarden/ks.yaml
+  - ./shinkro/ks.yaml
