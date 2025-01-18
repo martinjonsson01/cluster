@@ -54,6 +54,13 @@ spec:
               limits:
                 memory: 256M
 
+    service:
+      app:
+        controller: shinkro
+        ports:
+          http:
+            port: 7011
+
     persistence:
       config:
         existingClaim: shinkro
