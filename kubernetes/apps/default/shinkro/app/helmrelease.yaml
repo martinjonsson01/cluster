@@ -53,10 +53,6 @@ spec:
                 cpu: 10m
               limits:
                 memory: 256M
-            securityContext: &securityContext
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
           shinkro-mapping:
             image:
               repository: registry.k8s.io/git-sync/git-sync
@@ -67,7 +63,7 @@ spec:
               GITSYNC_PERIOD: 24h
               GITSYNC_ROOT: /shinkro-mapping
               GITSYNC_EXECHOOK_COMMAND: >
-                sudo cp -f
+                cp -f
                 /shinkro-mapping/shinkro-mapping/{tmdb-mal.yaml,tvdb-mal.yaml}
                 /config/
             resources:
@@ -75,16 +71,6 @@ spec:
                 cpu: 10m
               limits:
                 memory: 128Mi
-            securityContext: *securityContext
-
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
 
     service:
       app:
