@@ -65,7 +65,7 @@ spec:
               GITSYNC_EXECHOOK_COMMAND: >
                 cp -f
                 /shinkro-mapping/shinkro-mapping/{tmdb-mal.yaml,tvdb-mal.yaml}
-                /config/tmdb-mal.yaml
+                /config/
             resources:
               requests:
                 cpu: 10m
