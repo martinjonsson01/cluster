@@ -1,0 +1,18 @@
+AnimeMap:
+    - malid: 48895
+      title: Overlord IV
+      type: tv
+      tvdbid: 294002
+      tvdbseason: 4
+      start: 0
+      useMapping: false
+      animeMapping: []
+
+    - malid: 55791
+      title: '"Oshi no Ko" 2nd Season'
+      type: tv
+      tvdbid: 421069
+      tvdbseason: 2
+      start: 0
+      useMapping: false
+      animeMapping: []
