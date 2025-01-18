@@ -131,7 +131,7 @@ spec:
         server: ${SECRET_NAS_IP}
         path: /volume1/Media/media
         globalMounts:
-          - path: /media
+          - path: /Media/media
       scripts:
         type: configMap
         name: bazarr-scripts
