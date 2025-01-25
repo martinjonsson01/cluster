@@ -40,8 +40,10 @@ spec:
             env:
               CROSS_SEED_PORT: &port 80
               TZ: ${TIMEZONE}
-            #args: ["daemon"]
-            args: ["gen-config"]
+            envFrom:
+              - secretRef:
+                  name: cross-seed-secret
+            args: ["daemon"]
             probes:
               liveness: &probes
                 enabled: true
@@ -81,13 +83,13 @@ spec:
     persistence:
       config:
         existingClaim: cross-seed
-      #secret-file:
-      #  type: secret
-      #  name: cross-seed-secret
-      #  globalMounts:
-      #    - path: /config/config.js
-      #      subPath: config.js
-      #      readOnly: true
+      config-js:
+        type: configMap
+        name: cross-seed-configmap
+        globalMounts:
+          - path: /config/config.js
+            subPath: config.js
+            readOnly: true
       media:
         type: nfs
         server: ${SECRET_NAS_IP}
