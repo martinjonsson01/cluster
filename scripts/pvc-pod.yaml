@@ -5,18 +5,12 @@ metadata:
   namespace: default
 spec:
   volumes:
-    - name: dev
-      hostPath:
-        path: /dev
-    - name: sys
-      hostPath:
-        path: /sys
-    - name: var-lib-kubelet-device-plugins
-      hostPath:
-        path: /var/lib/kubelet/device-plugins
+    - name: app-data
+      persistentVolumeClaim:
+        claimName: cross-seed
   containers:
     - name: noop
-      image: debian:bullseye
+      image: alpine:3
       command:
         - /bin/sh
         - -c
@@ -25,9 +19,5 @@ spec:
             sleep 5
           done
       volumeMounts:
-        - name: dev
-          mountPath: /dev
-        - name: sys
-          mountPath: /sys
-        - name: var-lib-kubelet-device-plugins
-          mountPath: /var/lib/kubelet/device-plugins
+        - mountPath: /mnt/data
+          name: app-data
