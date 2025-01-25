@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="69"></td>
+    <td rowspan="70"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="69"></td>
+    <td rowspan="70"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -56,6 +56,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/coredns/app/helmrelease.yaml">coredns</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/cross-seed/app/helmrelease.yaml">cross-seed</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
