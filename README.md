@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="70"></td>
+    <td rowspan="71"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="70"></td>
+    <td rowspan="71"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -212,6 +212,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/observability/prometheus-operator-crds/app/helmrelease.yaml">prometheus-operator-crds</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/observability/promtail/app/helmrelease.yaml">promtail</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
