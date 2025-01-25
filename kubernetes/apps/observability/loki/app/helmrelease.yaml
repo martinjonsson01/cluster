@@ -59,6 +59,16 @@ spec:
               period: 24h
       limits_config:
         retention_period: 14d
+      structuredConfig:
+        ruler:
+          enable_alertmanager_v2: true
+          alertmanager_url: http://alertmanager-operated.observability.svc.cluster.local:9093
+          enable_api: true
+          storage:
+            type: local
+            local:
+              directory: /var/loki/rules
+          rule_path: /var/loki/rules/fake
     singleBinary:
       replicas: 1
       persistence:
@@ -85,15 +95,7 @@ spec:
         repository: ghcr.io/kiwigrid/k8s-sidecar
       rules:
         searchNamespace: ALL
-        folder: /rules/fake
-    monitoring:
-      rules:
-        enabled: true
-        alerting: true
-        disabled: {}
-      serviceMonitor:
-        enabled: true
-        metricsInstance:
-          enabled: false
-      lokiCanary:
-        enabled: true
+        folder: /var/loki/rules/fake
+      volumeMounts:
+        - mountPath: /var/loki
+          name: storage
