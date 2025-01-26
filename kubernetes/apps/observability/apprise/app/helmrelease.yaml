@@ -67,3 +67,7 @@ spec:
     persistence:
       config:
         existingClaim: apprise
+      config-store:
+        type: emptyDir
+        globalMounts:
+          - path: /config/store
