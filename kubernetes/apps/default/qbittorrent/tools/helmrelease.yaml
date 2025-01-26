@@ -48,7 +48,7 @@ spec:
               TZ: ${TIMEZONE}
             args: [
               "tagging",
-              "--added-on",      # Tag torrents with added date (last 24h, 7 days, 30 days, etc)
+              "--added-on",      # Tag torrents with added date (last 1d, 7 days, 30 days, etc)
               "--expired",       # Tag torrents that have an expired ratio or seeding time (defined in config.yaml)
               "--last-activity", # Tag torrents with last activity date (last 1d, 7 days, 30 days, etc)
               "--sites",         # Tag torrents with site names (defined in config.yaml)
@@ -69,20 +69,20 @@ spec:
             args: [
               "prune",
               "--exclude-category", "manual",
-              "--exclude-tag", "added:24h",
+              "--exclude-tag", "added:1d",
               "--include-tag", "unregistered",
               "--with-data",
-              "--dry-run",
+              #"--dry-run",
             ]
           expired:
             <<: *container
             args: [
               "prune",
               "--exclude-category", "manual",
-              "--exclude-tag", "added:24h",
+              "--exclude-tag", "added:1d",
               "--include-tag", "expired",
               "--with-data",
-              "--dry-run",
+              #"--dry-run",
             ]
         pod:
           restartPolicy: Never
