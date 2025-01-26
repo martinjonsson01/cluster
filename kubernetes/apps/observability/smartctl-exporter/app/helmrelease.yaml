@@ -29,11 +29,6 @@ spec:
       namespace: observability
   values:
     fullnameOverride: *app
-    config:
-      devices:
-        - /dev/sda
-        - /dev/sdc
-        - /dev/nvme0n1
     serviceMonitor:
       enabled: true
     prometheusRules:
