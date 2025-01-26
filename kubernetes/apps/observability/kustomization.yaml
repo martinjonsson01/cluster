@@ -10,3 +10,4 @@ resources:
   - ./smartctl-exporter/ks.yaml
   - ./unpoller/ks.yaml
   - ./promtail/ks.yaml
+  - ./tailing-sidecar-operator/ks.yaml

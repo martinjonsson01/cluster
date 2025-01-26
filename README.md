@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="71"></td>
+    <td rowspan="72"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="71"></td>
+    <td rowspan="72"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -280,6 +280,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/spegel/app/helmrelease.yaml">spegel</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/observability/tailing-sidecar-operator/app/helmrelease.yaml">tailing-sidecar-operator</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
