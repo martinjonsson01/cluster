@@ -57,6 +57,7 @@ spec:
               limits:
                 memory: 2Gi
           code-server:
+            dependsOn: app
             image:
               repository: ghcr.io/coder/code-server
               tag: 4.96.2@sha256:6b8c0e944caec80057e71d2c2f352cee38fe00ae4b7515fc4458eb300844f699
@@ -75,6 +76,7 @@ spec:
               limits:
                 memory: 512Mi
           filebrowser:
+            dependsOn: app
             image:
               repository: docker.io/filebrowser/filebrowser
               tag: v2.31.2@sha256:a4da9ca8364b0a1fc5dd36f7add92582bf673c0ae0bda8dd9bd13062c41d1715
@@ -95,6 +97,7 @@ spec:
               limits:
                 memory: 2Gi
           everything-presence-mmwave-configurator:
+            dependsOn: app
             image:
               repository: docker.io/everythingsmarthome/everything-presence-mmwave-configurator
               tag: 1.1.1@sha256:721c13237413e4bd2b42f6d332eae6e3969f4ac90d00fff183d3abcf1eaaeb24
