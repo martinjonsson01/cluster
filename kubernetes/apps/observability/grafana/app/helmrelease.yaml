@@ -200,6 +200,11 @@ spec:
         prometheus-qbittorrent-exporter:
           url: https://raw.githubusercontent.com/esanchezm/prometheus-qbittorrent-exporter/master/grafana/dashboard.json
           datasource: Prometheus
+        prometheus-metrics-management:
+          # renovate: depName="Prometheus Metrics Management"
+          gnetId: 19341
+          revision: 3
+          datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true
