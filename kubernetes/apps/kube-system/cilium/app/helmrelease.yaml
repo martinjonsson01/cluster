@@ -34,7 +34,7 @@ spec:
           - drop
           - tcp
           - flow
-          - port-distribution
+          #- port-distribution - Highest cardinality metric names: 62467 hubble_port_distribution_total
           - icmp
           - http
         serviceMonitor:
