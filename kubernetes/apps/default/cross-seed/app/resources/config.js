@@ -63,7 +63,9 @@ module.exports = {
   * cross-seed will send POST requests to these urls with a JSON payload of
   * { title, body, extra }. Conforms to the caronc/apprise REST API.
   */
-  notificationWebhookUrls: [],
+  notificationWebhookUrls: [
+    "https://apprise.jmartin.se/notify/cross-seed"
+  ],
   /**
   * The url of your qBittorrent webui.
   * Only relevant with action: "inject".
