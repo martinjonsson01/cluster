@@ -25,3 +25,4 @@ resources:
   - ./intel.yaml
   - ./jameswynn-charts.yaml
   - ./nvidia-device-plugin.yaml
+  - ./tailing-sidecar.yaml
