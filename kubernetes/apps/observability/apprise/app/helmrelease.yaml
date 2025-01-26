@@ -36,6 +36,12 @@ spec:
               tag: 1.1.8@sha256:2a6e858b21df502380417b9a14b983ccb7c7f4d944d6cb0a0413c0df01b7b348
             env:
               TZ: ${TIMEZONE}
+              PGID: 1000
+              PUID: 1000
+              APPRISE_STATEFUL_MODE: "simple"
+              APPRISE_WORKER_COUNT: 1
+              APPRISE_CONFIG_LOCK: "yes"
+              APPRISE_CONFIG_DIR: "/config"
             probes:
               liveness: &probes
                 enabled: true
@@ -51,9 +57,11 @@ spec:
               readiness: *probes
             resources:
               requests:
-                cpu: 10m
+                cpu: 250m
+                memory: 128Mi
               limits:
-                memory: 2Gi
+                cpu: 500m
+                memory: 512Mi
     service:
       app:
         controller: apprise
@@ -75,7 +83,14 @@ spec:
     persistence:
       config:
         existingClaim: apprise
-      config-store:
+      cross-seed-cfg:
+        type: secret
+        name: apprise-secret
+        globalMounts:
+          - path: /config/cross-seed.cfg
+            subPath: cross-seed.cfg
+            readOnly: true
+      cache:
         type: emptyDir
         globalMounts:
           - path: /config/store
