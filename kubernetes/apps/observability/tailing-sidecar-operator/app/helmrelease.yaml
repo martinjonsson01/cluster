@@ -23,7 +23,7 @@ spec:
       strategy: rollback
       retries: 3
   driftDetection:
-    mode: enabled
+    mode: disabled # The MutatingWebhookConfiguration repeatedly triggers drift detection
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
