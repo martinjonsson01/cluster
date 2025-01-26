@@ -30,11 +30,12 @@ spec:
     - name: longhorn
       namespace: storage
   values:
+    podAnnotations:
+        tailing-sidecar: plex-trailing-sidecar:logs:/config/Library/Application Support/Plex Media Server/Logs/Plex Media Server.log
     controllers:
       plex:
         annotations:
           reloader.stakater.com/auto: "true"
-          tailing-sidecar: plex-trailing-sidecar:logs:/config/Library/Application Support/Plex Media Server/Logs/Plex Media Server.log
         containers:
           app:
             image:
