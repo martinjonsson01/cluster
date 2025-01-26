@@ -4,8 +4,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: plex
-  annotations:
-    tailing-sidecar: plex-trailing-sidecar:logs:/config/Library/Application Support/Plex Media Server/Logs/Plex Media Server.log
 spec:
   interval: 30m
   chart:
@@ -36,6 +34,7 @@ spec:
       plex:
         annotations:
           reloader.stakater.com/auto: "true"
+          tailing-sidecar: plex-trailing-sidecar:logs:/config/Library/Application Support/Plex Media Server/Logs/Plex Media Server.log
         containers:
           app:
             image:
