@@ -107,6 +107,19 @@ spec:
             envFrom:
               - secretRef:
                   name: home-assistant-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/entities/binary_sensor.everything_presence_lite_93bbb0_occupancy
+                    port: &mmwave-config-port 8099
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             securityContext:
               allowPrivilegeEscalation: true
               readOnlyRootFilesystem: false
@@ -137,7 +150,7 @@ spec:
           filebrowser:
             port: 80
           everything-presence-mmwave-configurator:
-            port: 8099
+            port: *mmwave-config-port
     serviceMonitor:
       app:
         serviceName: home-assistant
