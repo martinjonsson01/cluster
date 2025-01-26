@@ -43,7 +43,7 @@ spec:
                 spec:
                   httpGet:
                     path: /status
-                    port: &port 8000
+                    port: &port 8080
                   initialDelaySeconds: 30
                   periodSeconds: 30
                   timeoutSeconds: 10
