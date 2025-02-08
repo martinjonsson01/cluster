@@ -20,6 +20,7 @@ module.exports = {
     7, // RuTracker
     9, // DigitalCore
     10, // Milkie
+    11, // MyAnonaMouse
   ].map(i => `http://prowlarr.default.svc.cluster.local/${i}/api?apikey=${process.env.PROWLARR_API_KEY}`),
   /**
   * URL(s) to your Sonarr instance(s), included in the same way as torznab
