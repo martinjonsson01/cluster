@@ -64,8 +64,8 @@ spec:
         ports:
           http:
             port: 8080
-          #web:
-          #  port: 8081
+          web:
+            port: 8081
     ingress:
       app:
         annotations:
@@ -82,21 +82,21 @@ spec:
                 service:
                   identifier: app
                   port: http
-      #web:
-      #  annotations:
-      #    external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-      #    gethomepage.dev/enabled: "true"
-      #    gethomepage.dev/group: Downloads
-      #    gethomepage.dev/icon: sh-calibre.svg
-      #    gethomepage.dev/name: Calibre Content
-      #  className: internal
-      #  hosts:
-      #    - host: "read.${SECRET_DOMAIN}"
-      #      paths:
-      #        - path: /
-      #          service:
-      #            identifier: app
-      #            port: web
+      web:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-calibre.svg
+          gethomepage.dev/name: Calibre Content
+        className: internal
+        hosts:
+          - host: "read.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: web
     persistence:
       config:
         existingClaim: calibre
