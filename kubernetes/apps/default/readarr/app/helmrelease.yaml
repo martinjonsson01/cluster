@@ -66,9 +66,6 @@ spec:
                 secretKeyRef:
                   name: readarr-db-app
                   key: dbname
-            envFrom:
-              - secretRef:
-                  name: readarr-secret
             probes:
               liveness: &probes
                 enabled: true
