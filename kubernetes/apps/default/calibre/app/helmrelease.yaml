@@ -1,0 +1,126 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: calibre
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: longhorn
+      namespace: storage
+  driftDetection:
+    mode: enabled
+  values:
+    controllers:
+      calibre:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: lscr.io/linuxserver/calibre
+              tag: 7.20.0
+            env:
+              TZ: ${TIMEZONE}
+              TITLE: Calibre
+              PUID: 65534
+              PGID: 65534
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: ["ALL"]
+                add: ["seccomp:unconfined"]
+            resources:
+              requests:
+                cpu: 100m
+                memory: 250M
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: calibre
+        ports:
+          http:
+            port: 8080
+          web:
+            port: 8081
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-calibre.svg
+          gethomepage.dev/name: Calibre
+        className: internal
+        hosts:
+          - host: "calibre.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+      web:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/icon: sh-calibre.svg
+          gethomepage.dev/name: Calibre Content
+        className: internal
+        hosts:
+          - host: "read.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: web
+    persistence:
+      config:
+        existingClaim: calibre
+      inbox:
+        existingClaim: calibre-inbox
+        globalMounts:
+          - path: /config/inbox
+      tmp:
+        type: emptyDir
+      media:
+        type: nfs
+        server: ${SECRET_NAS_IP}
+        path: /volume1/Media
+        globalMounts:
+          - path: /Media
