@@ -30,3 +30,4 @@ resources:
   - ./linkwarden/ks.yaml
   - ./shinkro/ks.yaml
   - ./cross-seed/ks.yaml
+  - ./readarr/ks.yaml
