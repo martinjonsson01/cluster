@@ -56,11 +56,13 @@ spec:
               tag: 2.9.6.4552@sha256:7464531b2b1e27d0ff24645c527923f650bc5cc636c81162b5b15835355c22dc
 
             env:
+              LIDARR__APP__INSTANCENAME: Lidarr
               LIDARR__AUTHENTICATION_METHOD: External
               LIDARR__AUTHENTICATION_REQUIRED: Enabled
-              LIDARR__APP__INSTANCENAME: Lidarr
-              LIDARR__SERVER__PORT: &port 8686
+              SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              SONARR__LOG__DBENABLED: "False"
               LIDARR__LOG__LEVEL: info
+              LIDARR__SERVER__PORT: &port 8686
               LIDARR__APP__THEME: dark
               LIDARR__LOG__ANALYTICSENABLED: 'false'
 
@@ -180,7 +182,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: lidarr
+        existingClaim: lidarr-2
 
       tmp:
         type: emptyDir
