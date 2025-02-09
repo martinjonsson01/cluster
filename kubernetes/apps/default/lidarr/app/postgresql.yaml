@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: lidarr-db
+spec:
+  instances: 2
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4-30
+  enableSuperuserAccess: true
+  bootstrap:
+    initdb:
+      database: lidarr-main
+      owner: lidarr
+  storage:
+    storageClass: openebs-hostpath
+    size: 8Gi
+  resources:
+    requests:
+      memory: 20Mi
+      cpu: 10m
+  monitoring:
+    enablePodMonitor: true
+  smartShutdownTimeout: 1
+  stopDelay: 301
