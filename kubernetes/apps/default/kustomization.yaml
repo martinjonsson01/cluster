@@ -33,3 +33,4 @@ resources:
   - ./readarr/ks.yaml
   - ./calibre/ks.yaml
   - ./mylar/ks.yaml
+  - ./lidarr/ks.yaml
