@@ -43,9 +43,6 @@ spec:
               TZ: ${TIMEZONE}
               UID: 568
               GID: 568
-            envFrom:
-              - secretRef:
-                  name: mylar-secret
             probes:
               liveness:
                 enabled: true
