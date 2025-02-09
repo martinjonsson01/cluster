@@ -32,3 +32,4 @@ resources:
   - ./cross-seed/ks.yaml
   - ./readarr/ks.yaml
   - ./calibre/ks.yaml
+  - ./mylar/ks.yaml
