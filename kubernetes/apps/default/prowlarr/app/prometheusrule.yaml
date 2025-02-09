@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: lidarr
+spec:
+  groups:
+    - name: Lidarr
+      rules:
+        - alert: ExportarrAbsent
+          annotations:
+            description: |
+              Exportarr instance for Lidarr has disappeared from Prometheus service discovery.
+            summary: Exportarr instance for Lidarr is down.
+          expr: absent(up{job=~".*lidarr-metrics.*"} == 1)
+          for: 5m
+          labels:
+            severity: critical
+        - alert: LidarrDown
+          annotations:
+            description: |
+              Arr Application lidarr in namespace {{ $labels.namespace }} is not reporting status check correctly.
+            summary: lidarr is Down
+          expr: lidarr_system_status{job=~".*lidarr-metrics.*"} != 1
+          for: 15m
+          labels:
+            severity: critical
+        - alert: LidarrUnhealthy
+          annotations:
+            description: |
+              Arr Application lidarr is having issues with {{ $labels.source }} health check - {{ $labels.message }}.
+              For more infromation check {{ $labels.wikiurl }}.
+            summary: lidarr is unhealthy
+          expr: max_over_time(lidarr_system_health_issues{job=~".*lidarr-metrics.*",source!="UpdateCheck",source!="IndexerLongTermStatusCheck"}[1h]) == 1
+          for: 2h
+          labels:
+            severity: warning
