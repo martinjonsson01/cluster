@@ -68,6 +68,27 @@ spec:
                     name: lidarr-secret
                     key: API_KEY
 
+              LIDARRR__POSTGRES__HOST:
+                secretKeyRef:
+                  name: lidarr-db-app
+                  key: host
+              LIDARRR__POSTGRES__PORT:
+                secretKeyRef:
+                  name: lidarr-db-app
+                  key: port
+              LIDARRR__POSTGRES__USER:
+                secretKeyRef:
+                  name: lidarr-db-app
+                  key: user
+              LIDARRR__POSTGRES__PASSWORD:
+                secretKeyRef:
+                  name: lidarr-db-app
+                  key: password
+              LIDARRR__POSTGRES__MAINDB:
+                secretKeyRef:
+                  name: lidarr-db-app
+                  key: dbname
+
               TZ: ${TIMEZONE}
 
             probes:
