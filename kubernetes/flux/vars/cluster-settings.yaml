@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 data:
   TIMEZONE: Europe/Stockholm
-  LOCALE: sv_SE.UTF-8
+  LOCALE: en_SE.UTF-8
   NODE_CIDR: "192.168.0.0/24"
   POD_CIDR: "10.69.0.0/16"
   SERVICE_CIDR: "10.96.0.0/16"
