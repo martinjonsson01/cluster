@@ -100,7 +100,7 @@ spec:
               "--exclude-pattern", "*_unpackerred*",
               "--exclude-pattern", "*/manual/*",
               "--exclude-pattern", "*/ratio-farming/*",
-              "--exclude-pattern", "*/torrent-files/*",
+              "--exclude-pattern", "*/torrent-files",
               "--dry-run"
             ]
         pod:
