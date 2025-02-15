@@ -101,7 +101,7 @@ spec:
               "--exclude-pattern", "*/manual/*",
               "--exclude-pattern", "*/ratio-farming/*",
               "--exclude-pattern", "*/torrent-files",
-              "--dry-run"
+              #"--dry-run"
             ]
         pod:
           restartPolicy: Never
