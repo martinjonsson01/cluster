@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="78"></td>
+    <td rowspan="79"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="78"></td>
+    <td rowspan="79"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -140,6 +140,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/lidarr/app/helmrelease.yaml">lidarr</a></td>
+  </tr>
+  <tr>
+    <td><code>Cluster</code></td>
+    <td><a href="kubernetes/apps/default/lidarr/app/postgresql.yaml">lidarr-db</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
