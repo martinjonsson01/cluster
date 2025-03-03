@@ -23,7 +23,7 @@ resources:
   - ./maloja/ks.yaml
   - ./multiscrobbler/ks.yaml
   - ./bazarr/ks.yaml
-  - ./ollama/ks.yaml
+  # - ./ollama/ks.yaml
   - ./open-webui/ks.yaml
   - ./maintainerr/ks.yaml
   - ./changedetection/ks.yaml
