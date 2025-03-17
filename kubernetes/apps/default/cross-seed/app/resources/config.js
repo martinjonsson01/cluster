@@ -22,7 +22,8 @@ module.exports = {
     10, // Milkie
     11, // [FL] MyAnonaMouse
     13, // REDacted
-    14, // [FL] Seedpool
+    15, // YUSCENE
+    16, // Seedpool
   ].map(i => `http://prowlarr.default.svc.cluster.local/${i}/api?apikey=${process.env.PROWLARR_API_KEY}`),
   /**
   * URL(s) to your Sonarr instance(s), included in the same way as torznab
