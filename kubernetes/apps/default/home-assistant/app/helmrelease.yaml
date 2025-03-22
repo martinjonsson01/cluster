@@ -100,7 +100,7 @@ spec:
             dependsOn: app
             image:
               repository: docker.io/everythingsmarthome/everything-presence-mmwave-configurator
-              tag: 1.1.1@sha256:721c13237413e4bd2b42f6d332eae6e3969f4ac90d00fff183d3abcf1eaaeb24
+              tag: 1.1.1@sha256:e0d131f93456f3f58a202685a27edaf13f98e249a0f861f3c97a81a5bade6c09
             env:
               TZ: ${TIMEZONE}
               HA_URL: http://127.0.0.1:8123
