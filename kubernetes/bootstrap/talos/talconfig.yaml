@@ -57,7 +57,7 @@ nodes:
           ip: "192.168.0.109"
   - hostname: "greger"
     ipAddress: "192.168.0.112"
-    installDisk: "/dev/sdb"
+    installDisk: "/dev/nvme0n1"
     talosImageURL: factory.talos.dev/installer/8a774b9b47f8b4c0c49ee7a7c7a6052fc5d661a93f3f72f418c7b0ba58143a7e
     controlPlane: true
     networkInterfaces:
