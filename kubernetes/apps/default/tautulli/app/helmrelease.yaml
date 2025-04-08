@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: ghcr.io/onedr0p/tautulli
-              tag: 2.15.1@sha256:cf198fe0ee64336e9e1212c162f25b6370e5e04659ec51d934aac24cb0c408bc
+              tag: 2.15.1@sha256:74468ecce40f44c449675ec7fcb7c86ebff89961572d141ad743b8ccbdde3c98
             env:
               TZ: ${TIMEZONE}
               TAUTULLI__PORT: &port 80
