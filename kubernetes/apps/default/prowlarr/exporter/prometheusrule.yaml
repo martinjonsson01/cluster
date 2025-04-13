@@ -42,7 +42,7 @@ spec:
               {{ $labels.message }}.
               For more infromation check {{ $labels.wikiurl }}.
             summary: One of Prowlarr Indexers stopped working properly
-          expr: max_over_time(prowlarr_system_health_issues{job=~".*prowlarr-exporter.*",source="IndexerStatusCheck"}[1h]) == 1
+          expr: max_over_time(prowlarr_system_health_issues{job=~".*prowlarr-exporter.*",source="IndexerLongTermStatusCheck"}[1h]) == 1
           for: 12h
           labels:
             severity: warning
