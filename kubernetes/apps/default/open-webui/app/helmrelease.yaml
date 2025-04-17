@@ -36,7 +36,7 @@ spec:
           app:
             image:
               repository: ghcr.io/open-webui/open-webui
-              tag: 0.5.7@sha256:b9a3425659236186df16ccf4432a247a353e54dec9549fb475d8b57f0c29a93d
+              tag: v0.6.5@sha256:fe7a6870ec6b2fd540c0f2007e6aa812dc4bf04a2d0a305bb344eeb10de0a7b7
             env:
               TZ: ${TIMEZONE}
               GLOBAL_LOG_LEVEL: WARNING
