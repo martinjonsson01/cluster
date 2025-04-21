@@ -18,7 +18,6 @@ module.exports = {
   torznab: [
     6, // SkTorrent
     7, // RuTracker
-    9, // DigitalCore
     10, // Milkie
     11, // [FL] MyAnonaMouse
     13, // REDacted
