@@ -68,7 +68,7 @@ module.exports = {
   * { title, body, extra }. Conforms to the caronc/apprise REST API.
   */
   notificationWebhookUrls: [
-    "http://apprise.observability.svc.cluster.local:8080/notify/cross-seed"
+    // "http://apprise.observability.svc.cluster.local:8080/notify/cross-seed"  --- disabled for now
   ],
   /**
   * The url of your qBittorrent webui.
