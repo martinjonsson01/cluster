@@ -24,6 +24,7 @@ module.exports = {
     16, // Seedpool
     19, // FearNoPeer
     20, // YUSCENE
+    23, // AnimeLovers
   ].map(i => `http://prowlarr.default.svc.cluster.local/${i}/api?apikey=${process.env.PROWLARR_API_KEY}`),
   /**
   * URL(s) to your Sonarr instance(s), included in the same way as torznab
