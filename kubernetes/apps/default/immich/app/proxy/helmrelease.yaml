@@ -53,6 +53,18 @@ spec:
             env:
               IMMICH_URL: http://immich-server.default.svc.cluster.local:2283
 
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthcheck
+                    port: &port 3000
+                  failureThreshold: 5
+                  periodSeconds: 10
+              readiness: *probes
+
             resources:
               requests:
                 cpu: 100m
@@ -68,7 +80,7 @@ spec:
           http:
             enabled: true
             primary: true
-            port: 3000
+            port: *port
             protocol: HTTP
 
     ingress:
