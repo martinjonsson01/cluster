@@ -107,7 +107,7 @@ The software I run in my home cluster.
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/default/immich/app/helmrelease.yaml">immich</a></td>
+    <td><a href="kubernetes/apps/default/immich/app/server/helmrelease.yaml">immich</a></td>
   </tr>
   <tr>
     <td><code>Cluster</code></td>
