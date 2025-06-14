@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="79"></td>
+    <td rowspan="80"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="79"></td>
+    <td rowspan="80"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -112,6 +112,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>Cluster</code></td>
     <td><a href="kubernetes/apps/default/immich/app/postgresql.yaml">immich-db</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/immich/app/proxy/helmrelease.yaml">immich-proxy</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
