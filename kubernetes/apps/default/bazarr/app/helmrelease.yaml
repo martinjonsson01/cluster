@@ -28,7 +28,6 @@ spec:
     - name: longhorn
       namespace: storage
   values:
-
     controllers:
       bazarr:
         annotations:
