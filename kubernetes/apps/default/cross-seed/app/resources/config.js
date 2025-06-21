@@ -82,7 +82,9 @@ module.exports = {
   * Supply your username and password inside the url like so:
   * "http://username:password@localhost:8080"
   */
-  qbittorrentUrl: "http://qbittorrent.default.svc.cluster.local",
+  torrentClients: [
+    "qbittorrent:http://qbittorrent.default.svc.cluster.local",
+  ],
   /**
   * Use the torrents already in your torrent client to find matches.
   * This is the preferred method of cross-seeding, only set to false
