@@ -17,7 +17,6 @@ module.exports = {
   */
   torznab: [
     6, // SkTorrent
-    10, // Milkie
     11, // [FL] MyAnonaMouse
     13, // REDacted
     16, // Seedpool
