@@ -38,6 +38,11 @@
   "commitMessageSuffix": "",
   // package rules
   "packageRules": [
+    // require manual update approval
+    {
+      "matchPackageNames": ["ghcr.io/home-operations/qbittorrent"],
+      "dependencyDashboardApproval": true
+    },
     // automerge
     {
       "description": ["Auto merge Github Actions"],
@@ -49,7 +54,7 @@
     },
     {
       "description": ["Auto merge non-major semver updates"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     },
