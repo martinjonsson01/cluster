@@ -41,7 +41,8 @@
     // require manual update approval
     {
       "matchPackageNames": ["ghcr.io/home-operations/qbittorrent"],
-      "dependencyDashboardApproval": true
+      "dependencyDashboardApproval": true,
+      "automerge": false
     },
     // automerge
     {
