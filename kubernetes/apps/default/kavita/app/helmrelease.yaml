@@ -77,8 +77,6 @@ spec:
         existingClaim: kavita
         globalMounts:
           - path: /kavita/config
-      tmp:
-        type: emptyDir
       media:
         type: nfs
         server: ${SECRET_NAS_IP}
