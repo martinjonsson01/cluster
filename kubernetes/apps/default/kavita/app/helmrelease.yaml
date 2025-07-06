@@ -75,6 +75,8 @@ spec:
     persistence:
       config:
         existingClaim: kavita
+        globalMounts:
+          - path: /kavita/config
       tmp:
         type: emptyDir
       media:
