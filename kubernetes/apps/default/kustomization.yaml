@@ -36,3 +36,4 @@ resources:
   - ./lidarr/ks.yaml
   - ./huntarr/ks.yaml
   - ./kavita/ks.yaml
+  - ./audiobookshelf/ks.yaml
