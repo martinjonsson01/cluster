@@ -27,7 +27,8 @@ spec:
 
   values:
     controllers:
-      tdarr:
+      tdarr-node:
+        type: daemonset
         annotations:
           reloader.stakater.com/auto: "true"
 
