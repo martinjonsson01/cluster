@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="83"></td>
+    <td rowspan="85"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="83"></td>
+    <td rowspan="85"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -332,6 +332,14 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/tautulli/app/helmrelease.yaml">tautulli</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/tdarr/app/helmrelease.yaml">tdarr</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/tdarr/app/helmrelease-node.yaml">tdarr-node</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
