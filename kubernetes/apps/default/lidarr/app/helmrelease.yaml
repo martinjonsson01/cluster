@@ -52,8 +52,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/larivierec/lidarr
-              tag: 2.10.3.4602@sha256:b08e3cfed6421296967ffcaf2d9ea0a691bc178baaa75383b7203b44318e3814
+              repository: ghcr.io/home-operations/lidarr
+              tag: 2.13.0.4664@sha256:b2dec31a6ff0a5c99703eea84caf1a9b285fe01c31bc1224641b2c78989b1008
 
             env:
               LIDARR__APP__INSTANCENAME: Lidarr
@@ -186,6 +186,11 @@ spec:
 
       tmp:
         type: emptyDir
+
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
 
       media:
         type: nfs
