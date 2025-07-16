@@ -30,8 +30,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: longhorn
   path: ./kubernetes/apps/storage/longhorn/storageclass
   prune: true
   sourceRef:
@@ -40,3 +38,6 @@ spec:
   wait: false # no flux ks dependents
   interval: 30m
   timeout: 5m
+  dependsOn:
+    - name: longhorn
+      namespace: flux-system

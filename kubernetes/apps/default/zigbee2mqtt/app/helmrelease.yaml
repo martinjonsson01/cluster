@@ -22,11 +22,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: longhorn
-      namespace: storage
-    - name: emqx
-      namespace: database
   driftDetection:
     mode: enabled
   values:

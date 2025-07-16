@@ -9,8 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: external-dns-cloudflare
   path: ./kubernetes/apps/network/cloudflared/app
   prune: true
   sourceRef:
@@ -19,3 +17,6 @@ spec:
   wait: false
   interval: 30m
   timeout: 5m
+  dependsOn:
+    - name: external-dns-cloudflare
+      namespace: flux-system
