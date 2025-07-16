@@ -21,3 +21,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
+  dependsOn:
+    - name: longhorn
+      namespace: flux-system

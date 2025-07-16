@@ -10,8 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: emqx-cluster
   path: ./kubernetes/apps/default/zigbee2mqtt/app
   prune: true
   sourceRef:
@@ -23,6 +21,11 @@ spec:
   postBuild:
     substitute:
       APP: *app
+  dependsOn:
+    - name: longhorn
+      namespace: flux-system
+    - name: emqx-cluster
+      namespace: flux-system
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -35,8 +38,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: emqx-cluster
   path: ./kubernetes/apps/default/zigbee2mqtt/exporter
   prune: true
   sourceRef:
@@ -45,3 +46,6 @@ spec:
   wait: false
   interval: 30m
   timeout: 5m
+  dependsOn:
+    - name: zigbee2mqtt
+      namespace: flux-system

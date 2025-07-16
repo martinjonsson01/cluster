@@ -21,3 +21,8 @@ spec:
   postBuild:
     substitute:
       APP: *app
+  dependsOn:
+    - name: longhorn
+      namespace: flux-system
+    - name: intel-device-plugin-gpu
+      namespace: flux-system

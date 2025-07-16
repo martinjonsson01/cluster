@@ -24,11 +24,6 @@ spec:
       retries: 3
   driftDetection:
     mode: enabled
-  dependsOn:
-    - name: longhorn
-      namespace: storage
-    - name: cnpg
-      namespace: cnpg-system
   values:
     controllers:
       linkwarden:

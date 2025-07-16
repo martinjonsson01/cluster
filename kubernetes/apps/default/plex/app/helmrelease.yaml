@@ -24,11 +24,6 @@ spec:
       retries: 3
   driftDetection:
     mode: enabled
-  dependsOn:
-    - name: intel-device-plugin-gpu
-      namespace: kube-system
-    - name: longhorn
-      namespace: storage
   values:
     controllers:
       plex:

@@ -26,12 +26,6 @@ spec:
   driftDetection:
     mode: enabled
 
-  dependsOn:
-    - name: longhorn
-      namespace: storage
-    - name: cnpg
-      namespace: cnpg-system
-
   values:
     defaultPodOptions:
       automountServiceAccountToken: false

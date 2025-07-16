@@ -30,8 +30,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: node-feature-discovery
   path: ./kubernetes/apps/kube-system/node-feature-discovery/rules
   prune: true
   sourceRef:
@@ -40,3 +38,6 @@ spec:
   wait: true
   interval: 30m
   timeout: 5m
+  dependsOn:
+    - name: node-feature-discovery
+      namespace: flux-system

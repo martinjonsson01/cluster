@@ -26,9 +26,6 @@ spec:
       retries: 3
   driftDetection:
     mode: enabled
-  dependsOn:
-    - name: node-feature-discovery
-      namespace: kube-system
   values:
     controllerExtraArgs: |
       - --devices=gpu

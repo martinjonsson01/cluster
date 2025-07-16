@@ -21,3 +21,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
+  dependsOn:
+    - name: plex
+      namespace: flux-system

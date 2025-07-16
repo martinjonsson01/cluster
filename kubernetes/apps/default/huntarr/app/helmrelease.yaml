@@ -26,10 +26,6 @@ spec:
   driftDetection:
     mode: enabled
 
-  dependsOn:
-    - name: longhorn
-      namespace: storage
-
   values:
     controllers:
       huntarr:

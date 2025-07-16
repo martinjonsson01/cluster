@@ -28,8 +28,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cilium
   path: ./kubernetes/apps/kube-system/cilium/config
   prune: false # never should be deleted
   sourceRef:
@@ -38,3 +36,6 @@ spec:
   wait: false
   interval: 30m
   timeout: 5m
+  dependsOn:
+    - name: cilium
+      namespace: flux-system
