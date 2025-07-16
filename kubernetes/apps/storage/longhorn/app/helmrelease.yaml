@@ -27,6 +27,16 @@ spec:
   driftDetection:
     mode: enabled
   values:
+
+    # Hotfix for 1.90 https://longhorn.io/docs/1.9.0/important-notes/#warning
+    preUpgradeChecker:
+      jobEnabled: true # Remove this on next chart update
+      upgradeVersionCheck: false # Remove this on next chart update
+    image:
+      longhorn:
+        manager:
+          tag: v1.9.0-hotfix-1 # Remove this on next chart update
+
     persistence:
       defaultClass: true
       defaultClassReplicaCount: 2
