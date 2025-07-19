@@ -24,6 +24,10 @@ spec:
             type = built_in_database
             enable = true
           }
+          {
+            type = file
+            path = "/opt/init-acl"
+          }
         ]
         no_match: "deny"
       }
@@ -41,6 +45,10 @@ spec:
           mountPath: /opt/init-user.json
           subPath: init-user.json
           readOnly: true
+        - name: init-user
+          mountPath: /opt/init-acl
+          subPath: init-acl
+          readOnly: true
       extraVolumes:
         - name: init-user
           secret:
@@ -51,3 +59,4 @@ spec:
         io.cilium/lb-ipam-ips: 192.168.0.129
     spec:
       type: LoadBalancer
+      loadBalancerIP: 192.168.0.129
