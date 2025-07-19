@@ -112,7 +112,7 @@ spec:
                   httpGet:
                     path: /api/entities/binary_sensor.everything_presence_lite_93bbb0_occupancy
                     port: &mmwave-config-port 8099
-                  initialDelaySeconds: 0
+                  initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
