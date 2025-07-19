@@ -216,7 +216,7 @@ spec:
                   port: everything-presence-mmwave-configurator
     persistence:
       config:
-        existingClaim: home-assistant-data
+        existingClaim: home-assistant
         globalMounts:
           - path: /config
       logs:
