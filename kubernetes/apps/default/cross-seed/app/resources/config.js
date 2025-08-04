@@ -26,6 +26,7 @@ module.exports = {
     25, // PrivateHD
     27, // NordicQuality
     29, // Darkpeers
+    31, // TorrentLeech
   ].map(i => `http://prowlarr.default.svc.cluster.local/${i}/api?apikey=${process.env.PROWLARR_API_KEY}`),
   /**
   * URL(s) to your Sonarr instance(s), included in the same way as torznab
