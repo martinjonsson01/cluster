@@ -40,3 +40,4 @@ resources:
   - ./trilium/ks.yaml
   - ./standardnotes/ks.yaml
   - ./grist/ks.yaml
+  - authentik-outpost-name.yaml

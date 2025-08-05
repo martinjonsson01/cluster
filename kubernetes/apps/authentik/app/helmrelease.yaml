@@ -1,0 +1,119 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: authentik
+  namespace: authentik
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: authentik
+      version: 2025.6.4
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: authentik
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 4
+  driftDetection:
+    mode: enabled
+
+  values:
+    global:
+      priorityClassName: system-cluster-critical
+
+      podAnnotations:
+        reloader.stakater.com/auto: "true"
+
+      env:
+        - name: AUTHENTIK_POSTGRESQL__PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: authentik-db-app
+              key: password
+      envFrom:
+        - secretRef:
+            name: authentik-secret
+
+      volumes:
+        - name: public
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
+      volumeMounts:
+        - name: public
+          mountPath: /media/public
+
+    authentik:
+      # This sends anonymous usage-data, stack traces on errors and
+      # performance data to sentry.beryju.org, and is fully opt-in
+      error_reporting:
+        enabled: false
+      disable_update_check: true
+      disable_startup_analytics: true
+
+      postgresql:
+        host: authentik-db-rw
+        name: authentik
+        user: authentik
+
+      redis:
+        enabled: true
+
+      email:
+        host: ${SECRET_EMAIL_HOST}
+        port: 587
+        use_tls: true
+        username: ${SECRET_EMAIL_USERNAME}
+        password: ${SECRET_EMAIL_PASSWORD}
+        from: authentik@${SECRET_DOMAIN}
+
+      log_level: warning
+
+    redis:
+      enabled: true
+
+    server:
+      replicas: 2
+
+      ingress:
+        enabled: true
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Services
+          gethomepage.dev/icon: sh-authentik.svg
+          gethomepage.dev/name: Authentik
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+          nginx.org/websocket-services: authentik
+          nginx.ingress.kubernetes.io/enable-global-auth: "false"
+        ingressClassName: external
+        hosts:
+          - sso.${SECRET_DOMAIN}
+
+      containerSecurityContext:
+        readOnlyRootFilesystem: true
+
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          interval: 1m
+
+    prometheus:
+      rules:
+        enabled: true
+
+    worker:
+      replicas: 2
+
+      containerSecurityContext:
+        readOnlyRootFilesystem: true

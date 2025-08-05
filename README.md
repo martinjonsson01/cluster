@@ -370,6 +370,16 @@ The software I run in my home cluster.
     <td><a href="kubernetes/apps/default/zigbee2mqtt/exporter/helmrelease.yaml">zigbee2mqtt-exporter</a></td>
   </tr>
   <tr>
+    <td rowspan="2">authentik</td>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/authentik/app/helmrelease.yaml">authentik</a></td>
+    <td rowspan="2"></td>
+  </tr>
+  <tr>
+    <td><code>Cluster</code></td>
+    <td><a href="kubernetes/apps/authentik/postgresql.yaml">authentik-db</a></td>
+  </tr>
+  <tr>
     <td>network</td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/network/ingress-nginx/internal/helmrelease.yaml">ingress-nginx-internal</a></td>
