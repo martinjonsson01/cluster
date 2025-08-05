@@ -39,3 +39,4 @@ resources:
   - ./tdarr/ks.yaml
   - ./trilium/ks.yaml
   - ./standardnotes/ks.yaml
+  - ./grist/ks.yaml
