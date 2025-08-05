@@ -75,7 +75,7 @@ spec:
         password: ${SECRET_EMAIL_PASSWORD}
         from: authentik@${SECRET_DOMAIN}
 
-      log_level: warning
+      log_level: trace
 
     redis:
       enabled: true
