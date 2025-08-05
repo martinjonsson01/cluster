@@ -1,0 +1,88 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: grist
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 4
+  driftDetection:
+    mode: enabled
+
+  values:
+    controllers:
+      grist:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          server:
+            image:
+              repository: docker.io/gristlabs/grist
+              tag: 1.7.1@sha256:be6d84c8919c48bdaa0a52abbb3c32ebed1db59e17d339124d21c4191681cfaf
+            envFrom:
+              - secretRef:
+                  name: grist-secret
+            env:
+              APP_HOME_URL: https://sheets.${SECRET_DOMAIN}
+              GRIST_ALLOWED_HOSTS: &domain sheets.${SECRET_DOMAIN}
+              GRIST_DOMAIN: *domain
+              GRIST_SINGLE_ORG: sheets
+              GRIST_HIDE_UI_ELEMENTS: billing
+              GRIST_LIST_PUBLIC_SITES: false
+              GRIST_ORG_IN_PATH: false
+              GRIST_PAGE_TITLE_SUFFIX: _blank
+              GRIST_FORCE_LOGIN: true
+              GRIST_SUPPORT_ANON: false
+              GRIST_THROTTLE_CPU: true
+              GRIST_SANDBOX_FLAVOR: gvisor
+              PYTHON_VERSION: 3
+              PYTHON_VERSION_ON_CREATION: 3
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250Mi
+              limits:
+                memory: 750Mi
+
+    service:
+      app:
+        controller: grist
+        ports:
+          http:
+            port: 8484
+
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: sh-grist.svg
+          gethomepage.dev/name: Grist
+        className: internal
+        hosts:
+          - host: *domain
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+
+    persistence:
+      data:
+        existingClaim: grist
+        globalMounts:
+          - path: /persist
