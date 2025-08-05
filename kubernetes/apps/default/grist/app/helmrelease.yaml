@@ -37,19 +37,8 @@ spec:
                   name: grist-secret
             env:
               APP_HOME_URL: https://sheets.${SECRET_DOMAIN}
-              GRIST_ALLOWED_HOSTS: &domain sheets.${SECRET_DOMAIN}
-              GRIST_DOMAIN: *domain
-              GRIST_SINGLE_ORG: sheets
-              GRIST_HIDE_UI_ELEMENTS: billing
-              GRIST_LIST_PUBLIC_SITES: false
-              GRIST_ORG_IN_PATH: false
-              GRIST_PAGE_TITLE_SUFFIX: _blank
+              GRIST_ORG_IN_PATH: true
               GRIST_FORCE_LOGIN: true
-              GRIST_SUPPORT_ANON: false
-              GRIST_THROTTLE_CPU: true
-              GRIST_SANDBOX_FLAVOR: gvisor
-              PYTHON_VERSION: 3
-              PYTHON_VERSION_ON_CREATION: 3
             resources:
               requests:
                 cpu: 10m
@@ -74,7 +63,7 @@ spec:
           gethomepage.dev/name: Grist
         className: internal
         hosts:
-          - host: *domain
+          - host: sheets.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
