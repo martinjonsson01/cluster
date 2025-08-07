@@ -48,6 +48,7 @@
         talhelper.packages.x86_64-linux.default # A helper tool to help creating Talos cluster in your GitOps repository.
         talosctl # CLI for out-of-band management of Kubernetes nodes created by Talos
         kubectl-cnpg # Plugin for kubectl to manage a CloudNativePG cluster in Kubernetes
+        stern # Multi pod and container log tailing for Kubernetes
       ];
     };
   };
