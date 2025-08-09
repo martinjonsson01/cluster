@@ -1,0 +1,233 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: nextcloud
+spec:
+  interval: 30m
+  chart:
+    spec:
+      # renovate: registryUrl=https://nextcloud.github.io/helm/
+      chart: nextcloud
+      version: 7.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: nextcloud
+        namespace: flux-system
+      interval: 5m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  driftDetection:
+    mode: enabled
+
+  # See https://github.com/nextcloud/helm/blob/master/charts/nextcloud/values.yaml
+  values:
+    env:
+      PHP_MEMORY_LIMIT: 256M
+
+    ingress:
+      enabled: true
+      className: external
+      annotations:
+        external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/group: Services
+        gethomepage.dev/icon: sh-nextcloud.svg
+        gethomepage.dev/name: Nextcloud
+        nginx.ingress.kubernetes.io/proxy-body-size: 4G
+        nginx.ingress.kubernetes.io/enable-cors: "true"
+        nginx.ingress.kubernetes.io/cors-allow-headers: "X-Forwarded-For"
+        # Keep this in sync with https://github.com/nextcloud/helm/tree/main/charts/nextcloud#service-discovery-with-nginx-and-ingress
+        nginx.ingress.kubernetes.io/server-snippet: |-
+          server_tokens off;
+          proxy_hide_header X-Powered-By;
+          rewrite ^/.well-known/webfinger /index.php/.well-known/webfinger last;
+          rewrite ^/.well-known/nodeinfo /index.php/.well-known/nodeinfo last;
+          rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
+          rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json;
+          location = /.well-known/carddav {
+            return 301 $scheme://$host/remote.php/dav;
+          }
+          location = /.well-known/caldav {
+            return 301 $scheme://$host/remote.php/dav;
+          }
+          location = /robots.txt {
+            allow all;
+            log_not_found off;
+            access_log off;
+          }
+          location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ {
+            deny all;
+          }
+          location ~ ^/(?:autotest|occ|issue|indie|db_|console) {
+            deny all;
+          }
+
+      tls:
+      - hosts:
+        - nextcloud.${SECRET_DOMAIN}
+
+    redis:
+      enabled: true
+      auth:
+        existingSecret: nextcloud-secret
+        existingSecretPasswordKey: redis-password
+      global:
+        storageClass: longhorn-cache
+      master:
+        persistence:
+          enabled: false
+      replica:
+        persistence:
+          enabled: false
+
+    internalDatabase:
+      enabled: false
+
+    externalDatabase:
+      enabled: true
+      type: postgresql
+      existingSecret:
+        enabled: true
+        secretName: nextcloud-db-app
+        usernameKey: user
+        passwordKey: password
+        hostKey: host
+        databaseKey: dbname
+
+    cronjob:
+      enabled: true
+      failedJobsHistoryLimit: 1
+      successfulJobsHistoryLimit: 1
+
+    nextcloud:
+      host: nextcloud.${SECRET_DOMAIN}
+      existingSecret:
+        enabled: true
+        secretName: nextcloud-secret
+      phpConfigs:
+        uploadLimit.ini: |
+          upload_max_filesize = 16G
+          post_max_size = 16G
+          max_input_time = 3600
+          max_execution_time = 3600
+          default_phone_region = SE
+      configs:
+        proxy.config.php: |-
+          <?php
+          $CONFIG = array (
+            'trusted_proxies' =>
+            array(
+               0 => '127.0.0.1',
+               1 => '${POD_CIDR}',
+            ),
+            'forwarded_for_headers' =>
+            array (
+              0 => 'HTTP_X_FORWARDED_FOR',
+            ),
+          );
+        #Circumvention for client freezes - https://github.com/nextcloud/desktop/issues/5094
+        bulkupload.config.php: |-
+          <?php
+          $CONFIG = array (
+            'bulkupload.enabled' => false,
+          );
+      mail:
+        enabled: true
+        fromAddress: nextcloud
+        domain: ${SECRET_DOMAIN}
+        smtp:
+          secure: starttls
+          port: 587
+          authtype: LOGIN
+
+    livenessProbe:
+      enabled: true
+    readinessProbe:
+      enabled: true
+    startupProbe:
+      enabled: true
+
+    lifecycle:
+      postStartCommand:
+      - su
+      - www-data
+      - -s
+      - /bin/sh
+      - -c
+      - >-
+        cd /var/www/html;
+        ./occ upgrade;
+        ./occ db:add-missing-indices;
+        /bin/true
+
+    persistence:
+      enabled: true
+      existingClaim: nextcloud
+      nextcloudData:
+        enabled: true
+        existingClaim: nextcloud-nfs
+
+    collabora:
+      enabled: true
+
+      collabora:
+        fullnameOverrride: "collabora"
+
+        ## HTTPS nextcloud domain, if needed
+        aliasgroups:
+          - host: "https://nextcloud.${SECRET_DOMAIN}:443"
+
+        extra_params: >
+          --o:ssl.enable=false
+          --o:ssl.termination=true
+          --o:fetch_update_check=0
+          --o:num_prespawn_children=3
+          --o:remote_font_config.url=https://nextcloud.${SECRET_DOMAIN}/apps/richdocuments/settings/fonts.json
+
+        ## Specify server_name when the hostname is not reachable directly for example behind reverse-proxy
+        server_name: 'collabora.${SECRET_DOMAIN}'
+
+        # setup admin login credentials
+        existingSecret:
+          enabled: true
+          secretName: nextcloud-secret
+          usernameKey: nextcloud-username
+          passwordKey: nextcloud-password
+
+      # setup ingress
+      ingress:
+        enabled: true
+        className: "external"
+        # please check collabora values.yaml for nginx/haproxy annotations examples
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          nginx.ingress.kubernetes.io/upstream-hash-by: "$arg_WOPISrc"
+          nginx.ingress.kubernetes.io/proxy-body-size: "0"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+          nginx.ingress.kubernetes.io/server-snippet: |
+            # block admin and metrics endpoint from outside by default
+            location /cool/getMetrics { deny all; return 403; }
+            location /cool/adminws/ { deny all; return 403; }
+            location /browser/dist/admin/admin.html { deny all; return 403; }
+        hosts:
+          - host: collabora.${SECRET_DOMAIN}
+            paths:
+            - path: /
+              pathType: ImplementationSpecific
+
+      # see collabora helm README.md for recommended values
+      # https://github.com/CollaboraOnline/online/tree/master/kubernetes/helm/collabora-online#deploying-collabora-online-in-kubernetes
+      resources:
+        limits:
+          cpu: "1800m"
+          memory: "2000Mi"
+        requests:
+          cpu: "1800m"
+          memory: "2000Mi"

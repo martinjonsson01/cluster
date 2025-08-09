@@ -41,3 +41,4 @@ resources:
   - ./standardnotes/ks.yaml
   - ./grist/ks.yaml
   - authentik-outpost-name.yaml
+  - nextcloud/ks.yaml
