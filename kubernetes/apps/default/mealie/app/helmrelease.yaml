@@ -36,8 +36,14 @@ spec:
               tag: v2.8.0@sha256:63aef46d90975d9cf9c0fdb9399fc2fe36acd222e1db6be99c504b9ccdbee967
             env:
               TZ: ${TIMEZONE}
-              ALLOW_SIGNUP: "false"
               BASE_URL: https://recipes.${SECRET_DOMAIN}
+              OIDC_AUTH_ENABLED: true
+              OIDC_SIGNUP_ENABLED: true
+              OIDC_CONFIGURATION_URL: https://sso.${SECRET_DOMAIN}/application/o/mealie/.well-known/openid-configuration
+              OIDC_AUTO_REDIRECT: true
+              OIDC_REMEMBER_ME: true
+              OIDC_USER_GROUP: family
+              OIDC_ADMIN_GROUP: mealie Admins
               DB_ENGINE: postgres
               POSTGRES_USER:
                 secretKeyRef:
