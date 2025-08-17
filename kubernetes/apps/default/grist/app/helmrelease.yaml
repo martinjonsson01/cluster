@@ -31,7 +31,7 @@ spec:
           server:
             image:
               repository: docker.io/gristlabs/grist
-              tag: 1.7.1@sha256:be6d84c8919c48bdaa0a52abbb3c32ebed1db59e17d339124d21c4191681cfaf
+              tag: 1.7.2@sha256:b7957412adaafba5eb43b13b9a40f5a67b3b72f2da02a4045d4008fa26d1365f
             envFrom:
               - secretRef:
                   name: grist-secret
