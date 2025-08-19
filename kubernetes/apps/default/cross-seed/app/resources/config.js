@@ -44,6 +44,7 @@ module.exports = {
   *      sonarr: ["http://sonarr:8989/?apikey=12345",
   *               "http://sonarr4k:8989/?apikey=12345"],
   */
+    36, // Anthelion
   sonarr: [
     `http://sonarr.default.svc.cluster.local:8989/?apikey=${process.env.SONARR_API_KEY}`
   ],
