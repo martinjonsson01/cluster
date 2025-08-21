@@ -35,7 +35,7 @@ spec:
               repository: krateng/maloja
               tag: 3.2.4
             env:
-              TZ: ${TIMEZONE}
+              MALOJA_LOCATION_TIMEZONE: ${TIMEZONE}
               MALOJA_DATA_DIRECTORY: /data
             envFrom:
               - secretRef:
