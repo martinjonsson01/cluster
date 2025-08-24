@@ -75,7 +75,7 @@ spec:
           db:
             image:
               repository: mysql
-              tag: 8.4.6@sha256:0a2a40b552410757015645e28f727f6ad18b7ff8a7cb697871ccadd238778dcb
+              tag: 9.4.0@sha256:439bfb4044dc59ade76c4e5c4065c02e5ba4d4007db32c40ac58d55c03069916
             env:
               MYSQL_DATABASE:
                 secretKeyRef:
