@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: lscr.io/linuxserver/calibre
-              tag: 7.26.0
+              tag: 8.10.0
             env:
               TZ: ${TIMEZONE}
               TITLE: Calibre
