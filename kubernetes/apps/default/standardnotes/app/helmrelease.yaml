@@ -60,7 +60,7 @@ spec:
           localstack:
             image:
               repository: localstack/localstack
-              tag: 3.8.1
+              tag: 4.8.0
             env:
               SERVICES: sns,sqs
               HOSTNAME_EXTERNAL: localhost
