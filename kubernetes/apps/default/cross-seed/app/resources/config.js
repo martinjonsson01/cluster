@@ -30,6 +30,7 @@ module.exports = {
     33, // Aither
     35, // BakaBT
     36, // Anthelion
+    69, // Orpheus
   ].map(
     (i) =>
       `http://prowlarr.default.svc.cluster.local/${i}/api?apikey=${process.env.PROWLARR_API_KEY}`,
