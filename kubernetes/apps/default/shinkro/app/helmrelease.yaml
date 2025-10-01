@@ -25,7 +25,6 @@ spec:
   driftDetection:
     mode: enabled
   values:
-
     controllers:
       shinkro:
         annotations:
