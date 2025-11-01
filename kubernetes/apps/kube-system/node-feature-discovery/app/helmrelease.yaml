@@ -28,10 +28,16 @@ spec:
     mode: enabled
   values:
     master:
+      priorityClassName: system-cluster-critical
       replicaCount: 1
     worker:
+      priorityClassName: system-cluster-critical
       config:
         core:
           labelSources: ["pci", "system", "usb"]
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
     prometheus:
       enable: true
