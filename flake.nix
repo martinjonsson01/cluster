@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    talhelper.url = "github:budimanjojo/talhelper?ref=v3.0.19";
+    talhelper.url = "github:budimanjojo/talhelper?ref=v3.0.38";
   };
 
   outputs = {
