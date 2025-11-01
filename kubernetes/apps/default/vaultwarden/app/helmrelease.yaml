@@ -72,7 +72,7 @@ spec:
             securityContext:
               readOnlyRootFilesystem: true
         pod:
-          priorityClassName: system-cluster-critical
+          priorityClassName: user-high
           securityContext:
             fsGroup: 65534
             runAsGroup: 65534

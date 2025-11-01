@@ -1,0 +1,9 @@
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: user-high
+value: 800000000
+globalDefault: false
+preemptionPolicy: PreemptLowerPriority
+description: "Critical user workloads that can preempt medium and low priority pods."

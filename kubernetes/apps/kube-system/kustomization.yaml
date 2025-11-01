@@ -13,3 +13,4 @@ resources:
   - ./intel-device-plugin/ks.yaml
   - ./nvidia-device-plugin/ks.yaml
   - ./generic-device-plugin/ks.yaml
+  - ./priority-classes/ks.yaml

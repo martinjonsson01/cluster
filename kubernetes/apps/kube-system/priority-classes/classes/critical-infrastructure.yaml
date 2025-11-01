@@ -1,0 +1,9 @@
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: critical-infrastructure
+value: 900000000
+globalDefault: false
+preemptionPolicy: PreemptLowerPriority
+description: "Critical infrastructure pods like UPS monitoring and shutdown services."
