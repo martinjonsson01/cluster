@@ -46,6 +46,8 @@ spec:
       taintToleration: "martin.com/gpu=nvidia:NoSchedule"
       v1DataEngine: true
       v2DataEngine: false
+    defaultBackupStore:
+      backupTarget: "${SECRET_BACKUP_TARGET}"
     longhornManager:
       priorityClass: system-cluster-critical
       tolerations: &tolerations
