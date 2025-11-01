@@ -140,6 +140,7 @@ patches:
   - "@./patches/global/openebs-local.yaml"
   - "@./patches/global/sysctl.yaml"
   - "@./patches/global/udev.yaml"
+  - "@./patches/global/longhorn.yaml"
 
 # Controller patches
 controlPlane:
