@@ -27,6 +27,13 @@ spec:
   driftDetection:
     mode: enabled
   values:
+
+    # Regression in 1.10.0, see https://github.com/longhorn/longhorn/releases/tag/v1.10.0
+    image:
+      longhorn:
+        manager:
+          tag: "v1.10.0-hotfix-1"
+
     persistence:
       defaultClass: true
       defaultClassReplicaCount: 2
