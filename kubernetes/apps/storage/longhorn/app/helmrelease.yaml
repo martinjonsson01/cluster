@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: longhorn
-      version: 1.10.0
+      version: 1.9.1
       sourceRef:
         kind: HelmRepository
         name: longhorn
@@ -27,27 +27,31 @@ spec:
   driftDetection:
     mode: enabled
   values:
+
+    # Hotfix for 1.90 https://longhorn.io/docs/1.9.0/important-notes/#warning
+    preUpgradeChecker:
+      jobEnabled: true # Remove this on next chart update
+      upgradeVersionCheck: false # Remove this on next chart update
+    image:
+      longhorn:
+        manager:
+          tag: v1.9.0-hotfix-1 # Remove this on next chart update
+
     persistence:
       defaultClass: true
       defaultClassReplicaCount: 2
     defaultSettings:
-      defaultReplicaCount: "2"
-      defaultDataPath: /var/lib/longhorn
       priorityClass: system-cluster-critical
       createDefaultDiskLabeledNodes: true
-      defaultDataLocality: "best-effort"
-      replicaAutoBalance: "best-effort"
-      storageMinimalAvailablePercentage: "1"
-      storageReservedPercentageForDefaultDisk: "10"
+      defaultDataLocality: true
+      replicaAutoBalance: true
+      storageMinimalAvailablePercentage: 1
+      storageReservedPercentageForDefaultDisk: 10
       defaultLonghornStaticStorageClass: longhorn
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
-      concurrentAutomaticEngineUpgradePerNodeLimit: "3"
+      concurrentAutomaticEngineUpgradePerNodeLimit: 3
       orphanAutoDeletion: true
       taintToleration: "martin.com/gpu=nvidia:NoSchedule"
-      v1DataEngine: true
-      v2DataEngine: false
-    defaultBackupStore:
-      backupTarget: "${SECRET_BACKUP_TARGET}"
     longhornManager:
       priorityClass: system-cluster-critical
       tolerations: &tolerations
