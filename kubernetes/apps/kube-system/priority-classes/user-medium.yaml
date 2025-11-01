@@ -1,0 +1,9 @@
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: user-medium
+value: 500000000
+globalDefault: true
+preemptionPolicy: Never
+description: "Default priority for standard user workloads."
