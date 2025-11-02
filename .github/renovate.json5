@@ -40,7 +40,7 @@
   "packageRules": [
     // require manual update approval
     {
-      "matchPackageNames": ["ghcr.io/home-operations/qbittorrent"],
+      "matchPackageNames": ["ghcr.io/home-operations/qbittorrent", "longhorn"],
       "dependencyDashboardApproval": true,
       "automerge": false
     },
