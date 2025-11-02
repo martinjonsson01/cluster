@@ -279,10 +279,6 @@ The software I run in my home cluster.
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/default/qbittorrent/tools/helmrelease.yaml">qbtools</a></td>
-  </tr>
-  <tr>
-    <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/radarr/app/helmrelease.yaml">radarr</a></td>
   </tr>
   <tr>
@@ -348,6 +344,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/tdarr/app/helmrelease-node.yaml">tdarr-node</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/qbittorrent/tools/helmrelease.yaml">tqm</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

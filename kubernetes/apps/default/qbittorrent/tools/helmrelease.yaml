@@ -3,17 +3,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: qbtools
+  name: tqm
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: app-template
-      version: 3.7.3
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
   install:
     remediation:
       retries: 3
@@ -24,114 +20,82 @@ spec:
       retries: 3
   driftDetection:
     mode: enabled
+  dependsOn:
+    - name: qbittorrent
+      namespace: default
   values:
     controllers:
-      tagging:
+      tqm:
         type: cronjob
         cronjob: &cronJobSpec
-          schedule: 0 * * * * # At minute 0
-          timeZone: ${TIMEZONE}
+          schedule: 0 * * * * # Every hour
+          backoffLimit: 0
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 1
+          ttlSecondsAfterFinished: 3600
         initContainers:
-          tagging: &container
+          retag: &container
             image:
-              repository: ghcr.io/buroa/qbtools
-              tag: v0.21.2@sha256:33da584c9d71bb2d8b9931995c41599bef1fdebf52cf5408cdd09175069f299a
-            env:
-              QBITTORRENT_HOST: qbittorrent.default.svc.cluster.local
-              QBITTORRENT_PORT: 80
-              TZ: ${TIMEZONE}
-            args: [
-              "tagging",
-              "--added-on",      # Tag torrents with added date (last 1d, 7 days, 30 days, etc)
-              "--expired",       # Tag torrents that have an expired ratio or seeding time (defined in config.yaml)
-              "--last-activity", # Tag torrents with last activity date (last 1d, 7 days, 30 days, etc)
-              "--sites",         # Tag torrents with site names (defined in config.yaml)
-              "--unregistered"   # Tag torrents with unregistered tracker status message
-            ]
+              repository: ghcr.io/home-operations/tqm
+              tag: 1.17.0@sha256:05b62239063ad1e884f2254532e3dc9b60cff08870112dca244af328d761be0d
+            args:
+              - retag
+              - qb
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 64Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-            resources:
-              requests:
-                cpu: 25m
-              limits:
-                memory: 256M
+              capabilities: {drop: ["ALL"]}
         containers:
-          unregistered:
+          clean:
             <<: *container
-            args: [
-              "prune",
-              "--exclude-category", "manual",
-              "--exclude-category", "upload",
-              "--exclude-tag", "added:1d",
-              "--include-tag", "unregistered",
-              "--with-data",
-              #"--dry-run",
-            ]
-          expired:
-            <<: *container
-            args: [
-              "prune",
-              "--exclude-category", "manual",
-              "--exclude-category", "ratio-farming",
-              "--exclude-category", "upload",
-              "--exclude-tag", "added:1d",
-              "--include-tag", "expired",
-              "--with-data",
-              #"--dry-run",
-            ]
+            args:
+              - clean
+              - qb
         pod:
           restartPolicy: Never
       orphaned:
         type: cronjob
         cronjob:
           <<: *cronJobSpec
-          schedule: 0 6 * * 2 # At 06:00 on Tuesday
+          schedule: 0 0 * * 0
+          suspend: true # Only ever run manually
         containers:
           app:
             <<: *container
-            args: [
-              "orphaned",
-              "--exclude-pattern", "*_unpackerred*",
-              "--exclude-pattern", "*/manual/*",
-              "--exclude-pattern", "*/upload/*",
-              "--exclude-pattern", "*/ratio-farming/*",
-              "--exclude-pattern", "*/torrent-files",
-              #"--dry-run"
-            ]
+            args:
+              - orphan
+              - qb
+              - --dry-run
         pod:
           restartPolicy: Never
-      reannounce:
-        containers:
-          app:
-            <<: *container
-            args: [
-              "reannounce",
-              "--process-seeding"
-            ]
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
-        seccompProfile: { type: RuntimeDefault }
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     persistence:
+      config:
+        type: emptyDir
+        globalMounts:
+          - path: /.config/tqm
       secret-file:
         type: secret
-        name: qbtools-secret
+        name: tqm-secret
         globalMounts:
-          - path: /config/config.yaml
+          - path: /.config/tqm/config.yaml
             subPath: config.yaml
-            readOnly: true
       media:
         type: nfs
         server: ${SECRET_NAS_IP}
         path: /volume1/Media/torrents
-        advancedMounts:
-          orphaned:
-            app:
-              - path: /Media/torrents
+        globalMounts:
+          - path: /Media/torrents
+            readOnly: true
