@@ -38,7 +38,6 @@ resources:
   - ./audiobookshelf/ks.yaml
   - ./tdarr/ks.yaml
   - ./trilium/ks.yaml
-  - ./standardnotes/ks.yaml
   - ./grist/ks.yaml
   - authentik-outpost-name.yaml
   - nextcloud/ks.yaml
