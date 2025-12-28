@@ -58,13 +58,18 @@ spec:
             image:
               repository: ghcr.io/coder/code-server
               tag: 4.107.0@sha256:4b622c4cd1b0f559fec0df67fcf09042d63e9ce84c575102066afd9511695627
-            args: [
-              "--auth", "none",
-              "--user-data-dir", "/config/.vscode",
-              "--extensions-dir", "/config/.vscode",
-              "--port", "12321",
-              "/config"
-            ]
+            args:
+              [
+                "--auth",
+                "none",
+                "--user-data-dir",
+                "/config/.vscode",
+                "--extensions-dir",
+                "/config/.vscode",
+                "--port",
+                "12321",
+                "/config",
+              ]
             securityContext:
               runAsNonRoot: true
             resources:
@@ -219,7 +224,7 @@ spec:
                   port: everything-presence-mmwave-configurator
     persistence:
       config:
-        existingClaim: home-assistant-data
+        existingClaim: home-assistant-data-2
         globalMounts:
           - path: /config
       logs:
