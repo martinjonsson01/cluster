@@ -30,7 +30,6 @@ resources:
   - ./linkwarden/ks.yaml
   - ./shinkro/ks.yaml
   - ./cross-seed/ks.yaml
-  - ./readarr/ks.yaml
   - ./calibre/ks.yaml
   - ./lidarr/ks.yaml
   - ./huntarr/ks.yaml

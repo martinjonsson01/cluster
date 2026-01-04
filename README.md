@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="87"></td>
+    <td rowspan="85"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="87"></td>
+    <td rowspan="85"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -288,14 +288,6 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/radarr/exporter/helmrelease.yaml">radarr-exporter</a></td>
-  </tr>
-  <tr>
-    <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/default/readarr/app/helmrelease.yaml">readarr</a></td>
-  </tr>
-  <tr>
-    <td><code>Cluster</code></td>
-    <td><a href="kubernetes/apps/default/readarr/app/postgresql.yaml">readarr-db</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
