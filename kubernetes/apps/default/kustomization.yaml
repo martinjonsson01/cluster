@@ -41,3 +41,4 @@ resources:
   - authentik-outpost-name.yaml
   - nextcloud/ks.yaml
   - recyclarr/ks.yaml
+  - isponsorblocktv/ks.yaml
