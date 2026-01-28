@@ -5,9 +5,5 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./secret.sops.yaml
-configMapGenerator:
-  - name: recyclarr
-    files:
-      - ./resources/recyclarr.yml
 generatorOptions:
   disableNameSuffixHash: true
