@@ -15,7 +15,6 @@ resources:
   - ./external-dns.yaml
   - ./ingress-nginx.yaml
   - ./k8s-gateway.yaml
-  - ./kubernetes-dashboard.yaml
   - ./grafana.yaml
   - ./longhorn.yaml
   - ./emqx.yaml
