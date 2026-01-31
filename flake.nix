@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     talhelper.url = "github:budimanjojo/talhelper?ref=v3.0.38";
   };
 
@@ -14,16 +14,18 @@
   in {
     devShells.${system}.default = pkgs.mkShellNoCC {
       packages = with pkgs; [
-        (python3.withPackages (ps:
-          with ps; [
-            pip
-            setuptools
-            wheel
-            cloudflare
-            email-validator
-            makejinja
-            netaddr
-          ]))
+        (python3.withPackages (
+          ps:
+            with ps; [
+              pip
+              setuptools
+              wheel
+              cloudflare
+              email-validator
+              makejinja
+              netaddr
+            ]
+        ))
         pre-commit # Framework for managing and maintaining multi-language pre-commit hooks
         cargo # Rust package manager
         rustc # Rust compiler
