@@ -134,6 +134,8 @@ spec:
               limits:
                 memory: 512Mi
     defaultPodOptions:
+      nodeSelector:
+        sonoff.feature.node.kubernetes.io/thread-dongle: "true"
       securityContext:
         runAsNonRoot: false
         runAsUser: 568
