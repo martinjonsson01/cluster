@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/nfd.k8s-sigs.io/nodefeaturerule_v1alpha1.json
+apiVersion: nfd.k8s-sigs.io/v1alpha1
+kind: NodeFeatureRule
+metadata:
+  name: sonoff-thread-dongle-device
+spec:
+  rules:
+    - # Sonoff Zigbee 3.0 USB Dongle Plus V2 (ZBDongle-E)
+      name: sonoff.thread-dongle
+      labels:
+        sonoff.feature.node.kubernetes.io/thread-dongle: "true"
+      matchFeatures:
+        - feature: usb.device
+          matchExpressions:
+            vendor: { op: In, value: ["10c4"] }
+            serial: { op: In, value: ["6075e5b5e5f3ef11b461c21b6d9880ab"] }

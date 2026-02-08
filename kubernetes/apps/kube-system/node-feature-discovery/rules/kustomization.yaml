@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./intel-gpu-device.yaml
   - ./sonoff-zigbee-dongle.yaml
+  - ./sonoff-thread-dongle.yaml
   - ./apc-cluster-ups.yaml
