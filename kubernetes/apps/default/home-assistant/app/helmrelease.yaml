@@ -143,6 +143,8 @@ spec:
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
+        supplementalGroups:
+          - 20 # 'dialout' group, udev assigns the usb dongle to this group.
     service:
       app:
         controller: home-assistant
