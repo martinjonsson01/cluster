@@ -64,7 +64,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: matter-server-1
+        existingClaim: matter-server-2
         globalMounts:
           - path: /data
 
