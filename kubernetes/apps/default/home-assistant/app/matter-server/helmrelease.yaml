@@ -42,6 +42,11 @@ spec:
             image:
               repository: ghcr.io/home-assistant-libs/python-matter-server
               tag: 8.1.0@sha256:170aa093ce91c76cde4cc390918307590f0f5558fcec93f913af3cb019e6562a
+            args:
+              - --storage-path
+              - /data
+              - --primary-interface
+              - enp3s0
             env:
               TZ: ${TIMEZONE}
               OT_RCP_DEVICE: spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=460800
