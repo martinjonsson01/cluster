@@ -25,6 +25,8 @@ spec:
   driftDetection:
     mode: enabled
   values:
+    hostNetwork: true
+
     controllers:
       home-assistant:
         annotations:
