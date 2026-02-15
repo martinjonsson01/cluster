@@ -141,6 +141,7 @@ patches:
   - "@./patches/global/sysctl.yaml"
   - "@./patches/global/udev.yaml"
   - "@./patches/global/longhorn.yaml"
+  - "@./patches/global/ipv6.yaml"
 
 # Controller patches
 controlPlane:
