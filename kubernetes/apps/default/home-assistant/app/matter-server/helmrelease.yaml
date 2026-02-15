@@ -47,6 +47,8 @@ spec:
               - /data
               - --primary-interface
               - enp3s0
+              - --paa-root-cert-dir
+              - /data/credentials
             env:
               TZ: ${TIMEZONE}
               OT_RCP_DEVICE: spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=460800
