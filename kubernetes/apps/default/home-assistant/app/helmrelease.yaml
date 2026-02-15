@@ -82,6 +82,11 @@ spec:
             image:
               repository: docker.io/filebrowser/filebrowser
               tag: v2.57.1@sha256:6ef368f5a0730ee1638886e4b77a94503fcc302569f7d2ae980b23d59072a700
+            args:
+              - --port
+              - "8080"
+              - --root
+              - /data
             env:
               TZ: ${TIMEZONE}
               FB_DATABASE: /config/filebrowser.db
