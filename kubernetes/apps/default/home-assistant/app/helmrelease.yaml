@@ -149,9 +149,9 @@ spec:
     service:
       app:
         controller: home-assistant
+        # Required for hostNetwork to ensure traffic reaches the node IP
+        ipFamilyPolicy: PreferDualStack
         type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 192.168.0.124
         ports:
           http:
             port: 8123
@@ -159,6 +159,7 @@ spec:
             port: 12321
           filebrowser:
             port: 80
+            targetPort: 8080
           everything-presence-mmwave-configurator:
             port: *mmwave-config-port
     serviceMonitor:
