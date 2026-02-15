@@ -77,6 +77,3 @@ spec:
       enabled: true
       annotations:
         grafana_folder: Cilium
-    ipv6:
-      enabled: true
-    ipv6NativeRoutingCIDR: fd00:10:244::/64
