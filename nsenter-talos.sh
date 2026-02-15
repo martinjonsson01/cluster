@@ -17,7 +17,7 @@ kubectl -n kube-system run "${podName:?}" --restart=Never -it --privileged --rm 
       {
         "name": "nsenter",
         "image": "debian:bookworm",
-        "command": ["bash", "-c", "apt update; DEBIAN_FRONTEND=noninteractive apt install -y usbutils nut nut-client nut-server; bash"],
+        "command": ["bash", "-c", "apt update; DEBIAN_FRONTEND=noninteractive apt install -y usbutils nut nut-client nut-server tcpdump iproute2; bash"],
         "stdin": true,
         "tty": true,
         "securityContext": {
