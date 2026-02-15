@@ -28,6 +28,7 @@ spec:
           reloader.stakater.com/auto: "true"
 
         pod:
+          hostNetwork: true
           securityContext:
             runAsNonRoot: true
             runAsUser: 65534
@@ -53,8 +54,6 @@ spec:
               capabilities:
                 drop: ["ALL"]
                 add: ["NET_BIND_SERVICE"]
-
-    hostNetwork: true
 
     service:
       app:
