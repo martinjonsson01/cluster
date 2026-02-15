@@ -56,9 +56,6 @@ spec:
           enabled: true
           className: internal
           hosts: ["hubble.${SECRET_DOMAIN}"]
-    enableMulticast: false
-    multicast:
-      enabled: false
     operator:
       prometheus:
         enabled: true
