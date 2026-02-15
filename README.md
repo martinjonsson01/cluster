@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="87"></td>
+    <td rowspan="88"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="87"></td>
+    <td rowspan="88"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -192,6 +192,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/maloja/app/helmrelease.yaml">maloja</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/home-assistant/app/matter-server/helmrelease.yaml">matter-server</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
