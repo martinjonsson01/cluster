@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: avahi-daemon
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  driftDetection:
+    mode: enabled
+  values:
+    controllers:
+      avahi-daemon:
+        type: daemonset
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: flungo/avahi
+              tag: latest@sha256:803451d0200610298d30d3151240f47c5de4d6558f6a3a36340692048cdf28e0
+            env:
+              REFLECTOR_ENABLE_REFLECTOR: "yes"
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+    persistence:
+      dbus:
+        enabled: true
+        type: hostPath
+        hostPath: /run/dbus/system_bus_socket
+        hostPathType: Socket
