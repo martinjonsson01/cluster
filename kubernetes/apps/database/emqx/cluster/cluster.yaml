@@ -1,11 +1,11 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/apps.emqx.io/emqx_v2beta1.json
-apiVersion: apps.emqx.io/v2beta1
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/apps.emqx.io/emqx_v2.json
+apiVersion: apps.emqx.io/v2
 kind: EMQX
 metadata:
   name: emqx
 spec:
-  image: public.ecr.aws/emqx/emqx:5.8.9
+  image: docker.io/emqx/emqx:5.10.3
   config:
     data: |
       authentication {
@@ -32,7 +32,7 @@ spec:
       annotations:
         reloader.stakater.com/auto: "true"
     spec:
-      replicas: 2
+      replicas: 1
       envFrom:
         - secretRef:
             name: emqx-secret
