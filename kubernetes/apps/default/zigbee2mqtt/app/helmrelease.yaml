@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/koenkk/zigbee2mqtt
-              tag: 2.8.0@sha256:89cf02f379aa743a68494388e3a26fba7b8c9101f8b452038cc07aeff3fc983c
+              tag: 2.9.2@sha256:2a21bbf7a664a149024bbe1f776e3151f28ed9db15948270dcbffb89544a41f0
             env:
               TZ: ${TIMEZONE}
               ZIGBEE2MQTT_DATA: /config
@@ -90,7 +90,7 @@ spec:
           code-server:
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.109.2@sha256:1b84cd817fe8eb1159323ae9d2f29b3c70c6ccd44958d651a94900cf7f0ff9c4
+              tag: 4.115.0@sha256:cbd5e05849367e521f774b760602cb9e0a8da1f159eaf89600490eec34129fe5
             args: [
               "--auth", "none",
               "--user-data-dir", "/config/.vscode",

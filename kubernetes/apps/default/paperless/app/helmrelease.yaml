@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: ghcr.io/paperless-ngx/paperless-ngx
-              tag: 2.20.8
+              tag: 2.20.13
             dependsOn:
               - broker
               - gotenberg
@@ -128,14 +128,14 @@ spec:
           tika:
             image:
               repository: docker.io/apache/tika
-              tag: 3.2.3.0-full
+              tag: 3.3.0.0-full
               pullPolicy: IfNotPresent
             ports:
               - containerPort: 9998
           gotenberg:
             image:
               repository: docker.io/gotenberg/gotenberg
-              tag: 8.26.0
+              tag: 8.30.1
               pullPolicy: IfNotPresent
             ports:
               - containerPort: 3000
