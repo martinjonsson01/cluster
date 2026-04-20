@@ -38,6 +38,7 @@ spec:
             args:
               - --log-level=info
               - --config=/config/config.yaml
+              - --domain=squat.ai
             resources:
               requests:
                 cpu: 10m
