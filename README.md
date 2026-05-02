@@ -119,10 +119,6 @@ The software I run in my home cluster.
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/default/newtarr/app/helmrelease.yaml">newtarr</a></td>
-  </tr>
-  <tr>
-    <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/immich/app/server/helmrelease.yaml">immich</a></td>
   </tr>
   <tr>
@@ -216,6 +212,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/multiscrobbler/app/helmrelease.yaml">multi-scrobbler</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/newtarr/app/helmrelease.yaml">newtarr</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
