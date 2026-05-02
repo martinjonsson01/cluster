@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: ghcr.io/dmunozv04/isponsorblocktv
-              tag: v2.6.1@sha256:545856523283753ebcf4b400a46895b9906844be5265a0f4cab98a6b0bdf84be
+              tag: v2.8.1@sha256:ac35b5d861f437cd5c71d0ccea7c3ed7ea0938ae08cbb6e256de06a236b106f5
               pullPolicy: IfNotPresent
             env:
               TZ: ${TIMEZONE}
