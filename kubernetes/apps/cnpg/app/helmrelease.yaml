@@ -25,7 +25,7 @@ spec:
     crds: CreateReplace
     cleanupOnFail: true
     remediation:
-      retries: 3
+      retries: 0
   values:
     podLabels:
       policy.martin.com/egress-kubeapi: "true"

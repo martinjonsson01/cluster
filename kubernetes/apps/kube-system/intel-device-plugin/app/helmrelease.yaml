@@ -22,8 +22,7 @@ spec:
     cleanupOnFail: true
     crds: CreateReplace
     remediation:
-      strategy: rollback
-      retries: 3
+      retries: 0
   driftDetection:
     mode: enabled
   values:
