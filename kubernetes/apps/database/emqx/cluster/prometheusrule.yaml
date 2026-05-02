@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: emqx
+spec:
+  groups:
+    - name: emqx
+      rules:
+        - alert: EMQXBrokerNoConnections
+          expr: emqx_connections_count == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: EMQX broker has no active connections for 5 minutes
