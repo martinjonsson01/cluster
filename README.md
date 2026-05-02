@@ -119,7 +119,7 @@ The software I run in my home cluster.
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/default/huntarr/app/helmrelease.yaml">huntarr</a></td>
+    <td><a href="kubernetes/apps/default/newtarr/app/helmrelease.yaml">newtarr</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

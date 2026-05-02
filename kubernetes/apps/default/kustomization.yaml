@@ -32,7 +32,7 @@ resources:
   - ./cross-seed/ks.yaml
   - ./calibre/ks.yaml
   - ./lidarr/ks.yaml
-  - ./huntarr/ks.yaml
+  - ./newtarr/ks.yaml
   - ./kavita/ks.yaml
   - ./audiobookshelf/ks.yaml
   - ./tdarr/ks.yaml
