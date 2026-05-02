@@ -12,7 +12,9 @@
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prEditedNotification", "prIgnoreNotification"],
   "rebaseWhen": "conflicted",
-  "schedule": ["every weekend"],
+  "timezone": "Europe/Stockholm",
+  "automergeSchedule": ["after 3pm and before 7pm every weekday"],
+  "fetchReleaseNotes": "branch",
   "ignorePaths": ["**/*.sops.*"],
   "flux": {
     "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
@@ -23,28 +25,25 @@
   "helmfile": {
     "fileMatch": ["(^|/)helmfile\\.ya?ml(?:\\.j2)?$"]
   },
-  "kubernetes": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
-  },
   "kustomize": {
     "fileMatch": ["(^|/)kustomization\\.ya?ml(?:\\.j2)?$"]
   },
   "pip_requirements": {
     "fileMatch": ["(^|/)[\\w-]*requirements(-\\w+)?\\.(txt|pip)(?:\\.j2)?$"]
   },
+  "hostRules": [
+    {
+      "matchHost": "ghcr.io",
+      "hostType": "docker"
+    }
+  ],
   // commit message topics
   "commitMessageTopic": "{{depName}}",
   "commitMessageExtra": "to {{newVersion}}",
   "commitMessageSuffix": "",
   // package rules
   "packageRules": [
-    // require manual update approval
-    {
-      "matchPackageNames": ["ghcr.io/home-operations/qbittorrent", "longhorn"],
-      "dependencyDashboardApproval": true,
-      "automerge": false
-    },
-    // automerge
+    // ===== auto-merge =====
     {
       "description": ["Auto merge Github Actions"],
       "matchManagers": ["github-actions"],
@@ -54,16 +53,16 @@
       "matchUpdateTypes": ["minor", "patch"]
     },
     {
-      "description": ["Auto merge non-major semver updates"],
+      "description": ["Auto merge non-major semver updates (Tier 3 default)"],
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     },
-    // groups
+    // ===== groups =====
     {
       "description": ["Flux Group"],
       "groupName": "Flux",
-      "matchPackagePatterns": ["fluxcd"],
+      "matchPackageNames": ["/fluxcd/"],
       "matchDatasources": ["docker", "github-tags"],
       "versioning": "semver",
       "group": {
@@ -74,7 +73,7 @@
     {
       "description": ["Talos Group"],
       "groupName": "Talos",
-      "matchPackagePatterns": [
+      "matchPackageNames": [
         "siderolabs/talosctl",
         "siderolabs/installer"
       ],
@@ -84,7 +83,13 @@
       },
       "separateMinorPatch": true
     },
-    // commit message topics
+    // ===== linkwarden registry override =====
+    {
+      "description": ["Linkwarden GHCR lookup fix"],
+      "matchPackageNames": ["ghcr.io/linkwarden/linkwarden"],
+      "registryUrls": ["https://ghcr.io"]
+    },
+    // ===== commit message topics =====
     {
       "matchDatasources": ["helm"],
       "commitMessageTopic": "chart {{depName}}"
@@ -93,7 +98,7 @@
       "matchDatasources": ["docker"],
       "commitMessageTopic": "image {{depName}}"
     },
-    // commit messages
+    // ===== commit messages =====
     {
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["major"],
@@ -168,7 +173,7 @@
       "semanticCommitType": "fix",
       "semanticCommitScope": "github-action"
     },
-    // labels
+    // ===== labels =====
     {
       "matchUpdateTypes": ["major"],
       "labels": ["type/major"]
@@ -196,6 +201,48 @@
     {
       "matchManagers": ["github-actions"],
       "addLabels": ["renovate/github-action"]
+    },
+    // ===== Tier 2: services with real-world impact — block minor/major auto-merge =====
+    {
+      "description": ["Tier 2: services with real-world impact — minor/major require manual approval"],
+      "matchPackageNames": [
+        "ghcr.io/home-operations/home-assistant",
+        "ghcr.io/home-assistant-libs/python-matter-server",
+        "ghcr.io/koenkk/zigbee2mqtt",
+        "docker.io/emqx/emqx",
+        "ghcr.io/dani-garcia/vaultwarden"
+      ],
+      "matchUpdateTypes": ["minor", "major"],
+      "dependencyDashboardApproval": true,
+      "automerge": false
+    },
+    // ===== Tier 1: cluster/node-level infrastructure — block ALL update types =====
+    {
+      "description": ["Tier 1: cluster/node-level infrastructure — all updates require manual approval"],
+      "matchPackageNames": [
+        "cilium",
+        "coredns",
+        "longhorn",
+        "openebs",
+        "ingress-nginx",
+        "cert-manager",
+        "cloudnative-pg",
+        "emqx-operator",
+        "tailing-sidecar-operator",
+        "intel-device-plugins-operator",
+        "intel-device-plugins-gpu",
+        "nvidia-device-plugin",
+        "node-feature-discovery",
+        "kube-prometheus-stack",
+        "prometheus-operator-crds",
+        "ghcr.io/squat/generic-device-plugin",
+        "ghcr.io/home-operations/qbittorrent",
+        "/fluxcd/",
+        "siderolabs/talosctl",
+        "siderolabs/installer"
+      ],
+      "dependencyDashboardApproval": true,
+      "automerge": false
     }
   ],
   // custom managers
