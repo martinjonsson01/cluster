@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: generic-device-plugin
+spec:
+  groups:
+    - name: generic-device-plugin
+      rules:
+        - alert: ZigbeeResourceDrift
+          expr: |
+            kube_node_status_allocatable{resource=~".*zigbee.*"} == 0
+              unless
+            kube_node_status_capacity{resource=~".*zigbee.*"} == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Zigbee device advertised in capacity but allocatable is zero
