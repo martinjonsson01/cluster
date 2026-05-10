@@ -25,5 +25,4 @@ resources:
   - ./jameswynn-charts.yaml
   - ./nvidia-device-plugin.yaml
   - ./tailing-sidecar.yaml
-  - ./authentik.yaml
   - nextcloud.yaml
