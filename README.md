@@ -20,14 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="89"></td>
+    <td rowspan="88"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="89"></td>
-  </tr>
-  <tr>
-    <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/observability/apprise/app/helmrelease.yaml">apprise</a></td>
+    <td rowspan="88"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
