@@ -1,6 +1,6 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/apps.emqx.io/emqx_v2.json
-apiVersion: apps.emqx.io/v2
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/apps.emqx.io/emqx_v3beta1.json
+apiVersion: apps.emqx.io/v3beta1
 kind: EMQX
 metadata:
   name: emqx
@@ -27,6 +27,10 @@ spec:
         ]
         no_match: "deny"
       }
+  updateStrategy:
+    type: RollingUpdate
+    evacuationStrategy:
+      type: Disabled # single node: nowhere to evacuate connections to
   coreTemplate:
     metadata:
       annotations:
