@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/varoop/shinkro
-              tag: v0.6.2@sha256:47a3f680cd6a842da1fa7c4731d3bca6e8b5047dffd351e8e2c6ad694059a814
+              tag: v0.6.4@sha256:19da0fd2df9beb56437b07acc1396286313d4f4039e83c57cdd6accc4e03ffec
             env:
               TZ: ${TIMEZONE}
               # Dummy values, required for first start.
