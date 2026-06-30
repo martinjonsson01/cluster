@@ -29,7 +29,7 @@ resources:
   - ./changedetection/ks.yaml
   - ./linkwarden/ks.yaml
   - ./shinkro/ks.yaml
-  - ./cross-seed/ks.yaml
+  - ./qui/ks.yaml
   - ./calibre/ks.yaml
   - ./lidarr/ks.yaml
   - ./newtarr/ks.yaml

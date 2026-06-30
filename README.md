@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="88"></td>
+    <td rowspan="86"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="88"></td>
+    <td rowspan="86"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -68,10 +68,6 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/coredns/app/helmrelease.yaml">coredns</a></td>
-  </tr>
-  <tr>
-    <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/default/cross-seed/app/helmrelease.yaml">cross-seed</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -283,7 +279,7 @@ The software I run in my home cluster.
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/default/qbittorrent/exporter/helmrelease.yaml">qbittorrent-exporter</a></td>
+    <td><a href="kubernetes/apps/default/qui/app/helmrelease.yaml">qui</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -344,10 +340,6 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/tdarr/app/helmrelease-node.yaml">tdarr-node</a></td>
-  </tr>
-  <tr>
-    <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/default/qbittorrent/tools/helmrelease.yaml">tqm</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

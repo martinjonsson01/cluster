@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: qui
+spec:
+  groups:
+    - name: qui
+      rules:
+        - alert: QuiExporterAbsent
+          annotations:
+            description: |
+              qui has disappeared from Prometheus service discovery.
+            summary: qui metrics are down.
+          expr: absent(up{job=~".*qui.*"} == 1)
+          for: 5m
+          labels:
+            severity: critical
+        - alert: QbittorrentInstanceDown
+          annotations:
+            description: |
+              qui cannot reach qBittorrent instance {{ $labels.instance_name }}.
+            summary: qBittorrent is unreachable from qui.
+          expr: qbittorrent_instance_connection_status != 1
+          for: 15m
+          labels:
+            severity: critical
