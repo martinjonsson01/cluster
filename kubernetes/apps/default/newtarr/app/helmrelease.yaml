@@ -71,6 +71,20 @@ spec:
                   identifier: app
                   port: http
 
+      # Redirect from old URL
+      huntarr:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          nginx.ingress.kubernetes.io/permanent-redirect: https://newtarr.${SECRET_DOMAIN}
+        className: internal
+        hosts:
+          - host: "huntarr.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+
     persistence:
       config:
         existingClaim: newtarr
