@@ -14,23 +14,7 @@
   in {
     devShells.${system}.default = pkgs.mkShellNoCC {
       packages = with pkgs; [
-        (python3.withPackages (
-          ps:
-            with ps; [
-              pip
-              setuptools
-              wheel
-              cloudflare
-              email-validator
-              makejinja
-              netaddr
-            ]
-        ))
         pre-commit # Framework for managing and maintaining multi-language pre-commit hooks
-        cargo # Rust package manager
-        rustc # Rust compiler
-        libgcc # GNU Compiler Collection
-        gcc14 # GCC
         age # Modern encryption tool with small explicit keys
         cloudflared # Cloudflare Tunnel daemon, Cloudflare Access toolkit, and DNS-over-HTTPS client
         direnv # Shell extension that manages your environment
@@ -50,7 +34,6 @@
         talhelper.packages.x86_64-linux.default # A helper tool to help creating Talos cluster in your GitOps repository.
         talosctl # CLI for out-of-band management of Kubernetes nodes created by Talos
         kubectl-cnpg # Plugin for kubectl to manage a CloudNativePG cluster in Kubernetes
-        stern # Multi pod and container log tailing for Kubernetes
       ];
     };
   };

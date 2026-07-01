@@ -11,13 +11,8 @@ talosconfig
 *.key
 # Private
 .private
-.bin
-# Ansible
-.venv*
 # Taskfile
 .task
-# Brew
-Brewfile.lock.json
 # intellij
 .idea
 # wiki
