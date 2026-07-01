@@ -4,11 +4,13 @@ groups:
     rules:
       - alert: QbittorrentFastResumeRejected
         expr: |
-          sum by (app) (count_over_time({app="qbittorrent"} |~ "(?i)fast resume rejected"[1h])) > 0
-        for: 2m
+          sum by (app) (count_over_time({app="qbittorrent"} |~ "(?i)fast resume rejected"[15m])) > 10
+        for: 5m
         labels:
-          severity: critical
+          severity: warning
           category: logs
         annotations:
-          app: "{{ $labels.container }}"
-          summary: "{{ $labels.container }} has a torrent with fast resume rejected"
+          summary: >-
+            {{ $labels.app }} had {{ $value }} "fast resume rejected" errors in
+            15m - the media storage may be inaccessible (this is well past the
+            handful of benign rechecks a normal restart causes).
