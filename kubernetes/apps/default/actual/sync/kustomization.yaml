@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./helmrelease.yaml
+  - ./secret.sops.yaml
+configMapGenerator:
+  - name: actual-sync
+    files:
+      - ./resources/package.json
+      - ./resources/package-lock.json
+      - ./resources/sync-banks.js
+generatorOptions:
+  disableNameSuffixHash: true

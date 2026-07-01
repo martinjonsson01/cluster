@@ -1,0 +1,13 @@
+{
+  "name": "actual-sync-banks",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Trigger Actual Budget bank sync (GoCardless/SimpleFIN)",
+  "main": "sync-banks.js",
+  "scripts": {
+    "sync": "node sync-banks.js"
+  },
+  "dependencies": {
+    "@actual-app/api": "25.12.0"
+  }
+}

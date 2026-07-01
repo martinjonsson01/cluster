@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: actual-sync
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  driftDetection:
+    mode: enabled
+  values:
+    controllers:
+      actual-sync:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        type: cronjob
+        cronjob:
+          # 03:00, once a day
+          schedule: "0 3 * * *"
+          timeZone: "${TIMEZONE}"
+          backoffLimit: 1
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 1
+          successfulJobsHistory: 1
+
+        pod:
+          securityContext:
+            fsGroup: 2000
+            fsGroupChangePolicy: OnRootMismatch
+            runAsGroup: 2000
+            runAsNonRoot: true
+            runAsUser: 2000
+          restartPolicy: Never
+
+        containers:
+          app:
+            image:
+              repository: docker.io/library/node
+              tag: 22-slim@sha256:813a7480f28fdadac1f7f5c824bcdad435b5bc1322a5968bbbdef8d058f9dff4
+            command:
+              - /bin/bash
+              - -c
+              - |
+                set -euo pipefail
+                cp /config/package.json /config/package-lock.json /config/sync-banks.js /app/
+                cd /app
+                echo "Installing dependencies (npm ci)..."
+                npm ci --no-audit --no-fund --prefer-offline
+                echo "Starting bank sync..."
+                node sync-banks.js
+            env:
+              ACTUAL_SERVER_URL: http://actual.default.svc.cluster.local:5006
+              ACTUAL_CACHE_DIR: /app/cache
+              HOME: /app
+              npm_config_cache: /app/.npm
+              npm_config_update_notifier: "false"
+            envFrom:
+              - secretRef:
+                  name: actual-sync-secret
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256M
+              limits:
+                memory: 768M
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop:
+                  - ALL
+
+    persistence:
+      app:
+        type: emptyDir
+        globalMounts:
+          - path: /app
+      config-files:
+        type: configMap
+        name: actual-sync
+        globalMounts:
+          - path: /config
