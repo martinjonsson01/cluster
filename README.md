@@ -239,10 +239,6 @@ The software I run in my home cluster.
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/default/overseerr/app/helmrelease.yaml">overseerr</a></td>
-  </tr>
-  <tr>
-    <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/paperless/app/helmrelease.yaml">paperless</a></td>
   </tr>
   <tr>
@@ -300,6 +296,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/reloader/app/helmrelease.yaml">reloader</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/seerr/app/helmrelease.yaml">seerr</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

@@ -18,7 +18,7 @@ resources:
   - ./paperless/ks.yaml
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
-  - ./overseerr/ks.yaml
+  - ./seerr/ks.yaml
   - ./homepage/ks.yaml
   - ./maloja/ks.yaml
   - ./multiscrobbler/ks.yaml
