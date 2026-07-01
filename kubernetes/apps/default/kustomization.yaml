@@ -38,6 +38,5 @@ resources:
   - ./tdarr/ks.yaml
   - ./trilium/ks.yaml
   - ./grist/ks.yaml
-  - nextcloud/ks.yaml
   - recyclarr/ks.yaml
   - isponsorblocktv/ks.yaml

@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="86"></td>
+    <td rowspan="85"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="86"></td>
+    <td rowspan="85"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -211,10 +211,6 @@ The software I run in my home cluster.
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/default/nextcloud/app/helmrelease.yaml">nextcloud</a></td>
-  </tr>
-  <tr>
-    <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/node-feature-discovery/app/helmrelease.yaml">node-feature-discovery</a></td>
   </tr>
   <tr>
@@ -364,12 +360,6 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/zigbee2mqtt/exporter/helmrelease.yaml">zigbee2mqtt-exporter</a></td>
-  </tr>
-  <tr>
-    <td>default</td>
-    <td><code>Cluster</code></td>
-    <td><a href="kubernetes/apps/default/nextcloud/app/postgresql.yaml">nextcloud-db</a></td>
-    <td></td>
   </tr>
   <tr>
     <td>network</td>
