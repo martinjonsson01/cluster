@@ -44,10 +44,9 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
+    route:
       main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Tools
           gethomepage.dev/icon: changedetection-io.png
@@ -55,14 +54,12 @@ spec:
           gethomepage.dev/widget.type: changedetectionio
           gethomepage.dev/widget.url: http://changedetection.default.svc:5000
           gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_CHANGEDETECTION_API_TOKEN}
-        className: internal
-        hosts:
-          - host: change-detection.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: main
-                  port: http
+        hostnames:
+          - change-detection.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
     persistence:
       config:
         existingClaim: changedetection

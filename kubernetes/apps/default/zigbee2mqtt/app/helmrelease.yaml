@@ -110,34 +110,35 @@ spec:
             port: *port
           code-server:
             port: 12321
-    ingress:
+    route:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Home Automation
           gethomepage.dev/icon: sh-zigbee2mqtt.svg
           gethomepage.dev/name: Zigbee2MQTT
           gethomepage.dev/pod-selector: app.kubernetes.io/name=zigbee2mqtt
-        className: internal
-        hosts:
-          - host: zigbee.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - zigbee.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
       code-server:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        className: internal
-        hosts:
-          - host: zigbee-code.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: code-server
+        hostnames:
+          - zigbee-code.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: code-server
     persistence:
       config:
         existingClaim: zigbee2mqtt

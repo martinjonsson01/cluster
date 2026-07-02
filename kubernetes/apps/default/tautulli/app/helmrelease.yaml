@@ -60,10 +60,9 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Media
           gethomepage.dev/icon: sh-tautulli.svg
@@ -74,14 +73,12 @@ spec:
           gethomepage.dev/widget.enableUser: "true"
           gethomepage.dev/widget.showEpisodeNumber: "true"
           gethomepage.dev/widget.expandOneStreamToTwoRows: "true"
-        className: internal
-        hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
     persistence:
       config:
         existingClaim: tautulli

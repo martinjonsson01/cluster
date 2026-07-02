@@ -79,24 +79,25 @@ spec:
             enabled: true
             port: *bittorrentPort
             protocol: TCP
-    ingress:
+    route:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Downloads
           gethomepage.dev/icon: sh-qbittorrent.svg
           gethomepage.dev/name: qBittorrent
           gethomepage.dev/widget.type: "qbittorrent"
           gethomepage.dev/widget.url: "http://qbittorrent.default.svc:80"
-        className: internal
-        hosts:
-          - host: qb.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - qb.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
     persistence:
       config:
         existingClaim: qbittorrent

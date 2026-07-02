@@ -54,22 +54,19 @@ spec:
         ports:
           http:
             port: 8080
-    ingress:
+    route:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Tools
           gethomepage.dev/icon: si-ollama.svg
           gethomepage.dev/name: Open WebUI
-        className: internal
-        hosts:
-          - host: "chat.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "chat.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
     persistence:
       config:
         existingClaim: *app
