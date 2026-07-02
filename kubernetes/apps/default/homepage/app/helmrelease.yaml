@@ -17,18 +17,22 @@ spec:
   values:
     image:
       repository: ghcr.io/gethomepage/homepage
-      tag: v0.10.9
+      tag: v1.13.2
 
     # Enable RBAC. RBAC is necessary to use Kubernetes integration
     enableRbac: true
 
     extraClusterRoles:
-      # - apiGroups:
-      #   - some-group
-      #   resources:
-      #   - some-resource
-      #   verbs:
-      #   - get
+      # Discovery of Gateway API HTTPRoutes
+      - apiGroups:
+          - gateway.networking.k8s.io
+        resources:
+          - httproutes
+          - gateways
+        verbs:
+          - get
+          - list
+          - watch
 
     serviceAccount:
       # Specify a different service account name. When blank it will default to the release
@@ -120,6 +124,8 @@ spec:
       kubernetes:
         # change mode to 'cluster' to use RBAC service account
         mode: cluster
+        ingress: true
+        gateway: true
       docker:
       settings:
         title: Services
@@ -162,6 +168,7 @@ spec:
     #      value: '{{ .Release.Name }}'
     env:
       TZ: ${TIMEZONE}
+      HOMEPAGE_ALLOWED_HOSTS: "start.${SECRET_DOMAIN}"
 
     persistence:
       logs:
