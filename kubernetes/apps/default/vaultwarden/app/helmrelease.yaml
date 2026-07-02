@@ -1,29 +1,14 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/app-template-3.4.0/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: vaultwarden
 spec:
-  chart:
-    spec:
-      chart: app-template
-      version: 3.7.3
-      reconcileStrategy: ChartVersion
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
   interval: 1h
-  driftDetection:
-    mode: enabled
   values:
     controllers:
       vaultwarden:
@@ -87,11 +72,7 @@ spec:
 
     persistence:
       data:
-        enabled: true
-        retain: true
-        accessMode: ReadWriteOnce
-        storageClass: longhorn
-        size: 8Gi
+        existingClaim: vaultwarden-data
 
     ingress:
       vaultwarden:
