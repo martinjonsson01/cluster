@@ -1,0 +1,58 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.networking.k8s.io/gateway_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: envoy-external
+spec:
+  gatewayClassName: envoy
+  infrastructure:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: "envoy-external.${SECRET_DOMAIN}"
+      lbipam.cilium.io/ips: 192.168.0.125
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: "${SECRET_DOMAIN/./-}-production-tls"
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.networking.k8s.io/gateway_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: envoy-internal
+spec:
+  gatewayClassName: envoy
+  infrastructure:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: "envoy-internal.${SECRET_DOMAIN}"
+      lbipam.cilium.io/ips: 192.168.0.126
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: "${SECRET_DOMAIN/./-}-production-tls"
