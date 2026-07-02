@@ -13,15 +13,6 @@ spec:
         kind: HelmRepository
         name: k8s-gateway
         namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  driftDetection:
-    mode: enabled
   values:
     fullnameOverride: k8s-gateway
     domain: "${SECRET_DOMAIN}"

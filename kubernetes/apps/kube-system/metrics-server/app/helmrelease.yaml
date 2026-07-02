@@ -13,15 +13,6 @@ spec:
         kind: HelmRepository
         name: metrics-server
         namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  driftDetection:
-    mode: enabled
   values:
     args:
       - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname

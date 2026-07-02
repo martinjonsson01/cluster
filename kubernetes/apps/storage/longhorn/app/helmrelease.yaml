@@ -14,18 +14,9 @@ spec:
         kind: HelmRepository
         name: longhorn
         namespace: flux-system
-  install:
-    crds: Create
-    remediation:
-      retries: 3
   upgrade:
-    cleanupOnFail: true
     crds: CreateReplace
-    remediation:
-      strategy: rollback
-      retries: 4
-  driftDetection:
-    mode: enabled
+
   values:
 
     # Regression in 1.10.0, see https://github.com/longhorn/longhorn/releases/tag/v1.10.0

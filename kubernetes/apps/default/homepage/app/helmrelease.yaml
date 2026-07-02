@@ -14,16 +14,6 @@ spec:
         name: jameswynn-charts
         namespace: flux-system
       interval: 30m
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 4
-  driftDetection:
-    mode: enabled
   values:
     image:
       repository: ghcr.io/gethomepage/homepage

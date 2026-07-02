@@ -14,15 +14,6 @@ spec:
         kind: HelmRepository
         name: grafana
         namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  driftDetection:
-    mode: enabled
   values:
     fullnameOverride: promtail
     config:

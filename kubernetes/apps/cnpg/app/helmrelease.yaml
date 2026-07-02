@@ -6,8 +6,9 @@ metadata:
   name: cnpg
 spec:
   interval: 30m
-  driftDetection:
-    mode: enabled
+  upgrade:
+    crds: CreateReplace
+
   chart:
     spec:
       chart: cloudnative-pg
@@ -17,15 +18,6 @@ spec:
         namespace: flux-system
         name: cnpg
       interval: 1h
-  install:
-    crds: Create
-    remediation:
-      retries: 3
-  upgrade:
-    crds: CreateReplace
-    cleanupOnFail: true
-    remediation:
-      retries: 0
   values:
     podLabels:
       policy.martin.com/egress-kubeapi: "true"
