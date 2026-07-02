@@ -19,7 +19,6 @@ repos:
   - repo: https://github.com/gabe565/pre-commit-fluxcd
     rev: v0.5.1
     hooks:
-      - id: check-drift-detection-enabled
       - id: check-secrets-encrypted
 
   - repo: https://github.com/gabe565/template-kubernetes-apps-markdown
