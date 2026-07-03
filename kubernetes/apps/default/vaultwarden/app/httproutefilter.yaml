@@ -1,0 +1,8 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: HTTPRouteFilter
+metadata:
+  name: vaultwarden-admin-block
+spec:
+  directResponse:
+    statusCode: 403

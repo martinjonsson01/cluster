@@ -60,7 +60,7 @@ spec:
         ports:
           http:
             port: 9000
-    ingress:
+    route:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
@@ -73,14 +73,12 @@ spec:
           gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_MEALIE_API_TOKEN}
           gethomepage.dev/widget.version: "2"
           gethomepage.dev/widget.fields: '["recipes", "users", "categories", "tags"]'
-        className: external
-        hosts:
-          - host: "recipes.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "recipes.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
     persistence:
       data:
         existingClaim: mealie

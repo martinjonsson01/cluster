@@ -166,7 +166,7 @@ spec:
             bearerTokenSecret:
               name: home-assistant-secret
               key: HASS_SERVICEMONITOR_TOKEN
-    ingress:
+    route:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
@@ -178,15 +178,16 @@ spec:
           gethomepage.dev/widget.type: homeassistant
           gethomepage.dev/widget.url: http://home-assistant.default.svc:8123
           gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_HOMEASSISTANT_API_TOKEN}
-        className: external
-        hosts:
-          - host: hass.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-    route:
+        hostnames:
+          - hass.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
       code-server:
         hostnames:
           - hass-code.${SECRET_DOMAIN}

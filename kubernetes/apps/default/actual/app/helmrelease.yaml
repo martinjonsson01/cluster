@@ -54,7 +54,7 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
@@ -62,14 +62,12 @@ spec:
           gethomepage.dev/group: Services
           gethomepage.dev/icon: sh-actual-budget.svg
           gethomepage.dev/name: Actual
-        className: external
-        hosts:
-          - host: "budget.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "budget.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
     persistence:
       data:
         existingClaim: actual-data

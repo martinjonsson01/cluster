@@ -74,12 +74,10 @@ spec:
         ports:
           http:
             port: 32400
-    ingress:
+    route:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-          nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
-          nginx.ingress.kubernetes.io/backend-protocol: HTTPS
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Media
           gethomepage.dev/icon: sh-plex.png
@@ -88,14 +86,12 @@ spec:
           gethomepage.dev/widget.url: http://plex.default.svc:32400
           gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_PLEX_API_TOKEN}
           gethomepage.dev/widget.fields: '["streams", "movies", "tv"]'
-        className: external
-        hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
     persistence:
       config:
         existingClaim: plex

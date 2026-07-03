@@ -74,30 +74,45 @@ spec:
       data:
         existingClaim: vaultwarden-data
 
-    ingress:
-      vaultwarden:
-        enabled: true
+    route:
+      # LAN clients resolve vault to envoy-internal (UDM record from this route)
+      # and get the full app including /admin.
+      app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Services
           gethomepage.dev/icon: sh-vaultwarden.svg
           gethomepage.dev/name: Vaultwarden
-        className: external
-        hosts:
-          - host: &host vault.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service: &svc
-                  identifier: vaultwarden
-                  port: http
-      admin:
-        enabled: true
+        hostnames:
+          - &host vault.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs: &backend
+              - identifier: vaultwarden
+                port: http
+      # Internet clients come in via the Cloudflare tunnel (see dnsendpoint.yaml)
+      # and /admin is blocked with a 403 (see httproutefilter.yaml).
+      external:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-        className: internal
-        hosts:
-          - host: *host
-            paths:
-              - path: /admin
-                service: *svc
+          external-dns.alpha.kubernetes.io/controller: none
+        hostnames:
+          - *host
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /admin
+            filters:
+              - type: ExtensionRef
+                extensionRef:
+                  group: gateway.envoyproxy.io
+                  kind: HTTPRouteFilter
+                  name: vaultwarden-admin-block
+          - backendRefs: *backend

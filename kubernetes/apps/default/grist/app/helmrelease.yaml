@@ -54,7 +54,7 @@ spec:
           http:
             port: 8484
 
-    ingress:
+    route:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
@@ -62,14 +62,12 @@ spec:
           gethomepage.dev/group: Media
           gethomepage.dev/icon: sh-grist.svg
           gethomepage.dev/name: Grist
-        className: external
-        hosts:
-          - host: *domain
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - *domain
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
 
     persistence:
       data:

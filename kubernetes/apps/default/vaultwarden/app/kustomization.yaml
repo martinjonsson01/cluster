@@ -5,4 +5,6 @@ kind: Kustomization
 resources:
   - ./secret.sops.yaml
   - ./helmrelease.yaml
+  - ./httproutefilter.yaml
+  - ./dnsendpoint.yaml
   - ./postgresql.yaml

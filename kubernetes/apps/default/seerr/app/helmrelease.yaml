@@ -56,7 +56,7 @@ spec:
         ports:
           http:
             port: 5055
-    ingress:
+    route:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
@@ -68,26 +68,28 @@ spec:
           gethomepage.dev/widget.url: http://seerr.default.svc:5055
           gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_OVERSEERR_API_TOKEN}
           gethomepage.dev/widget.fields: '["pending", "processing"]'
-        className: external
-        hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+      # Redirect from old URL
       redirect:
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-          nginx.ingress.kubernetes.io/permanent-redirect: https://seerr.${SECRET_DOMAIN}
-        className: external
-        hosts:
-          - host: "overseerr.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "overseerr.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        rules:
+          - filters:
+              - type: RequestRedirect
+                requestRedirect:
+                  hostname: "seerr.${SECRET_DOMAIN}"
+                  statusCode: 301
     persistence:
       config:
         existingClaim: overseerr
