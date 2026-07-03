@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="86"></td>
+    <td rowspan="85"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="86"></td>
+    <td rowspan="85"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -140,10 +140,6 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/isponsorblocktv/app/helmrelease.yaml">isponsorblocktv</a></td>
-  </tr>
-  <tr>
-    <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/network/k8s-gateway/app/helmrelease.yaml">k8s-gateway</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
