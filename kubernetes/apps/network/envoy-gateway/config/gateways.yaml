@@ -4,6 +4,10 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: envoy-external
+  annotations:
+    # external-dns reads the target for attached HTTPRoutes from the Gateway,
+    # not from per-route annotations.
+    external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
 spec:
   gatewayClassName: envoy
   infrastructure:
