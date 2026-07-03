@@ -39,5 +39,5 @@ spec:
   dependsOn:
     - name: envoy-gateway
       namespace: flux-system
-    - name: ingress-nginx-certificates
+    - name: certificates
       namespace: flux-system

@@ -29,14 +29,13 @@ spec:
             name: &secret external-dns-cloudflare-secret
             key: api-token
     extraArgs:
-      - --ingress-class=external
       - --annotation-filter=external-dns.alpha.kubernetes.io/target
       - --cloudflare-proxied
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=envoy-external
     policy: sync
-    sources: ["crd", "ingress", "gateway-httproute"]
+    sources: ["crd", "gateway-httproute"]
     txtPrefix: k8s.
     txtOwnerId: default
     domainFilters: ["${SECRET_DOMAIN}"]

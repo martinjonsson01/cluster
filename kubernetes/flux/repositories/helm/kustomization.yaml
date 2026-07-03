@@ -12,7 +12,6 @@ resources:
   - ./spegel.yaml
   - ./stakater.yaml
   - ./external-dns.yaml
-  - ./ingress-nginx.yaml
   - ./k8s-gateway.yaml
   - ./grafana.yaml
   - ./longhorn.yaml

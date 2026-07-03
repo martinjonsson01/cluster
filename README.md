@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="87"></td>
+    <td rowspan="86"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="87"></td>
+    <td rowspan="86"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -128,10 +128,6 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/immich/app/proxy/helmrelease.yaml">immich-proxy</a></td>
-  </tr>
-  <tr>
-    <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/network/ingress-nginx/external/helmrelease.yaml">ingress-nginx-external</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -368,12 +364,6 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/zigbee2mqtt/exporter/helmrelease.yaml">zigbee2mqtt-exporter</a></td>
-  </tr>
-  <tr>
-    <td>network</td>
-    <td><code>HelmRelease</code></td>
-    <td><a href="kubernetes/apps/network/ingress-nginx/internal/helmrelease.yaml">ingress-nginx-internal</a></td>
-    <td></td>
   </tr>
 </table>
 
