@@ -43,10 +43,9 @@ spec:
       ui:
         enabled: true
         rollOutPods: true
+        # Exposed via a standalone HTTPRoute instead (see httproute.yaml).
         ingress:
-          enabled: true
-          className: internal
-          hosts: ["hubble.${SECRET_DOMAIN}"]
+          enabled: false
     operator:
       prometheus:
         enabled: true

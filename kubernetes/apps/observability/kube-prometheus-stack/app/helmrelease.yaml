@@ -28,11 +28,9 @@ spec:
       enabled: false
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
+      # Exposed via a standalone HTTPRoute instead (see httproute.yaml).
       ingress:
-        enabled: true
-        ingressClassName: internal
-        hosts: ["alertmanager.${SECRET_DOMAIN}"]
-        pathType: Prefix
+        enabled: false
       alertmanagerSpec:
         replicas: 2
         alertmanagerConfiguration:
@@ -64,11 +62,9 @@ spec:
     kubeProxy:
       enabled: false
     prometheus:
+      # Exposed via a standalone HTTPRoute instead (see httproute.yaml).
       ingress:
-        enabled: true
-        ingressClassName: internal
-        hosts: ["prometheus.${SECRET_DOMAIN}"]
-        pathType: Prefix
+        enabled: false
       prometheusSpec:
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
         ruleSelectorNilUsesHelmValues: false

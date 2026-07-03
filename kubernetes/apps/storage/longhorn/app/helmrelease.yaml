@@ -58,13 +58,9 @@ spec:
       tolerations: *tolerations
     global:
       tolerations: *tolerations
+    # Exposed via a standalone HTTPRoute instead (see httproute.yaml).
     ingress:
-      enabled: true
-      annotations:
-        external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-      ingressClassName: internal
-      host: longhorn.${SECRET_DOMAIN}
-      pathType: Prefix
+      enabled: false
     metrics:
       serviceMonitor:
         enabled: true

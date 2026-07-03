@@ -72,28 +72,10 @@ spec:
                 requests:
                   cpu: 1500m
                   memory: 2048M
+      # Exposed via a standalone HTTPRoute instead (see httproute.yaml).
       ingress:
         main:
-          enabled: true
-          ingressClassName: internal
-          annotations:
-            external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-            # proxy-body-size is set to 0 to remove the body limit on file uploads
-            nginx.ingress.kubernetes.io/proxy-body-size: "0"
-            gethomepage.dev/enabled: "true"
-            gethomepage.dev/group: Services
-            gethomepage.dev/icon: sh-immich.svg
-            gethomepage.dev/name: Immich
-            gethomepage.dev/pod-selector: app.kubernetes.io/instance=immich
-            gethomepage.dev/widget.type: "immich"
-            gethomepage.dev/widget.url: "http://immich-server.default.svc:2283"
-            gethomepage.dev/widget.key: ${SECRET_HOMEPAGE_VAR_IMMICH_API_TOKEN}
-            gethomepage.dev/widget.version: "2"
-          hosts:
-            - host: "photos.${SECRET_DOMAIN}"
-              paths:
-                - path: /
-                  pathType: Prefix
+          enabled: false
 
     machine-learning:
       controllers:

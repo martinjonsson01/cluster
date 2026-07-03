@@ -220,12 +220,9 @@ spec:
       - vonage-status-panel
     serviceMonitor:
       enabled: true
+    # Exposed via a standalone HTTPRoute instead (see httproute.yaml).
     ingress:
-      enabled: true
-      annotations:
-        external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
-      ingressClassName: internal
-      hosts: ["grafana.${SECRET_DOMAIN}"]
+      enabled: false
     persistence:
       enabled: false
     testFramework:
