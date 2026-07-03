@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: feed-monitor
+spec:
+  groups:
+    - name: FeedMonitor
+      rules:
+        - alert: FeedMonitorJobFailed
+          annotations:
+            description: A feed-monitor job run has failed.
+            summary: feed-monitor run failed.
+          expr: kube_job_status_failed{namespace="default", job_name=~"feed-monitor.*"} > 0
+          for: 5m
+          labels:
+            severity: warning

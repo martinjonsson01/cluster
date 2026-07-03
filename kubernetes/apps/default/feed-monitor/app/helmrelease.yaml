@@ -1,0 +1,76 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: feed-monitor
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      feed-monitor:
+        type: cronjob
+        cronjob:
+          schedule: "17 1,7,13,19 * * *"
+          backoffLimit: 0
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 1
+          successfulJobsHistory: 1
+
+        pod:
+          restartPolicy: Never
+
+        containers:
+          app:
+            image:
+              repository: git.${SECRET_DOMAIN}/martin/feed-monitor
+              tag: latest
+              pullPolicy: Always
+            args:
+              - --config
+              - /config/config.yaml
+              - --state
+              - /data/state.sqlite
+              - run
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64M
+              limits:
+                memory: 512M
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    defaultPodOptions:
+      imagePullSecrets:
+        - name: feed-monitor-registry
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 2000
+        runAsGroup: 2000
+        fsGroup: 2000
+        fsGroupChangePolicy: OnRootMismatch
+
+    persistence:
+      data:
+        existingClaim: feed-monitor
+        globalMounts:
+          - path: /data
+      config:
+        type: secret
+        name: feed-monitor-secret
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp

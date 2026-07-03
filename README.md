@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="86"></td>
+    <td rowspan="87"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="86"></td>
+    <td rowspan="87"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -92,6 +92,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/network/external-dns/unifi/helmrelease.yaml">external-dns-unifi</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/feed-monitor/app/helmrelease.yaml">feed-monitor</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

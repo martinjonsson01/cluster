@@ -41,3 +41,4 @@ resources:
   - recyclarr/ks.yaml
   - isponsorblocktv/ks.yaml
   - ./forgejo/ks.yaml
+  - ./feed-monitor/ks.yaml
