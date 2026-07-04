@@ -240,6 +240,22 @@
       ],
       "dependencyDashboardApproval": true,
       "automerge": false
+    },
+    // ===== talconfig Talos/Kubernetes versions: manual bump ONLY =====
+    {
+      "description": [
+        "talosVersion + kubernetesVersion in talconfig.yaml are bumped by hand only.",
+        "The fleet is version-skewed and upgrades need a rolling node reboot (and a",
+        "talhelper that supports the target), so Renovate must not touch these - it",
+        "previously pushed them ahead of reality (v1.13.5 / k8s v1.36.2) and broke",
+        "`talhelper genconfig`. Covers ghcr.io/siderolabs/kubelet, which no tier caught."
+      ],
+      "matchFileNames": ["kubernetes/bootstrap/talos/talconfig.yaml"],
+      "matchPackageNames": [
+        "ghcr.io/siderolabs/installer",
+        "ghcr.io/siderolabs/kubelet"
+      ],
+      "enabled": false
     }
   ],
   // custom managers
