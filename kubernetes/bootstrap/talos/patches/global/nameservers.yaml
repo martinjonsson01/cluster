@@ -1,0 +1,8 @@
+machine:
+  network:
+    # Point nodes at the LAN DNS (UniFi UDM) so they participate in split-horizon
+    # DNS. Without this Talos falls back to public resolvers (1.1.1.1/8.8.8.8),
+    # which return the Cloudflare-proxied view of internal hostnames like
+    # git.${SECRET_DOMAIN} and break in-cluster image pulls from Forgejo.
+    nameservers:
+      - "192.168.0.1"
