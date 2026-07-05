@@ -14,9 +14,10 @@ spec:
               Exportarr instance for Radarr has disappeared from Prometheus service discovery.
             summary: Exportarr instance for Radarr is down.
           expr: absent(up{job=~".*radarr-exporter.*"} == 1)
-          for: 5m
+          for: 30m
           labels:
             severity: critical
+            job: radarr-exporter
         - alert: RadarrDown
           annotations:
             description: |

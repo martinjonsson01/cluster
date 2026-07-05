@@ -14,9 +14,10 @@ spec:
               Exportarr instance for Lidarr has disappeared from Prometheus service discovery.
             summary: Exportarr instance for Lidarr is down.
           expr: absent(up{job="lidarr"} == 1)
-          for: 5m
+          for: 30m
           labels:
             severity: critical
+            job: lidarr
         - alert: LidarrDown
           annotations:
             description: |

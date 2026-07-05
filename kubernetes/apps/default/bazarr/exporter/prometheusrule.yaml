@@ -14,9 +14,10 @@ spec:
               Exportarr instance for Bazarr has disappeared from Prometheus service discovery.
             summary: Exportarr instance for Bazarr is down.
           expr: absent(up{job=~".*bazarr-exporter.*"} == 1)
-          for: 5m
+          for: 30m
           labels:
             severity: critical
+            job: bazarr-exporter
         - alert: BazarrDown
           annotations:
             description: |
