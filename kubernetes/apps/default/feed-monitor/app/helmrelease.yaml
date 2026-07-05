@@ -28,8 +28,8 @@ spec:
           app:
             image:
               repository: git.${SECRET_DOMAIN}/martin/feed-monitor
-              tag: latest
-              pullPolicy: Always
+              tag: 446fc3c
+              pullPolicy: IfNotPresent
             args:
               - --config
               - /config/config.yaml
@@ -41,7 +41,7 @@ spec:
                 cpu: 10m
                 memory: 64M
               limits:
-                memory: 512M
+                memory: 2Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
