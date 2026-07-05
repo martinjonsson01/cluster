@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="87"></td>
+    <td rowspan="88"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="87"></td>
+    <td rowspan="88"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -44,6 +44,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/bazarr/exporter/helmrelease.yaml">bazarr-exporter</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/observability/blackbox-exporter/app/helmrelease.yaml">blackbox-exporter</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

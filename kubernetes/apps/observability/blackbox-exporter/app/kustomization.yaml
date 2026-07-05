@@ -5,11 +5,3 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./secret.sops.yaml
-  - ./probe.yaml
-  - ./prometheusrule.yaml
-configMapGenerator:
-  - name: copy-mal-files-script
-    files:
-      - ./resources/copy-mal-files.sh
-generatorOptions:
-  disableNameSuffixHash: true
