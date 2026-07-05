@@ -16,3 +16,19 @@ spec:
           for: 5m
           labels:
             severity: warning
+        - alert: FeedMonitorStale
+          annotations:
+            description: No feed-monitor run has succeeded in the last 24 hours.
+            summary: feed-monitor runs are stale.
+          expr: time() - kube_cronjob_status_last_successful_time{namespace="default", cronjob="feed-monitor"} > 86400
+          for: 15m
+          labels:
+            severity: warning
+        - alert: FeedMonitorMissing
+          annotations:
+            description: The feed-monitor cronjob is no longer reported by kube-state-metrics.
+            summary: feed-monitor cronjob is missing.
+          expr: absent(kube_cronjob_status_last_successful_time{namespace="default", cronjob="feed-monitor"})
+          for: 1h
+          labels:
+            severity: warning
