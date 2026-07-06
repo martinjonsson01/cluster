@@ -55,10 +55,35 @@ data:
           ]
         },
         {
+          "id": 7,
+          "type": "stat",
+          "title": "LLM balance (USD)",
+          "gridPos": { "h": 8, "w": 6, "x": 6, "y": 8 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "currencyUSD",
+              "decimals": 2,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "yellow", "value": 1 },
+                  { "color": "green", "value": 2 }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "targets": [
+            { "expr": "feedmonitor_llm_balance_usd", "instant": true, "refId": "A" }
+          ]
+        },
+        {
           "id": 4,
           "type": "timeseries",
           "title": "Cumulative LLM spend (USD)",
-          "gridPos": { "h": 8, "w": 18, "x": 6, "y": 8 },
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
           "fieldConfig": {
             "defaults": { "unit": "currencyUSD" },
