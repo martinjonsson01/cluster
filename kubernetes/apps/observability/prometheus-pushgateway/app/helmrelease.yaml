@@ -21,6 +21,7 @@ spec:
     fullnameOverride: *app
     serviceMonitor:
       enabled: true
+      namespace: observability
     resources:
       requests:
         cpu: 10m
