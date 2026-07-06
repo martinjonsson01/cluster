@@ -1,0 +1,106 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kubernetes
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: feed-monitor-dashboard
+  labels:
+    grafana_dashboard: "1"
+  annotations:
+    grafana_folder: feed-monitor
+data:
+  feed-monitor.json: |
+    {
+      "title": "feed-monitor",
+      "uid": "feed-monitor",
+      "schemaVersion": 39,
+      "version": 1,
+      "editable": true,
+      "time": { "from": "now-7d", "to": "now" },
+      "panels": [
+        {
+          "id": 1,
+          "type": "timeseries",
+          "title": "Items per run",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            { "expr": "feedmonitor_items_fetched", "legendFormat": "fetched", "instant": false, "refId": "A" },
+            { "expr": "feedmonitor_items_new", "legendFormat": "new", "instant": false, "refId": "B" },
+            { "expr": "feedmonitor_items_scored", "legendFormat": "scored", "instant": false, "refId": "C" }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "timeseries",
+          "title": "Queue depth",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            { "expr": "feedmonitor_queue_depth", "legendFormat": "queue depth", "instant": false, "refId": "A" }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "stat",
+          "title": "Spend last 30d (USD)",
+          "gridPos": { "h": 8, "w": 6, "x": 0, "y": 8 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "fieldConfig": {
+            "defaults": { "unit": "currencyUSD", "decimals": 2 },
+            "overrides": []
+          },
+          "targets": [
+            { "expr": "increase(feedmonitor_llm_spend_usd_total[30d])", "instant": true, "refId": "A" }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "timeseries",
+          "title": "Cumulative LLM spend (USD)",
+          "gridPos": { "h": 8, "w": 18, "x": 6, "y": 8 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "fieldConfig": {
+            "defaults": { "unit": "currencyUSD" },
+            "overrides": []
+          },
+          "targets": [
+            { "expr": "feedmonitor_llm_spend_usd_total", "legendFormat": "cumulative spend", "instant": false, "refId": "A" }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "timeseries",
+          "title": "Rejected by reason",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "targets": [
+            { "expr": "feedmonitor_items_rejected", "legendFormat": "{{reason}}", "instant": false, "refId": "A" }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "stat",
+          "title": "Last push age",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "fieldConfig": {
+            "defaults": { "unit": "s" },
+            "overrides": []
+          },
+          "targets": [
+            { "expr": "time() - push_time_seconds{job=\"feedmonitor\"}", "instant": true, "refId": "A" }
+          ]
+        }
+      ],
+      "templating": {
+        "list": [
+          {
+            "name": "datasource",
+            "type": "datasource",
+            "query": "prometheus",
+            "current": {}
+          }
+        ]
+      }
+    }

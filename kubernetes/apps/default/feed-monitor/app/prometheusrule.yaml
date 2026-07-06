@@ -32,3 +32,11 @@ spec:
           for: 1h
           labels:
             severity: warning
+        - alert: FeedMonitorSpendHigh
+          annotations:
+            description: feed-monitor LLM spend over the last 30 days exceeds 5 USD.
+            summary: feed-monitor LLM spend is high.
+          expr: increase(feedmonitor_llm_spend_usd_total[30d]) > 5
+          for: 1h
+          labels:
+            severity: warning

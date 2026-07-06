@@ -7,3 +7,4 @@ resources:
   - ./secret.sops.yaml
   - ./registry-secret.sops.yaml
   - ./prometheusrule.yaml
+  - ./dashboard-configmap.yaml

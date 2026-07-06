@@ -28,7 +28,7 @@ spec:
           app:
             image:
               repository: git.${SECRET_DOMAIN}/martin/feed-monitor
-              tag: ddf91be
+              tag: 821c381
               pullPolicy: IfNotPresent
             args:
               - --config
