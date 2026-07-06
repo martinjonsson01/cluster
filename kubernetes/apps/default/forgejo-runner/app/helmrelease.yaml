@@ -93,6 +93,7 @@ spec:
               labels:
                 - "docker:docker://data.forgejo.org/oci/node:22-bookworm"
                 - "ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:act-22.04"
+                - "nix:docker://nixos/nix:latest"
             cache:
               enabled: true
             container:
