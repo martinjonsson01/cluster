@@ -58,6 +58,9 @@ spec:
         openid:
           ENABLE_OPENID_SIGNIN: false
           ENABLE_OPENID_SIGNUP: false
+        actions:
+          ENABLED: true
+          DEFAULT_ACTIONS_URL: https://data.forgejo.org
     resources:
       requests:
         cpu: 50m

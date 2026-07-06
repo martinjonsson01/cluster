@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="89"></td>
+    <td rowspan="90"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="89"></td>
+    <td rowspan="90"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -108,6 +108,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/forgejo/app/helmrelease.yaml">forgejo</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/forgejo-runner/app/helmrelease.yaml">forgejo-runner</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
