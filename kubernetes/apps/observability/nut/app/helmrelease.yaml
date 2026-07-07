@@ -1,0 +1,128 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nut
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  dependsOn:
+    - name: kube-prometheus-stack
+      namespace: observability
+  values:
+    controllers:
+      nut:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          # usbhid-ups matches the UPS by its serial, so the ~124s USB
+          # re-enumeration (moving devnum) is invisible to the driver as long as
+          # the whole bus is mounted. upsd stays foregrounded as PID 1.
+          server:
+            image:
+              repository: instantlinux/nut-upsd
+              tag: 2.8.3-r4
+            command:
+              - /bin/sh
+              - -c
+              - |
+                mkdir -p /var/run/nut
+                /usr/sbin/upsdrvctl -u root start
+                exec /usr/sbin/upsd -u root -F
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+
+          exporter:
+            image:
+              repository: ghcr.io/druggeri/nut_exporter
+              tag: 3.3.0
+            env:
+              NUT_EXPORTER_SERVER: 127.0.0.1
+              NUT_EXPORTER_VARIABLES: >-
+                battery.charge,battery.runtime,battery.voltage,battery.voltage.nominal,input.voltage,input.voltage.nominal,ups.load,ups.status
+            resources:
+              requests:
+                cpu: 5m
+                memory: 16Mi
+              limits:
+                memory: 64Mi
+
+    defaultPodOptions:
+      # The UPS is cabled to griffith's USB; the driver must run there.
+      nodeSelector:
+        kubernetes.io/hostname: griffith
+
+    service:
+      app:
+        controller: nut
+        ports:
+          metrics:
+            port: 9199
+
+    serviceMonitor:
+      app:
+        serviceName: nut
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /ups_metrics
+            interval: 1m
+            scrapeTimeout: 30s
+            params:
+              ups:
+                - apc
+
+    persistence:
+      config:
+        type: configMap
+        name: nut-config
+        advancedMounts:
+          nut:
+            server:
+              - path: /etc/nut/nut.conf
+                subPath: nut.conf
+                readOnly: true
+              - path: /etc/nut/ups.conf
+                subPath: ups.conf
+                readOnly: true
+              - path: /etc/nut/upsd.conf
+                subPath: upsd.conf
+                readOnly: true
+      usb:
+        type: hostPath
+        hostPath: /dev/bus/usb
+        hostPathType: Directory
+        advancedMounts:
+          nut:
+            server:
+              - path: /dev/bus/usb
+
+    configMaps:
+      config:
+        forceRename: nut-config
+        data:
+          nut.conf: |
+            MODE=netserver
+          ups.conf: |
+            # Retry the driver at startup so a pod launched during the UPS's
+            # ~124s USB disconnect window still connects instead of giving up.
+            maxretry = 20
+            retrydelay = 5
+            [apc]
+                driver = usbhid-ups
+                port = auto
+                serial = "9B2509A04867"
+                desc = "APC Back-UPS BX750MI"
+          upsd.conf: |
+            LISTEN 127.0.0.1 3493

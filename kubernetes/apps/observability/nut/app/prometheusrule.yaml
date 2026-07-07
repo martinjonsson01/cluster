@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: nut-rules
+spec:
+  groups:
+    - name: nut.rules
+      rules:
+        - alert: UPSCommunicationLost
+          annotations:
+            summary:
+              NUT has not reported UPS metrics for 15m. Check the UPS is powered
+              and its USB cable is plugged into griffith; the exporter, upsd
+              driver or griffith itself may also be down.
+          # Tolerant of the ~124s USB re-enumeration and brief pod restarts.
+          expr: absent(network_ups_tools_battery_charge)
+          for: 15m
+          labels:
+            severity: critical
+        - alert: UPSOnBattery
+          annotations:
+            summary:
+              UPS is running on battery (mains power lost). Battery at
+              {{ with query "network_ups_tools_battery_charge" }}{{ . | first | value | printf "%.0f" }}%{{ end }}.
+          expr: network_ups_tools_ups_status{flag="OB"} == 1
+          for: 1m
+          labels:
+            severity: warning
+        - alert: UPSLowBattery
+          annotations:
+            summary:
+              UPS battery is low while on battery power. Shutdown is imminent.
+          expr: network_ups_tools_ups_status{flag="LB"} == 1
+          for: 0m
+          labels:
+            severity: critical
+        - alert: UPSReplaceBattery
+          annotations:
+            summary:
+              UPS raised replace-battery (RB). A battery self-test failed. Reseat
+              the battery faston tabs, then warranty-claim if it recurs when cool.
+          expr: network_ups_tools_ups_status{flag="RB"} == 1
+          for: 5m
+          labels:
+            severity: critical
+        - alert: UPSOverload
+          annotations:
+            summary:
+              UPS reports overload (OVER) at {{ with query "network_ups_tools_ups_load" }}{{ . | first | value | printf "%.0f" }}%{{ end }} load.
+          expr: network_ups_tools_ups_status{flag="OVER"} == 1
+          for: 1m
+          labels:
+            severity: critical
+        - alert: UPSBatteryChargeLow
+          annotations:
+            summary:
+              UPS battery charge has stayed below 50% for 10m (currently
+              {{ $value | printf "%.0f" }}%).
+          expr: network_ups_tools_battery_charge < 50
+          for: 10m
+          labels:
+            severity: warning

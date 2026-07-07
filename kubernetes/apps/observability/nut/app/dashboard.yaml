@@ -1,0 +1,174 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kubernetes
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nut-dashboard
+  labels:
+    grafana_dashboard: "1"
+  annotations:
+    grafana_folder: nut
+data:
+  nut.json: |
+    {
+      "title": "UPS (NUT)",
+      "uid": "nut-ups",
+      "schemaVersion": 39,
+      "version": 1,
+      "editable": true,
+      "refresh": "1m",
+      "time": { "from": "now-24h", "to": "now" },
+      "panels": [
+        {
+          "id": 1,
+          "type": "stat",
+          "title": "Mains power",
+          "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "options": { "colorMode": "background", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"] } },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [
+                { "type": "value", "options": { "1": { "text": "On line", "color": "green", "index": 0 }, "0": { "text": "ON BATTERY", "color": "red", "index": 1 } } }
+              ]
+            },
+            "overrides": []
+          },
+          "targets": [
+            { "expr": "network_ups_tools_ups_status{flag=\"OL\"}", "instant": true, "refId": "A" }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "stat",
+          "title": "Battery health",
+          "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "options": { "colorMode": "background", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"] } },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [
+                { "type": "value", "options": { "0": { "text": "OK", "color": "green", "index": 0 }, "1": { "text": "REPLACE", "color": "red", "index": 1 } } },
+                { "type": "special", "options": { "match": "null", "result": { "text": "OK", "color": "green", "index": 2 } } }
+              ]
+            },
+            "overrides": []
+          },
+          "targets": [
+            { "expr": "network_ups_tools_ups_status{flag=\"RB\"}", "instant": true, "refId": "A" }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "stat",
+          "title": "Load",
+          "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "options": { "colorMode": "value", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 70 }, { "color": "red", "value": 90 } ] }
+            },
+            "overrides": []
+          },
+          "targets": [
+            { "expr": "network_ups_tools_ups_load", "instant": true, "refId": "A" }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "stat",
+          "title": "Estimated runtime",
+          "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "options": { "colorMode": "value", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"] } },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "thresholds": { "mode": "absolute", "steps": [ { "color": "red", "value": null }, { "color": "yellow", "value": 180 }, { "color": "green", "value": 360 } ] }
+            },
+            "overrides": []
+          },
+          "targets": [
+            { "expr": "network_ups_tools_battery_runtime", "instant": true, "refId": "A" }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "gauge",
+          "title": "Battery charge",
+          "gridPos": { "h": 8, "w": 6, "x": 0, "y": 4 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdLabels": false, "showThresholdMarkers": true },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "min": 0,
+              "max": 100,
+              "thresholds": { "mode": "absolute", "steps": [ { "color": "red", "value": null }, { "color": "yellow", "value": 50 }, { "color": "green", "value": 90 } ] }
+            },
+            "overrides": []
+          },
+          "targets": [
+            { "expr": "network_ups_tools_battery_charge", "instant": true, "refId": "A" }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "timeseries",
+          "title": "Battery charge %",
+          "gridPos": { "h": 8, "w": 9, "x": 6, "y": 4 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100 }, "overrides": [] },
+          "targets": [
+            { "expr": "network_ups_tools_battery_charge", "legendFormat": "charge", "refId": "A" }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "timeseries",
+          "title": "Load %",
+          "gridPos": { "h": 8, "w": 9, "x": 15, "y": 4 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "fieldConfig": { "defaults": { "unit": "percent", "min": 0 }, "overrides": [] },
+          "targets": [
+            { "expr": "network_ups_tools_ups_load", "legendFormat": "load", "refId": "A" }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "timeseries",
+          "title": "Input voltage",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "fieldConfig": { "defaults": { "unit": "volt" }, "overrides": [] },
+          "targets": [
+            { "expr": "network_ups_tools_input_voltage", "legendFormat": "input", "refId": "A" },
+            { "expr": "network_ups_tools_input_voltage_nominal", "legendFormat": "nominal", "refId": "B" }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "timeseries",
+          "title": "Battery voltage",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+          "datasource": { "type": "prometheus", "uid": "${datasource}" },
+          "fieldConfig": { "defaults": { "unit": "volt" }, "overrides": [] },
+          "targets": [
+            { "expr": "network_ups_tools_battery_voltage", "legendFormat": "battery", "refId": "A" },
+            { "expr": "network_ups_tools_battery_voltage_nominal", "legendFormat": "nominal", "refId": "B" }
+          ]
+        }
+      ],
+      "templating": {
+        "list": [
+          {
+            "name": "datasource",
+            "type": "datasource",
+            "query": "prometheus",
+            "current": {}
+          }
+        ]
+      }
+    }
