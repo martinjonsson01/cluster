@@ -61,6 +61,9 @@ spec:
         actions:
           ENABLED: true
           DEFAULT_ACTIONS_URL: https://data.forgejo.org
+        webhook:
+          # In-cluster targets are blocked by default (ALLOWED_HOST_LIST=external)
+          ALLOWED_HOST_LIST: home-assistant.default.svc.cluster.local
     resources:
       requests:
         cpu: 50m
