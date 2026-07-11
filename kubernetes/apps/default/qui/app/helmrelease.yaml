@@ -106,6 +106,19 @@ spec:
             namespace: network
             sectionName: https
         rules:
+          # Work around QUI resetting the active route to `/` during API/SSO
+          # recovery. Send that root navigation back to the qBittorrent instance.
+          - matches:
+              - path:
+                  type: Exact
+                  value: /
+            filters:
+              - type: RequestRedirect
+                requestRedirect:
+                  path:
+                    type: ReplaceFullPath
+                    replaceFullPath: /instances/1
+                  statusCode: 302
           - backendRefs:
               - identifier: app
                 port: http
