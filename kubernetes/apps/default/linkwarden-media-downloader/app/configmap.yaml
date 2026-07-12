@@ -220,7 +220,10 @@ data:
         "timeout": 30,
         "twitter": {
           "cards": true,
-          "filename": "{date:%Y-%m-%d}_{tweet_id}_{num}.{extension}",
+          "filename": {
+            "count > 1": "{content|filename!W:X80/…/}_{num}.{extension}",
+            "": "{content|filename!W:X80/…/}.{extension}"
+          },
           "quoted": true,
           "ratelimit": "abort",
           "size": ["orig", "4096x4096", "large", "medium", "small"],
