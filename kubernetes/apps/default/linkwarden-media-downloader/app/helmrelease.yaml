@@ -1,0 +1,82 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: linkwarden-media-downloader
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      linkwarden-media-downloader:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        type: cronjob
+        cronjob:
+          schedule: "*/15 * * * *"
+          backoffLimit: 0
+          concurrencyPolicy: Forbid
+          failedJobsHistory: 1
+          successfulJobsHistory: 1
+
+        pod:
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [65542]
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mikf/gallery-dl
+              tag: latest@sha256:c2637cd6adcd1d69f1eaac69e3b8fe7d2cd6ab156580fcb133b5ed923922f56f
+            command:
+              - python3
+              - /config/download.py
+            env:
+              LINKWARDEN_URL: http://linkwarden.default.svc.cluster.local:3000
+              ALERTMANAGER_URL: http://alertmanager-operated.observability.svc.cluster.local:9093/api/v2/alerts
+              MIN_LINK_DELAY_SECONDS: "60"
+              MAX_LINK_DELAY_SECONDS: "180"
+              HOME: /tmp
+            envFrom:
+              - secretRef:
+                  name: linkwarden-media-downloader-secret
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64M
+              limits:
+                memory: 512M
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+
+    persistence:
+      config:
+        type: configMap
+        name: linkwarden-media-downloader
+        globalMounts:
+          - path: /config
+      downloads:
+        type: nfs
+        server: ${SECRET_NAS_IP}
+        path: ${SECRET_LINKWARDEN_DOWNLOAD_PATH}
+        globalMounts:
+          - path: /downloads
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp

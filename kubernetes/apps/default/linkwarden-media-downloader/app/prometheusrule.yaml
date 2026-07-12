@@ -1,0 +1,40 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: linkwarden-media-downloader
+spec:
+  groups:
+    - name: LinkwardenMediaDownloader
+      rules:
+        - alert: LinkwardenMediaDownloadFailed
+          annotations:
+            description: A Linkwarden media downloader job failed.
+            summary: Linkwarden media download failed.
+          expr: |-
+            (kube_job_status_failed{namespace="default", job_name=~"linkwarden-media-downloader.*"} > 0)
+            and on (namespace, job_name)
+            (time() - kube_job_created{namespace="default", job_name=~"linkwarden-media-downloader.*"} < 1800)
+          for: 5m
+          labels:
+            severity: warning
+        - alert: LinkwardenMediaDownloaderStale
+          annotations:
+            description: No Linkwarden media downloader run has succeeded in the last hour and no run is active.
+            summary: Linkwarden media downloader runs are stale.
+          expr: |-
+            (time() - kube_cronjob_status_last_successful_time{namespace="default", cronjob="linkwarden-media-downloader"} > 3600)
+            and on (namespace, cronjob)
+            (kube_cronjob_status_active{namespace="default", cronjob="linkwarden-media-downloader"} == 0)
+          for: 15m
+          labels:
+            severity: warning
+        - alert: LinkwardenMediaDownloaderMissing
+          annotations:
+            description: The Linkwarden media downloader cronjob is no longer reported by kube-state-metrics.
+            summary: Linkwarden media downloader cronjob is missing.
+          expr: absent(kube_cronjob_info{namespace="default", cronjob="linkwarden-media-downloader"})
+          for: 1h
+          labels:
+            severity: warning

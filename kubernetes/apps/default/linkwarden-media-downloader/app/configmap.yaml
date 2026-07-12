@@ -1,0 +1,229 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: linkwarden-media-downloader
+data:
+  download.py: |
+    import json
+    import os
+    import random
+    import subprocess
+    import sys
+    import time
+    from datetime import datetime, timedelta, timezone
+    from urllib.error import HTTPError, URLError
+    from urllib.parse import urlencode
+    from urllib.request import Request, urlopen
+
+    LINKWARDEN_URL = os.environ["LINKWARDEN_URL"].rstrip("/")
+    LINKWARDEN_TOKEN = os.environ["LINKWARDEN_TOKEN"]
+    COLLECTION_NAME = os.environ["LINKWARDEN_COLLECTION"]
+    ALERTMANAGER_URL = os.environ["ALERTMANAGER_URL"]
+    MIN_LINK_DELAY_SECONDS = int(os.environ["MIN_LINK_DELAY_SECONDS"])
+    MAX_LINK_DELAY_SECONDS = int(os.environ["MAX_LINK_DELAY_SECONDS"])
+    RANDOM = random.SystemRandom()
+
+
+    def get_json(path, parameters=None):
+      url = f"{LINKWARDEN_URL}{path}"
+      if parameters:
+        url = f"{url}?{urlencode(parameters)}"
+
+      request = Request(
+        url,
+        headers={
+          "Accept": "application/json",
+          "Authorization": f"Bearer {LINKWARDEN_TOKEN}",
+        },
+      )
+
+      try:
+        with urlopen(request, timeout=30) as response:
+          return json.load(response)
+      except HTTPError as error:
+        detail = error.read(512).decode("utf-8", errors="replace")
+        raise RuntimeError(
+          f"Linkwarden request failed with HTTP {error.code}: {detail}"
+        ) from error
+      except URLError as error:
+        raise RuntimeError(f"Linkwarden request failed: {error.reason}") from error
+
+
+    def find_collection_id():
+      payload = get_json("/api/v1/collections")
+      collections = payload.get("response")
+      if not isinstance(collections, list):
+        raise RuntimeError("Linkwarden returned an unexpected collections response")
+
+      matches = [item for item in collections if item.get("name") == COLLECTION_NAME]
+      if len(matches) != 1:
+        raise RuntimeError(
+          f"Expected one Linkwarden collection named {COLLECTION_NAME!r}, found {len(matches)}"
+        )
+      return matches[0]["id"]
+
+
+    def fetch_links(collection_id):
+      cursor = None
+      seen_cursors = set()
+
+      while True:
+        parameters = {"collectionId": collection_id}
+        if cursor is not None:
+          parameters["cursor"] = cursor
+
+        payload = get_json("/api/v1/links", parameters)
+        links = payload.get("response")
+
+        if not isinstance(links, list):
+          raise RuntimeError("Linkwarden returned an unexpected links response")
+
+        yield from links
+
+        if not links:
+          return
+        next_cursor = links[-1]["id"]
+        if next_cursor in seen_cursors:
+          raise RuntimeError("Linkwarden returned a repeated pagination cursor")
+        seen_cursors.add(next_cursor)
+        cursor = next_cursor
+
+
+    def download(link):
+      result = subprocess.run(
+        [
+          "gallery-dl",
+          "--config",
+          "/config/gallery-dl.conf",
+          link["url"],
+        ],
+        check=False,
+      )
+      return result.returncode == 0
+
+
+    def delete_link(link_id):
+      request = Request(
+        f"{LINKWARDEN_URL}/api/v1/links/{link_id}",
+        headers={
+          "Accept": "application/json",
+          "Authorization": f"Bearer {LINKWARDEN_TOKEN}",
+        },
+        method="DELETE",
+      )
+
+      try:
+        with urlopen(request, timeout=30):
+          pass
+      except HTTPError as error:
+        detail = error.read(512).decode("utf-8", errors="replace")
+        raise RuntimeError(
+          f"Linkwarden deletion failed with HTTP {error.code}: {detail}"
+        ) from error
+      except (URLError, TimeoutError) as error:
+        raise RuntimeError(f"Linkwarden deletion failed: {error}") from error
+
+
+    def report_link_failure(link, summary):
+      now = datetime.now(timezone.utc)
+      payload = [
+        {
+          "labels": {
+            "alertname": "LinkwardenMediaLinkFailed",
+            "severity": "warning",
+            "namespace": "default",
+            "link_id": str(link["id"]),
+          },
+          "annotations": {
+            "summary": summary,
+            "description": link["url"],
+          },
+          "generatorURL": link["url"],
+          "startsAt": now.isoformat(),
+          "endsAt": (now + timedelta(minutes=20)).isoformat(),
+        }
+      ]
+      request = Request(
+        ALERTMANAGER_URL,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST",
+      )
+
+      try:
+        with urlopen(request, timeout=10):
+          pass
+      except (HTTPError, URLError, TimeoutError) as error:
+        print(
+          f"Could not report failed link {link['id']} to Alertmanager: {error}",
+          file=sys.stderr,
+        )
+
+
+    def main():
+      collection_id = find_collection_id()
+      links = list(fetch_links(collection_id))
+
+      failures = 0
+      for position, link in enumerate(links):
+        print(
+          f"Processing Linkwarden link {link['id']}: {link['url']}",
+          flush=True,
+        )
+        if not download(link):
+          failures += 1
+          report_link_failure(
+            link,
+            f"Linkwarden media link {link['id']} failed to download.",
+          )
+        else:
+          try:
+            delete_link(link["id"])
+          except RuntimeError as error:
+            failures += 1
+            print(error, file=sys.stderr)
+            report_link_failure(
+              link,
+              f"Processed media link {link['id']} could not be deleted from Linkwarden.",
+            )
+
+        if position < len(links) - 1:
+          time.sleep(RANDOM.randint(MIN_LINK_DELAY_SECONDS, MAX_LINK_DELAY_SECONDS))
+
+      print(f"Processed {len(links)} queued media links")
+      if failures:
+        print(f"Left {failures} media links queued after failures", file=sys.stderr)
+      return 0
+
+
+    if __name__ == "__main__":
+      try:
+        raise SystemExit(main())
+      except (KeyError, RuntimeError) as error:
+        print(error, file=sys.stderr)
+        raise SystemExit(1) from error
+
+  gallery-dl.conf: |
+    {
+      "extractor": {
+        "base-directory": "/downloads",
+        "directory": [],
+        "retries": 4,
+        "timeout": 30,
+        "twitter": {
+          "cards": true,
+          "filename": "{date:%Y-%m-%d}_{tweet_id}_{num}.{extension}",
+          "quoted": true,
+          "ratelimit": "abort",
+          "size": ["orig", "4096x4096", "large", "medium", "small"],
+          "videos": true
+        }
+      },
+      "downloader": {
+        "part": true
+      },
+      "output": {
+        "mode": "pipe"
+      }
+    }

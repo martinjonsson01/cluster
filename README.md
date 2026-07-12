@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="91"></td>
+    <td rowspan="92"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="91"></td>
+    <td rowspan="92"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -184,6 +184,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>Cluster</code></td>
     <td><a href="kubernetes/apps/default/linkwarden/app/postgresql.yaml">linkwarden-db</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/linkwarden-media-downloader/app/helmrelease.yaml">linkwarden-media-downloader</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

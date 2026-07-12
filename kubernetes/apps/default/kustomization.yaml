@@ -28,6 +28,7 @@ resources:
   - ./maintainerr/ks.yaml
   - ./changedetection/ks.yaml
   - ./linkwarden/ks.yaml
+  - ./linkwarden-media-downloader/ks.yaml
   - ./shinkro/ks.yaml
   - ./qui/ks.yaml
   - ./calibre/ks.yaml
