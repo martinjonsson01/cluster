@@ -154,6 +154,7 @@ data:
       try:
         with urlopen(request, timeout=10):
           pass
+        print(f"Reported failed link {link['id']} to Alertmanager", flush=True)
       except (HTTPError, URLError, TimeoutError) as error:
         print(
           f"Could not report failed link {link['id']} to Alertmanager: {error}",
@@ -164,6 +165,7 @@ data:
     def main():
       collection_id = find_collection_id()
       links = list(fetch_links(collection_id))
+      print(f"Found {len(links)} queued media links", flush=True)
 
       failures = 0
       for position, link in enumerate(links):
@@ -173,13 +175,16 @@ data:
         )
         if not download(link):
           failures += 1
+          print(f"gallery-dl failed for link {link['id']}", file=sys.stderr)
           report_link_failure(
             link,
             f"Linkwarden media link {link['id']} failed to download.",
           )
         else:
+          print(f"gallery-dl completed link {link['id']}", flush=True)
           try:
             delete_link(link["id"])
+            print(f"Removed Linkwarden link {link['id']}", flush=True)
           except RuntimeError as error:
             failures += 1
             print(error, file=sys.stderr)
@@ -189,7 +194,9 @@ data:
             )
 
         if position < len(links) - 1:
-          time.sleep(RANDOM.randint(MIN_LINK_DELAY_SECONDS, MAX_LINK_DELAY_SECONDS))
+          delay = RANDOM.randint(MIN_LINK_DELAY_SECONDS, MAX_LINK_DELAY_SECONDS)
+          print(f"Waiting {delay} seconds before the next link", flush=True)
+          time.sleep(delay)
 
       print(f"Processed {len(links)} queued media links")
       if failures:
