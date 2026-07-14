@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="92"></td>
+    <td rowspan="93"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="92"></td>
+    <td rowspan="93"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -380,6 +380,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>Cluster</code></td>
     <td><a href="kubernetes/apps/default/vaultwarden/app/postgresql.yaml">vaultwarden-db</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/ytdl-sub/app/helmrelease.yaml">ytdl-sub</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

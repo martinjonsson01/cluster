@@ -44,3 +44,4 @@ resources:
   - ./forgejo/ks.yaml
   - ./forgejo-runner/ks.yaml
   - ./feed-monitor/ks.yaml
+  - ./ytdl-sub/ks.yaml
