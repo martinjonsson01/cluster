@@ -13,9 +13,9 @@ spec:
   values:
     controllers:
       ytdl-sub:
-        annotations:
-          reloader.stakater.com/auto: "true"
-
+        # No reloader annotation: each run reads the secret at pod start, and
+        # reloader reacting to secret edits would spawn ownerless one-off jobs
+        # that bypass the concurrencyPolicy below.
         type: cronjob
         cronjob:
           schedule: "0 */6 * * *"
