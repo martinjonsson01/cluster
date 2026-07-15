@@ -280,6 +280,7 @@ spec:
           containers:
             - name: check
               image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
+              workingDir: /usr/src/paperless/src
               command:
                 - python3
                 - /config/sanity-check.py
@@ -325,6 +326,8 @@ spec:
                   value: https://papers.${SECRET_DOMAIN}
                 - name: PYTHONDONTWRITEBYTECODE
                   value: "1"
+                - name: PYTHONPATH
+                  value: /usr/src/paperless/src
               resources:
                 requests:
                   cpu: 25m
