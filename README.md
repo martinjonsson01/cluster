@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="93"></td>
+    <td rowspan="94"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="93"></td>
+    <td rowspan="94"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -264,6 +264,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>Cluster</code></td>
     <td><a href="kubernetes/apps/default/paperless/app/postgresql.yaml">paperless-db</a></td>
+  </tr>
+  <tr>
+    <td><code>CronJob</code></td>
+    <td><a href="kubernetes/apps/default/paperless/app/sanity-check.yaml">paperless-sanity-check</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

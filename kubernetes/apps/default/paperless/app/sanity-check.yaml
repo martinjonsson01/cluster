@@ -1,0 +1,403 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paperless-sanity-check
+data:
+  sanity-check.py: |
+    import argparse
+    import hashlib
+    import json
+    import logging
+    import os
+    import sys
+    from collections.abc import Mapping, Sequence
+    from dataclasses import asdict, dataclass
+    from datetime import datetime, timedelta, timezone
+    from urllib.error import HTTPError, URLError
+    from urllib.request import Request, urlopen
+
+
+    @dataclass(frozen=True)
+    class IntegrityIssue:
+      document_id: str
+      document_title: str
+      kind: str
+      level: str
+      message: str
+
+      @property
+      def identity(self):
+        value = f"{self.document_id}\0{self.level}\0{self.message}"
+        return hashlib.sha256(value.encode()).hexdigest()[:16]
+
+
+    class UnsupportedSanityResult(RuntimeError):
+      pass
+
+
+    def parse_arguments():
+      parser = argparse.ArgumentParser()
+      parser.add_argument(
+        "--alertmanager-url",
+        default=os.environ.get("ALERTMANAGER_URL"),
+      )
+      parser.add_argument("--dry-run", action="store_true")
+      parser.add_argument("--alert-lifetime-hours", type=int, default=26)
+      return parser.parse_args()
+
+
+    def looks_like_issue_mapping(value):
+      if not isinstance(value, Mapping):
+        return False
+      for entries in value.values():
+        if not isinstance(entries, Sequence) or isinstance(entries, (str, bytes)):
+          return False
+        for entry in entries:
+          if not isinstance(entry, Mapping):
+            return False
+          if "level" not in entry or "message" not in entry:
+            return False
+      return True
+
+
+    def extract_issue_mapping(messages):
+      named_mapping = getattr(messages, "_messages", None)
+      if looks_like_issue_mapping(named_mapping):
+        return named_mapping
+
+      candidates = [
+        value
+        for value in vars(messages).values()
+        if looks_like_issue_mapping(value)
+      ]
+      if len(candidates) != 1:
+        raise UnsupportedSanityResult(
+          "Paperless sanity checker returned an unsupported result structure"
+        )
+      return candidates[0]
+
+
+    def classify_issue(message):
+      normalized = message.casefold()
+      if normalized.startswith("checksum mismatch."):
+        return "original_checksum_mismatch"
+      subjects = (
+        ("thumbnail", "thumbnail"),
+        ("original", "original"),
+        ("archived", "archive"),
+        ("archive file", "archive"),
+        ("orphaned", "orphaned_media"),
+        ("ocr", "ocr"),
+      )
+      conditions = (
+        ("checksum mismatch", "checksum_mismatch"),
+        ("does not exist", "missing"),
+        ("cannot read", "unreadable"),
+        ("checksum is missing", "missing_checksum"),
+        ("no archive filename", "missing_filename"),
+        ("no ocr data", "missing_data"),
+      )
+      subject = next(
+        (name for phrase, name in subjects if phrase in normalized),
+        "document",
+      )
+      condition = next(
+        (name for phrase, name in conditions if phrase in normalized),
+        "integrity_issue",
+      )
+      return f"{subject}_{condition}"
+
+
+    def normalize_level(value):
+      if isinstance(value, int):
+        return value
+      if isinstance(value, str):
+        level = logging.getLevelNamesMapping().get(value.upper())
+        if level is not None:
+          return level
+      raise UnsupportedSanityResult(
+        f"Unsupported Paperless issue level: {value!r}"
+      )
+
+
+    def extract_issues(messages, document_model):
+      issue_mapping = extract_issue_mapping(messages)
+      document_ids = [key for key in issue_mapping if key is not None]
+      titles = dict(
+        document_model.global_objects.filter(pk__in=document_ids).values_list(
+          "pk",
+          "title",
+        )
+      )
+      issues = []
+      for document_id, entries in issue_mapping.items():
+        for entry in entries:
+          level_number = normalize_level(entry["level"])
+          if level_number < logging.WARNING:
+            continue
+          message = str(entry["message"])
+          issues.append(
+            IntegrityIssue(
+              document_id=(
+                str(document_id) if document_id is not None else "media"
+              ),
+              document_title=titles.get(
+                document_id,
+                "Paperless media directory",
+              ),
+              kind=classify_issue(message),
+              level=logging.getLevelName(level_number).lower(),
+              message=message,
+            )
+          )
+      return issues
+
+
+    def alert_payload(issue, now, lifetime, paperless_url):
+      severity = "warning" if issue.level == "error" else "info"
+      return {
+        "labels": {
+          "alertname": "PaperlessDocumentIntegrityIssue",
+          "severity": severity,
+          "namespace": "default",
+          "job": "paperless-sanity-check",
+          "document_id": issue.document_id,
+          "issue_kind": issue.kind,
+          "issue_id": issue.identity,
+        },
+        "annotations": {
+          "summary": (
+            f"Paperless document {issue.document_id}: "
+            f"{issue.kind.replace('_', ' ')}"
+          ),
+          "description": f"{issue.document_title}: {issue.message}",
+        },
+        "generatorURL": paperless_url,
+        "startsAt": now.isoformat(),
+        "endsAt": (now + lifetime).isoformat(),
+      }
+
+
+    def post_alerts(url, payload):
+      request = Request(
+        url,
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json"},
+        method="POST",
+      )
+      try:
+        with urlopen(request, timeout=10) as response:
+          if response.status < 200 or response.status >= 300:
+            raise RuntimeError(
+              f"Alertmanager returned HTTP {response.status}"
+            )
+      except (HTTPError, URLError, TimeoutError) as error:
+        raise RuntimeError(
+          f"Could not report findings to Alertmanager: {error}"
+        ) from error
+
+
+    def main():
+      arguments = parse_arguments()
+      if not arguments.dry_run and not arguments.alertmanager_url:
+        raise RuntimeError(
+          "ALERTMANAGER_URL or --alertmanager-url is required"
+        )
+
+      os.environ.setdefault("DJANGO_SETTINGS_MODULE", "paperless.settings")
+      import django
+
+      django.setup()
+      from documents.models import Document
+      from documents.sanity_checker import check_sanity
+
+      messages = check_sanity(progress=False, scheduled=True)
+      messages.log_messages()
+      issues = extract_issues(messages, Document)
+      now = datetime.now(timezone.utc)
+      payload = [
+        alert_payload(
+          issue,
+          now,
+          timedelta(hours=arguments.alert_lifetime_hours),
+          os.environ.get("PAPERLESS_URL", ""),
+        )
+        for issue in issues
+      ]
+
+      report = {
+        "status": "issues" if issues else "ok",
+        "issue_count": len(issues),
+        "issues": [asdict(issue) for issue in issues],
+      }
+      print(json.dumps(report, ensure_ascii=False), flush=True)
+
+      if payload and not arguments.dry_run:
+        post_alerts(arguments.alertmanager_url, payload)
+        print(
+          f"Reported {len(payload)} integrity alerts to Alertmanager",
+          flush=True,
+        )
+      return 0
+
+
+    if __name__ == "__main__":
+      try:
+        raise SystemExit(main())
+      except (RuntimeError, UnsupportedSanityResult) as error:
+        print(error, file=sys.stderr, flush=True)
+        raise SystemExit(1) from error
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/batch/cronjob_v1.json
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: paperless-sanity-check
+spec:
+  schedule: "30 4 * * *"
+  timeZone: Europe/Stockholm
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: paperless-sanity-check
+        spec:
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [568, 65542]
+          containers:
+            - name: check
+              image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
+              command:
+                - python3
+                - /config/sanity-check.py
+              env:
+                - name: ALERTMANAGER_URL
+                  value: http://alertmanager-operated.observability.svc.cluster.local:9093/api/v2/alerts
+                - name: HOME
+                  value: /tmp
+                - name: PAPERLESS_DATA_DIR
+                  value: /data/local/data
+                - name: PAPERLESS_DBENGINE
+                  value: postgresql
+                - name: PAPERLESS_DBHOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: paperless-db-app
+                      key: host
+                - name: PAPERLESS_DBNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: paperless-db-app
+                      key: dbname
+                - name: PAPERLESS_DBPASS
+                  valueFrom:
+                    secretKeyRef:
+                      name: paperless-db-app
+                      key: password
+                - name: PAPERLESS_DBUSER
+                  valueFrom:
+                    secretKeyRef:
+                      name: paperless-db-app
+                      key: user
+                - name: PAPERLESS_MEDIA_ROOT
+                  value: /data/nas/media
+                - name: PAPERLESS_SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: paperless-secret
+                      key: PAPERLESS_SECRET_KEY
+                - name: PAPERLESS_TIME_ZONE
+                  value: ${TIMEZONE}
+                - name: PAPERLESS_URL
+                  value: https://papers.${SECRET_DOMAIN}
+                - name: PYTHONDONTWRITEBYTECODE
+                  value: "1"
+              resources:
+                requests:
+                  cpu: 25m
+                  memory: 256Mi
+                limits:
+                  memory: 2Gi
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop:
+                    - ALL
+              volumeMounts:
+                - name: config
+                  mountPath: /config
+                  readOnly: true
+                - name: data
+                  mountPath: /data/local
+                - name: nas
+                  mountPath: /data/nas
+                  readOnly: true
+                - name: tmp
+                  mountPath: /tmp
+          volumes:
+            - name: config
+              configMap:
+                name: paperless-sanity-check
+            - name: data
+              emptyDir: {}
+            - name: nas
+              nfs:
+                server: ${SECRET_NAS_IP}
+                path: /volume1/homes/martinjonsson01/Drive/paperless
+                readOnly: true
+            - name: tmp
+              emptyDir: {}
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: paperless-sanity-check
+spec:
+  groups:
+    - name: PaperlessSanityCheck
+      rules:
+        - alert: PaperlessSanityCheckJobFailed
+          annotations:
+            description: The latest Paperless sanity check could not complete or report its findings.
+            summary: Paperless sanity check failed.
+          expr: |-
+            (kube_job_status_failed{namespace="default", job_name=~"paperless-sanity-check.*"} > 0)
+            and on (namespace, job_name)
+            (time() - kube_job_created{namespace="default", job_name=~"paperless-sanity-check.*"} < 21600)
+          for: 5m
+          labels:
+            severity: warning
+        - alert: PaperlessSanityCheckStale
+          annotations:
+            description: No Paperless sanity check has succeeded in the last 27 hours and no check is active.
+            summary: Paperless sanity checks are stale.
+          expr: |-
+            (time() - kube_cronjob_status_last_successful_time{namespace="default", cronjob="paperless-sanity-check"} > 97200)
+            and on (namespace, cronjob)
+            (kube_cronjob_status_active{namespace="default", cronjob="paperless-sanity-check"} == 0)
+          for: 15m
+          labels:
+            severity: warning
+        - alert: PaperlessSanityCheckMissing
+          annotations:
+            description: The Paperless sanity-check CronJob is no longer reported by kube-state-metrics.
+            summary: Paperless sanity-check CronJob is missing.
+          expr: absent(kube_cronjob_info{namespace="default", cronjob="paperless-sanity-check"})
+          for: 1h
+          labels:
+            severity: warning

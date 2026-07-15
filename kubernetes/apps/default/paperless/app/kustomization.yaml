@@ -6,6 +6,7 @@ resources:
   - ./secret.sops.yaml
   - ./postgresql.yaml
   - ./helmrelease.yaml
+  - ./sanity-check.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

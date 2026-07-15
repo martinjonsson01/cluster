@@ -67,6 +67,11 @@ spec:
           - name: alertname
             value: LinkwardenMedia(LinkFailed|Downloader(Stale|Missing))
             matchType: =~
+      - receiver: email
+        matchers:
+          - name: alertname
+            value: Paperless(DocumentIntegrityIssue|SanityCheck(JobFailed|Stale|Missing))
+            matchType: =~
   inhibitRules:
     - equal: ["alertname", "namespace"]
       sourceMatch:
