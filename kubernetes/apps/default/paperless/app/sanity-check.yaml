@@ -10,11 +10,15 @@ data:
     import json
     import logging
     import os
+    import socket
     import sys
+    import uuid
     from collections.abc import Mapping, Sequence
     from dataclasses import asdict, dataclass
     from datetime import datetime, timedelta, timezone
+    from pathlib import Path
     from urllib.error import HTTPError, URLError
+    from urllib.parse import urlsplit, urlunsplit
     from urllib.request import Request, urlopen
 
 
@@ -121,15 +125,40 @@ data:
       )
 
 
+    def is_uuid(value):
+      try:
+        uuid.UUID(value)
+      except (ValueError, TypeError, AttributeError):
+        return False
+      return True
+
+
+    def document_name(document):
+      title = document.title.strip()
+      if title and not is_uuid(title):
+        return title
+
+      original_name = Path(document.original_filename).stem.strip()
+      if original_name and not is_uuid(original_name):
+        return original_name
+
+      metadata = []
+      if document.correspondent:
+        metadata.append(document.correspondent.name)
+      if document.created:
+        metadata.append(document.created.isoformat())
+      return " — ".join(metadata) or title or f"Paperless document {document.pk}"
+
+
     def extract_issues(messages, document_model):
       issue_mapping = extract_issue_mapping(messages)
       document_ids = [key for key in issue_mapping if key is not None]
-      titles = dict(
-        document_model.global_objects.filter(pk__in=document_ids).values_list(
-          "pk",
-          "title",
-        )
-      )
+      documents = {
+        document.pk: document
+        for document in document_model.global_objects.filter(
+          pk__in=document_ids
+        ).select_related("correspondent")
+      }
       issues = []
       for document_id, entries in issue_mapping.items():
         for entry in entries:
@@ -142,9 +171,10 @@ data:
               document_id=(
                 str(document_id) if document_id is not None else "media"
               ),
-              document_title=titles.get(
-                document_id,
-                "Paperless media directory",
+              document_title=(
+                document_name(documents[document_id])
+                if document_id in documents
+                else "Paperless media directory"
               ),
               kind=classify_issue(message),
               level=logging.getLevelName(level_number).lower(),
@@ -156,6 +186,11 @@ data:
 
     def alert_payload(issue, now, lifetime, paperless_url):
       severity = "warning" if issue.level == "error" else "info"
+      document_url = paperless_url
+      if issue.document_id.isdigit():
+        document_url = (
+          f"{paperless_url.rstrip('/')}/documents/{issue.document_id}/details"
+        )
       return {
         "labels": {
           "alertname": "PaperlessDocumentIntegrityIssue",
@@ -168,34 +203,75 @@ data:
         },
         "annotations": {
           "summary": (
-            f"Paperless document {issue.document_id}: "
+            f"Paperless: {issue.document_title} has "
             f"{issue.kind.replace('_', ' ')}"
           ),
-          "description": f"{issue.document_title}: {issue.message}",
+          "description": (
+            f"Paperless document #{issue.document_id}. {issue.message}"
+          ),
         },
-        "generatorURL": paperless_url,
+        "generatorURL": document_url,
         "startsAt": now.isoformat(),
         "endsAt": (now + lifetime).isoformat(),
       }
 
 
-    def post_alerts(url, payload):
-      request = Request(
-        url,
-        data=json.dumps(payload).encode(),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-      )
-      try:
-        with urlopen(request, timeout=10) as response:
-          if response.status < 200 or response.status >= 300:
-            raise RuntimeError(
-              f"Alertmanager returned HTTP {response.status}"
-            )
-      except (HTTPError, URLError, TimeoutError) as error:
+    def alertmanager_endpoints(url):
+      parsed = urlsplit(url)
+      if not parsed.hostname:
+        raise RuntimeError(f"Invalid Alertmanager URL: {url}")
+      port = parsed.port or (443 if parsed.scheme == "https" else 80)
+      addresses = {
+        result[4][0]
+        for result in socket.getaddrinfo(
+          parsed.hostname,
+          port,
+          type=socket.SOCK_STREAM,
+        )
+      }
+      if not addresses:
         raise RuntimeError(
-          f"Could not report findings to Alertmanager: {error}"
-        ) from error
+          f"Alertmanager hostname resolved to no endpoints: {parsed.hostname}"
+        )
+      for address in sorted(addresses):
+        host = f"[{address}]" if ":" in address else address
+        yield urlunsplit(
+          (
+            parsed.scheme,
+            f"{host}:{port}",
+            parsed.path,
+            parsed.query,
+            parsed.fragment,
+          )
+        ), parsed.netloc
+
+
+    def post_alerts(url, payload):
+      body = json.dumps(payload).encode()
+      endpoint_count = 0
+      for endpoint, host_header in alertmanager_endpoints(url):
+        request = Request(
+          endpoint,
+          data=body,
+          headers={
+            "Content-Type": "application/json",
+            "Host": host_header,
+          },
+          method="POST",
+        )
+        try:
+          with urlopen(request, timeout=10) as response:
+            if response.status < 200 or response.status >= 300:
+              raise RuntimeError(
+                f"Alertmanager returned HTTP {response.status}"
+              )
+        except (HTTPError, URLError, TimeoutError) as error:
+          raise RuntimeError(
+            f"Could not report findings to Alertmanager endpoint "
+            f"{endpoint}: {error}"
+          ) from error
+        endpoint_count += 1
+      return endpoint_count
 
 
     def main():
@@ -234,9 +310,10 @@ data:
       print(json.dumps(report, ensure_ascii=False), flush=True)
 
       if payload and not arguments.dry_run:
-        post_alerts(arguments.alertmanager_url, payload)
+        endpoint_count = post_alerts(arguments.alertmanager_url, payload)
         print(
-          f"Reported {len(payload)} integrity alerts to Alertmanager",
+          f"Reported {len(payload)} integrity alerts to "
+          f"{endpoint_count} Alertmanager endpoints",
           flush=True,
         )
       return 0
