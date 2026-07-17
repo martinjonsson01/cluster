@@ -4,5 +4,6 @@ kind: Kustomization
 resources:
   - ./envoyproxy.yaml
   - ./gateways.yaml
+  - ./nas.yaml
   - ./policies.yaml
   - ./redirect.yaml
