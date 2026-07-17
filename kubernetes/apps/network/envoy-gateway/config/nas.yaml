@@ -9,8 +9,8 @@ spec:
     - name: https
       appProtocol: https
       protocol: TCP
-      port: 443
-      targetPort: 443
+      port: 5001
+      targetPort: 5001
 ---
 apiVersion: discovery.k8s.io/v1
 kind: EndpointSlice
@@ -28,7 +28,7 @@ ports:
   - name: https
     appProtocol: https
     protocol: TCP
-    port: 443
+    port: 5001
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: BackendTLSPolicy
@@ -57,4 +57,4 @@ spec:
   rules:
     - backendRefs:
         - name: nas
-          port: 443
+          port: 5001
