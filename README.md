@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="94"></td>
+    <td rowspan="96"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="94"></td>
+    <td rowspan="96"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -396,6 +396,14 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/zigbee2mqtt/exporter/helmrelease.yaml">zigbee2mqtt-exporter</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/zulip/app/helmrelease.yaml">zulip</a></td>
+  </tr>
+  <tr>
+    <td><code>Cluster</code></td>
+    <td><a href="kubernetes/apps/default/zulip/app/postgresql.yaml">zulip-db</a></td>
   </tr>
 </table>
 

@@ -1,0 +1,111 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: zulip
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: zulip
+  install:
+    # First boot runs schema bootstrap + migrations, which outlives the
+    # startup probe window; don't let helm-controller time the release out.
+    disableWait: true
+  upgrade:
+    disableWait: true
+  # Settings sourced from the SOPS secret must NOT also be set inline under
+  # zulip.environment: the merge is inconsistent (inline placeholders can win
+  # over valuesFrom).
+  valuesFrom:
+    - kind: Secret
+      name: zulip-secret
+      valuesKey: SECRET_KEY
+      targetPath: zulip.environment.SECRETS_secret_key
+    - kind: Secret
+      name: zulip-secret
+      valuesKey: ZULIP_ADMINISTRATOR
+      targetPath: zulip.environment.SETTING_ZULIP_ADMINISTRATOR
+    - kind: Secret
+      name: zulip-secret
+      valuesKey: EMAIL_HOST
+      targetPath: zulip.environment.SETTING_EMAIL_HOST
+    - kind: Secret
+      name: zulip-secret
+      valuesKey: EMAIL_USER
+      targetPath: zulip.environment.SETTING_EMAIL_HOST_USER
+    - kind: Secret
+      name: zulip-secret
+      valuesKey: EMAIL_PASSWORD
+      targetPath: zulip.environment.SECRETS_email_password
+  values:
+    image:
+      repository: ghcr.io/zulip/zulip-server
+      tag: 12.1-0
+    zulip:
+      environment:
+        SETTING_EXTERNAL_HOST: zulip.${SECRET_DOMAIN}
+        # Trust X-Forwarded-For from the envoy gateway pods (pod CIDR) and
+        # kubelet HTTP probes (node CIDR); zulip's nginx reuses this list for
+        # /health real-ip trust, so probes fail without the node CIDR.
+        LOADBALANCER_IPS: ${POD_CIDR},${NODE_CIDR}
+        SETTING_EMAIL_PORT: "587"
+        SETTING_EMAIL_USE_TLS: true
+        SETTING_DEFAULT_FROM_EMAIL: Zulip <zulip@${SECRET_DOMAIN}>
+        SETTING_NOREPLY_EMAIL_ADDRESS: zulip@${SECRET_DOMAIN}
+        # Token-rewritten noreply addresses (noreply-<token>@...) fail the
+        # SMTP provider's SPF/DKIM; only needed for reply-by-email.
+        SETTING_ADD_TOKENS_TO_NOREPLY_ADDRESS: false
+        # Mobile push via push.zulipchat.com; requires the one-time
+        # `manage.py register_server` step after first boot.
+        SETTING_ZULIP_SERVICE_PUSH_NOTIFICATIONS: true
+      persistence:
+        enabled: true
+        existingClaim: zulip
+    service:
+      type: ClusterIP
+      port: 80
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1Gi
+      limits:
+        memory: 4Gi
+    postgresql:
+      enabled: false
+    externalPostgresql:
+      host: zulip-db-rw.default.svc.cluster.local
+      port: 5432
+      user: zulip
+      database: zulip
+      password:
+        valueFrom:
+          secretKeyRef:
+            name: zulip-db-app
+            key: password
+    rabbitmq:
+      enabled: true
+      persistence:
+        enabled: true
+        existingClaim: zulip-rabbitmq
+      auth:
+        username: zulip
+        existingPasswordSecret: zulip-secret
+        existingSecretPasswordKey: RABBITMQ_PASS
+        existingErlangSecret: zulip-secret
+        existingSecretErlangKey: RABBITMQ_ERLANG_COOKIE
+    # Bundled memcached/redis are cache-only: no persistence, cluster-internal.
+    # Bitnami memcached enforces SASL with an unretrievable generated password
+    # when auth is on; username must also be blanked so zulip skips SASL.
+    memcached:
+      enabled: true
+      auth:
+        enabled: false
+        username: ""
+    redis:
+      enabled: true
+    # Required by the bitnami subcharts when their images are overridden.
+    global:
+      security:
+        allowInsecureImages: true
