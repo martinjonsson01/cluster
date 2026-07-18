@@ -39,6 +39,16 @@ spec:
       name: zulip-secret
       valuesKey: EMAIL_PASSWORD
       targetPath: zulip.environment.SECRETS_email_password
+    # Generated once by `manage.py register_server`; must come from env or the
+    # entrypoint regenerates zulip-secrets.conf without them on every boot.
+    - kind: Secret
+      name: zulip-secret
+      valuesKey: ZULIP_ORG_ID
+      targetPath: zulip.environment.SECRETS_zulip_org_id
+    - kind: Secret
+      name: zulip-secret
+      valuesKey: ZULIP_ORG_KEY
+      targetPath: zulip.environment.SECRETS_zulip_org_key
   values:
     image:
       repository: ghcr.io/zulip/zulip-server
