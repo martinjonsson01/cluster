@@ -96,8 +96,9 @@ spec:
         existingErlangSecret: zulip-secret
         existingSecretErlangKey: RABBITMQ_ERLANG_COOKIE
     # Bundled memcached/redis are cache-only: no persistence, cluster-internal.
-    # Bitnami memcached enforces SASL with an unretrievable generated password
-    # when auth is on; username must also be blanked so zulip skips SASL.
+    # Both bitnami subcharts default to auth with a generated password that
+    # zulip has no way to retrieve, so auth must be off; memcached's username
+    # must also be blanked so zulip skips SASL.
     memcached:
       enabled: true
       auth:
@@ -105,6 +106,8 @@ spec:
         username: ""
     redis:
       enabled: true
+      auth:
+        enabled: false
     # Required by the bitnami subcharts when their images are overridden.
     global:
       security:
