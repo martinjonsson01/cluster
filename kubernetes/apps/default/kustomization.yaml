@@ -46,3 +46,4 @@ resources:
   - ./feed-monitor/ks.yaml
   - ./ytdl-sub/ks.yaml
   - ./zulip/ks.yaml
+  - ./matrix/ks.yaml

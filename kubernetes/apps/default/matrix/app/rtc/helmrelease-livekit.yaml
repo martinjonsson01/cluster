@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: livekit
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile: { type: RuntimeDefault }
+
+    controllers:
+      livekit:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: docker.io/livekit/livekit-server
+              tag: v1.13.4
+            args:
+              - --config
+              - /etc/livekit.yaml
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                memory: 1Gi
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 7880
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 7880
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: ["ALL"]
+
+    service:
+      app:
+        controller: livekit
+        # With a second service present the chart suffixes every service name;
+        # keep the HTTP one at the bare release name for the HTTPRoute.
+        forceRename: livekit
+        ports:
+          http:
+            port: 7880
+      # WebRTC media bypasses the Cloudflare tunnel: the UDM forwards
+      # UDP 7882 + TCP 7881 from the WAN straight to this address.
+      rtc:
+        controller: livekit
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 192.168.0.127
+        ports:
+          rtc-tcp:
+            port: 7881
+            protocol: TCP
+          rtc-udp:
+            port: 7882
+            protocol: UDP
+
+    persistence:
+      config:
+        type: secret
+        name: livekit-config
+        globalMounts:
+          - path: /etc/livekit.yaml
+            subPath: livekit.yaml
+            readOnly: true

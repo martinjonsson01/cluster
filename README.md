@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="96"></td>
+    <td rowspan="101"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="96"></td>
+    <td rowspan="101"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -80,6 +80,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/network/echo-server/app/helmrelease.yaml">echo-server</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/matrix/app/element/helmrelease.yaml">element-web</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -188,6 +192,14 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/linkwarden-media-downloader/app/helmrelease.yaml">linkwarden-media-downloader</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/matrix/app/rtc/helmrelease-livekit.yaml">livekit</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/matrix/app/rtc/helmrelease-lk-jwt.yaml">lk-jwt-service</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -352,6 +364,14 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/kube-system/spegel/app/helmrelease.yaml">spegel</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/matrix/app/synapse/helmrelease.yaml">synapse</a></td>
+  </tr>
+  <tr>
+    <td><code>Cluster</code></td>
+    <td><a href="kubernetes/apps/default/matrix/app/postgresql.yaml">synapse-db</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>

@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://homelab-schemas-epg.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: synapse-db
+spec:
+  instances: 2
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4-30
+  bootstrap:
+    initdb:
+      database: synapse
+      owner: synapse
+      # Synapse refuses to start on a database without C collation.
+      encoding: UTF8
+      localeCollate: C
+      localeCType: C
+      # Password is provided (not generated) because synapse reads it from the
+      # SOPS-templated homeserver.yaml, which cannot reference other secrets.
+      secret:
+        name: synapse-db-secret
+  storage:
+    storageClass: openebs-hostpath
+    size: 8Gi
+  resources:
+    requests:
+      memory: 20Mi
+      cpu: 10m
+  monitoring:
+    enablePodMonitor: true
+  smartShutdownTimeout: 1
+  stopDelay: 301

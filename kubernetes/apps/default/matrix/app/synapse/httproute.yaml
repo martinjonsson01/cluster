@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: synapse
+spec:
+  hostnames:
+    - matrix.${SECRET_DOMAIN}
+  parentRefs:
+    - name: envoy-external
+      namespace: network
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: synapse
+          port: 8008
+      # /sync long-polls for 30s; envoy's default request timeout kills it.
+      timeouts:
+        request: 120s
+---
+# Serves /.well-known/matrix/{client,server} on the apex domain from synapse so
+# user IDs live on the apex while synapse runs on matrix.<domain>. The rest of
+# the apex stays unclaimed.
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: matrix-well-known
+spec:
+  hostnames:
+    - "${SECRET_DOMAIN}"
+  parentRefs:
+    - name: envoy-external
+      namespace: network
+      sectionName: https
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /.well-known/matrix/
+      backendRefs:
+        - name: synapse
+          port: 8008
