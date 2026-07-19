@@ -12,6 +12,17 @@ spec:
       namespace: network
       sectionName: https
   rules:
+    # Admin API stays LAN/kubectl only; blocked at the edge with a 403.
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /_synapse/admin
+      filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.envoyproxy.io
+            kind: HTTPRouteFilter
+            name: synapse-admin-block
     - backendRefs:
         - name: synapse
           port: 8008
