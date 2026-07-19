@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: synapse-guest
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        # The image's synapse user; running as it makes start.py skip its
+        # root-only chown path.
+        runAsUser: 991
+        runAsGroup: 991
+        fsGroup: 991
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+
+    controllers:
+      synapse-guest:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/element-hq/synapse
+              tag: v1.156.0
+            env:
+              TZ: ${TIMEZONE}
+              SYNAPSE_CONFIG_PATH: /config/homeserver.yaml
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8008
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  periodSeconds: 5
+                  failureThreshold: 60
+
+    service:
+      app:
+        controller: synapse-guest
+        ports:
+          http:
+            port: *port
+
+    persistence:
+      config:
+        type: secret
+        name: synapse-guest-config
+        globalMounts:
+          - path: /config
+            readOnly: true
+      data:
+        existingClaim: synapse-guest
+        globalMounts:
+          - path: /data

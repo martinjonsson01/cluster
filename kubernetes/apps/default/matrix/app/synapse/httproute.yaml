@@ -50,6 +50,11 @@ spec:
         - path:
             type: PathPrefix
             value: /.well-known/matrix/
+        # lk-jwt-service resolves the server name from the well-known
+        # (which points at the apex) and validates openid tokens there.
+        - path:
+            type: PathPrefix
+            value: /_matrix/federation/v1/openid/
       backendRefs:
         - name: synapse
           port: 8008

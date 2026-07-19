@@ -8,3 +8,4 @@ resources:
   - ./synapse
   - ./element
   - ./rtc
+  - ./call

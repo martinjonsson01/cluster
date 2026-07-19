@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: lk-jwt-service
+  name: element-call
 spec:
   interval: 30m
   chartRef:
@@ -12,29 +12,16 @@ spec:
     namespace: flux-system
 
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        seccompProfile: { type: RuntimeDefault }
-
     controllers:
-      lk-jwt-service:
+      element-call:
         annotations:
           reloader.stakater.com/auto: "true"
 
         containers:
           app:
             image:
-              repository: ghcr.io/element-hq/lk-jwt-service
-              tag: 0.5.0
-            env:
-              LIVEKIT_URL: wss://matrix-rtc.${SECRET_DOMAIN}/livekit/sfu
-              LIVEKIT_FULL_ACCESS_HOMESERVERS: ${SECRET_DOMAIN},call-guest.${SECRET_DOMAIN}
-            envFrom:
-              - secretRef:
-                  name: lk-jwt-secret
+              repository: ghcr.io/element-hq/element-call
+              tag: v0.21.0
             resources:
               requests:
                 cpu: 10m
@@ -47,7 +34,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /healthz
+                    path: /
                     port: &port 8080
                   initialDelaySeconds: 5
                   periodSeconds: 30
@@ -56,19 +43,37 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /healthz
+                    path: /
                     port: *port
                   initialDelaySeconds: 3
                   periodSeconds: 10
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop: ["ALL"]
 
     service:
       app:
-        controller: lk-jwt-service
+        controller: element-call
         ports:
           http:
             port: *port
+
+    route:
+      app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Services
+          gethomepage.dev/icon: sh-element-call.svg
+          gethomepage.dev/name: Element Call
+        hostnames:
+          - call.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+
+    persistence:
+      config:
+        type: configMap
+        name: element-call-config
+        globalMounts:
+          - path: /app/config.json
+            subPath: config.json
+            readOnly: true

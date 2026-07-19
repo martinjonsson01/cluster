@@ -1,0 +1,11 @@
+{
+  "default_server_config": {
+    "m.homeserver": {
+      "base_url": "https://call-guest.${SECRET_DOMAIN}",
+      "server_name": "call-guest.${SECRET_DOMAIN}"
+    }
+  },
+  "livekit": {
+    "livekit_service_url": "https://matrix-rtc.${SECRET_DOMAIN}/livekit/jwt"
+  }
+}

@@ -20,10 +20,10 @@ The software I run in my home cluster.
     <th>Supporting Services</th>
   </tr>
   <tr>
-    <td rowspan="101"></td>
+    <td rowspan="103"></td>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/default/actual/app/helmrelease.yaml">actual</a></td>
-    <td rowspan="101"></td>
+    <td rowspan="103"></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -80,6 +80,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>HelmRelease</code></td>
     <td><a href="kubernetes/apps/network/echo-server/app/helmrelease.yaml">echo-server</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/matrix/app/call/helmrelease-element-call.yaml">element-call</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
@@ -372,6 +376,10 @@ The software I run in my home cluster.
   <tr>
     <td><code>Cluster</code></td>
     <td><a href="kubernetes/apps/default/matrix/app/postgresql.yaml">synapse-db</a></td>
+  </tr>
+  <tr>
+    <td><code>HelmRelease</code></td>
+    <td><a href="kubernetes/apps/default/matrix/app/call/helmrelease-synapse-guest.yaml">synapse-guest</a></td>
   </tr>
   <tr>
     <td><code>HelmRelease</code></td>
