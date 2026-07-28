@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: ghcr.io/mikf/gallery-dl
-              tag: latest@sha256:0d1a9cca40669b64f16d6a9d013b4f3453efc818ef61cbf0cd90c0b82f3e5895
+              tag: latest@sha256:065a0b14e5f3cb30708f8253320c78660975db13c8cb8d19102559a91ffd4033
             command:
               - python3
               - /config/download.py
