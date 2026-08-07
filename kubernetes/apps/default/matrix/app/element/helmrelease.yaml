@@ -21,7 +21,7 @@ spec:
           app:
             image:
               repository: ghcr.io/element-hq/element-web
-              tag: v1.12.24
+              tag: v1.12.25
             resources:
               requests:
                 cpu: 10m
