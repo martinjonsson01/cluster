@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: krateng/maloja
-              tag: 3.2.4
+              tag: 3.2.6
             env:
               MALOJA_LOCATION_TIMEZONE: ${TIMEZONE}
               MALOJA_DATA_DIRECTORY: /data
