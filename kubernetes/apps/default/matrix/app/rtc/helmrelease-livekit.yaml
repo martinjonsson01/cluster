@@ -28,7 +28,7 @@ spec:
           app:
             image:
               repository: docker.io/livekit/livekit-server
-              tag: v1.13.5
+              tag: v1.13.6
             args:
               - --config
               - /etc/livekit.yaml
