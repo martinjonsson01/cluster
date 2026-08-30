@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: multi-scrobbler-spotify-auth
+spec:
+  module: multi_scrobbler_spotify_auth
+  prober:
+    url: blackbox-exporter.observability.svc.cluster.local:9115
+  interval: 5m
+  scrapeTimeout: 30s
+  targets:
+    staticConfig:
+      static:
+        - http://multi-scrobbler.default.svc.cluster.local:9078/api/status

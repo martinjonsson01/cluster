@@ -20,6 +20,8 @@ spec:
   values:
     fullnameOverride: *app
     configExistingSecretName: blackbox-exporter-config
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
     resources:
       requests:
         cpu: 10m

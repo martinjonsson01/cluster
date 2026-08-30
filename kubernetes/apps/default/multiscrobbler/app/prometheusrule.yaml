@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: multi-scrobbler
+spec:
+  groups:
+    - name: multi-scrobbler
+      rules:
+        - alert: MultiScrobblerSpotifyAuthInvalid
+          annotations:
+            description: |
+              multi-scrobbler no longer reports its Spotify source as authenticated. Re-authenticate Spotify in the multi-scrobbler web UI.
+            summary: multi-scrobbler has lost Spotify authentication.
+          expr: probe_success{job="probe/default/multi-scrobbler-spotify-auth"} == 0
+          for: 30m
+          labels:
+            severity: critical
+        - alert: MultiScrobblerSpotifyAuthProbeAbsent
+          annotations:
+            description: |
+              The blackbox probe metric for multi-scrobbler's Spotify authentication has disappeared, so authentication loss would go unnoticed.
+            summary: multi-scrobbler Spotify authentication probe is missing.
+          expr: absent(probe_success{job="probe/default/multi-scrobbler-spotify-auth"})
+          for: 1h
+          labels:
+            severity: critical
