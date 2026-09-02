@@ -123,6 +123,7 @@ spec:
                 driver = usbhid-ups
                 port = auto
                 serial = "9B2509A04867"
+                interrupt_pipe_no_events_tolerance = 10
                 desc = "APC Back-UPS BX750MI"
           upsd.conf: |
             LISTEN 127.0.0.1 3493
