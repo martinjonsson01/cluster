@@ -28,7 +28,7 @@ spec:
           app:
             image:
               repository: ghcr.io/element-hq/lk-jwt-service
-              tag: 0.5.0
+              tag: 0.6.0
             env:
               LIVEKIT_URL: wss://matrix-rtc.${SECRET_DOMAIN}/livekit/sfu
               LIVEKIT_FULL_ACCESS_HOMESERVERS: ${SECRET_DOMAIN},call-guest.${SECRET_DOMAIN}
