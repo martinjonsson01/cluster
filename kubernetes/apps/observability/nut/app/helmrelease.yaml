@@ -20,9 +20,6 @@ spec:
           reloader.stakater.com/auto: "true"
 
         containers:
-          # usbhid-ups matches the UPS by its serial, so the ~124s USB
-          # re-enumeration (moving devnum) is invisible to the driver as long as
-          # the whole bus is mounted. upsd stays foregrounded as PID 1.
           server:
             image:
               repository: instantlinux/nut-upsd
@@ -32,8 +29,44 @@ spec:
               - -c
               - |
                 mkdir -p /var/run/nut
-                /usr/sbin/upsdrvctl -u root start
+                # Fork before USB initialization: daemonizing the initialized
+                # driver loses libusb threads (networkupstools/nut#3437).
+                while ! /usr/sbin/upsdrvctl -F -u root start; do
+                  sleep 5
+                done &
                 exec /usr/sbin/upsd -u root -F
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: &upsHealthCheck
+                      - /usr/bin/upsc
+                      - apc@127.0.0.1
+                      - ups.status
+                  periodSeconds: 10
+                  timeoutSeconds: 6
+                  failureThreshold: 30
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: *upsHealthCheck
+                  periodSeconds: 30
+                  timeoutSeconds: 6
+                  # Allow transient USB reconnects before recycling both daemons.
+                  failureThreshold: 6
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command: *upsHealthCheck
+                  periodSeconds: 10
+                  timeoutSeconds: 6
+                  failureThreshold: 3
             securityContext:
               privileged: true
             resources:
@@ -115,10 +148,6 @@ spec:
           nut.conf: |
             MODE=netserver
           ups.conf: |
-            # Retry the driver at startup so a pod launched during the UPS's
-            # ~124s USB disconnect window still connects instead of giving up.
-            maxretry = 20
-            retrydelay = 5
             [apc]
                 driver = usbhid-ups
                 port = auto
