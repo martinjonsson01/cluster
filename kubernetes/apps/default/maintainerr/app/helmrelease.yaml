@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: ghcr.io/maintainerr/maintainerr
-              tag: 3.17.1@sha256:95e429451ea45380430d260450ab301eed9ce91fbcba5f94cf8507bd0bac0d08
+              tag: 3.30.0@sha256:908af0b22c61f4908633fa4819e615a1e12e1aafe6c860375686bf18b1723525
             env:
               TZ: ${TIMEZONE}
             probes:
