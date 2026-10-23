@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: ghcr.io/triliumnext/trilium
-              tag: v0.103.0@sha256:8e6bc939a6d5dbeed42d1b5b155bc790b1c28ca3ac414382d04d626903c62081
+              tag: v0.106.1@sha256:d87d810fdcb549db65710a40933acaa16bc75c9426a9164c547f7ba95592941b
             env:
               TZ: ${TIMEZONE}
             resources:
