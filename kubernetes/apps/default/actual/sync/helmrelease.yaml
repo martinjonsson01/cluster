@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: docker.io/library/node
-              tag: 22-slim@sha256:83f487e0a63425e5b4d146fb5e5be574bcbe1b7b843d3ebafdd95eaf7767a7e5
+              tag: 26-slim@sha256:e4db4c914bf8ad241bd24804fc25d272d89bad97e68cdc8a1414862790a02c39
             command:
               - /bin/bash
               - -c
