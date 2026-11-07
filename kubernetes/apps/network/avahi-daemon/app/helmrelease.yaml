@@ -21,7 +21,7 @@ spec:
           app:
             image:
               repository: flungo/avahi
-              tag: latest@sha256:c12a6027d2f85a3461a9365997b218ccab55e4dde1e435541034ed1bc401ec78
+              tag: latest@sha256:715021cef68055de589d74f75296ff7e7d6c26745176167fe118eaad8efeef28
             env:
               REFLECTOR_ENABLE_REFLECTOR: "yes"
             resources:
