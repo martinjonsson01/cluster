@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/tautulli
-              tag: 2.17.2@sha256:7592e192e2dd5297054a80c0f1e8b2593f7675af75c5020806b30c712e159406
+              tag: 2.19.1@sha256:602dc59bbc24f3127e086c1b702860b02abb846e7669e2ed53157bc7572c5c9b
             env:
               TZ: ${TIMEZONE}
               TAUTULLI_HTTP_BASE_URL: https://tautulli.${SECRET_DOMAIN}
