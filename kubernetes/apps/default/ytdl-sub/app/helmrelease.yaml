@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: ghcr.io/jmbannon/ytdl-sub
-              tag: 2026.06.23@sha256:abbdc71622aa5485c379de0f2ce6cfcc891fdc595c47fe68c805db5d26be89f9
+              tag: 2026.11.19@sha256:f0919db66c6bafbe7f4cab7012529e1394ad18b9d036f28bc1c596c5ec3306fb
             command:
               - /bin/bash
               - -c
