@@ -241,6 +241,17 @@
       "dependencyDashboardApproval": true,
       "automerge": false
     },
+    // ===== gallery-dl: updates require manual approval =====
+    {
+      "description": [
+        "gallery-dl 1.32.20 and 1.32.21 crash with KeyError 'legacy' on every tweet",
+        "when the twitter option 'quoted' is on and no cookies are set.",
+        "Remove this rule when a fixed version is in use."
+      ],
+      "matchPackageNames": ["ghcr.io/mikf/gallery-dl"],
+      "dependencyDashboardApproval": true,
+      "automerge": false
+    },
     // ===== talconfig Talos/Kubernetes versions: manual bump ONLY =====
     {
       "description": [
