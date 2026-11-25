@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/recyclarr/recyclarr/v7.5.2/schemas/settings-schema.json
+resource_providers:
+  # Last commit before config-templates removed the include templates that
+  # recyclarr.yml uses. Remove this pin when recyclarr.yml moves to the
+  # templates for Recyclarr 8.
+  - name: config-templates-v7
+    type: config-templates
+    clone_url: https://github.com/recyclarr/config-templates.git
+    reference: 4ae377bb704fc7fd69a544ad04e91357e0b09f62
+    replace_default: true
