@@ -20,7 +20,10 @@ spec:
           annotations:
             description: No feed-monitor run has succeeded in the last 24 hours.
             summary: feed-monitor runs are stale.
-          expr: time() - kube_cronjob_status_last_successful_time{namespace="default", cronjob="feed-monitor"} > 86400
+          expr: |-
+            (time() - kube_cronjob_status_last_successful_time{namespace="default", cronjob="feed-monitor"} > 86400)
+            unless on (namespace, cronjob)
+            (kube_cronjob_spec_suspend{namespace="default", cronjob="feed-monitor"} == 1)
           for: 15m
           labels:
             severity: warning
