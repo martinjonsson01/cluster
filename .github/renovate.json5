@@ -206,7 +206,6 @@
         "ghcr.io/home-operations/home-assistant",
         "ghcr.io/home-assistant-libs/python-matter-server",
         "ghcr.io/koenkk/zigbee2mqtt",
-        "docker.io/emqx/emqx",
         "ghcr.io/dani-garcia/vaultwarden"
       ],
       "matchUpdateTypes": ["minor", "major"],
@@ -238,6 +237,17 @@
         "siderolabs/talosctl",
         "siderolabs/installer"
       ],
+      "dependencyDashboardApproval": true,
+      "automerge": false
+    },
+    // ===== EMQX: updates require manual approval =====
+    {
+      "description": [
+        "The default EMQX license allows one node, but emqx-operator 2.x starts the",
+        "new node next to the old one on every update, so the new node crashes with",
+        "SINGLE_NODE_LICENSE. The old node must be removed before the new one starts."
+      ],
+      "matchPackageNames": ["docker.io/emqx/emqx"],
       "dependencyDashboardApproval": true,
       "automerge": false
     },
